@@ -23,11 +23,22 @@ def find_app_folder(given):
             if os.path.isfile(os.path.join(cand, "appsettings.local.json")):
                 return cand
         return given
-    try:                                   # the copy that is running now
+    # A rig can hold many builds and run another one (e.g. the combine build): the lessons are for the Aug 26 v4
+    # 612R build, so look for that first, then a running Aug 26 copy, then the default place.
+    import glob
+    home = os.path.expanduser("~")
+    for pattern in (os.path.join(home, "Documents", "jd_resources", "Aug26_Sprayer612R_TestBuild_v4*", "net8.0-windows"),
+                    r"C:\Simulator\*\Aug26_Sprayer612R_TestBuild_v4*\net8.0-windows",
+                    r"C:\Simulator\Aug26_Sprayer612R_TestBuild_v4*\net8.0-windows",
+                    os.path.join(home, "Desktop", "**", "Aug26_Sprayer612R_TestBuild_v4*", "net8.0-windows")):
+        hits = [h for h in glob.glob(pattern, recursive=True) if os.path.isfile(os.path.join(h, "appsettings.local.json"))]
+        if hits:
+            return hits[0]
+    try:
         sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         from simapi.profiles import running_dir
         d = running_dir("SimulatorConnections")
-        if d:
+        if d and "Aug26" in d:
             return d
     except Exception:
         pass

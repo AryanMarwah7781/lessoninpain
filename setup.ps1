@@ -65,6 +65,7 @@ function Ensure-Tool($name, [scriptblock]$test, $wingetId) {
 }
 
 Write-Host 'Lesson Studio setup' -ForegroundColor Cyan
+Refresh-Path    # see tools installed since this window opened
 
 # ---------------------------------------------------------------------------------------------- 1. tools
 Step 1 'Tools: Git, Python, .NET 8 Desktop Runtime'
@@ -105,16 +106,17 @@ if ($AppFolder) {
     if (-not $app) { Todo "No SimulatorConnections.exe in $AppFolder" }
 }
 if (-not $app) {
-    $p = Get-Process SimulatorConnections -ErrorAction SilentlyContinue | Select-Object -First 1
-    if ($p -and $p.Path) { $app = Split-Path -Parent $p.Path; Info 'found the running copy' }
-}
-if (-not $app) {
+    # A rig can hold many builds (and run another one, e.g. the combine): the lessons are for the Aug 26 v4 612R
+    # build, so prefer it, then a running Aug 26 copy, then the newest copy found.
     Info 'searching for the app ...'
     $roots = @((Join-Path $Docs 'jd_resources'), $Docs, "$env:USERPROFILE\Desktop", "$env:USERPROFILE\Downloads", 'C:\Simulator', 'C:\JD', 'D:\') | Where-Object { Test-Path $_ }
-    foreach ($r in $roots) {
-        $hit = Get-ChildItem $r -Recurse -Depth 4 -Filter 'SimulatorConnections.exe' -ErrorAction SilentlyContinue | Select-Object -First 1
-        if ($hit) { $app = $hit.DirectoryName; break }
-    }
+    $found = @()
+    foreach ($r in $roots) { $found += @(Get-ChildItem $r -Recurse -Depth 4 -Filter 'SimulatorConnections.exe' -ErrorAction SilentlyContinue) }
+    $v4 = $found | Where-Object { $_.FullName -match 'Aug26_Sprayer612R_TestBuild_v4' } | Select-Object -First 1
+    $p = Get-Process SimulatorConnections -ErrorAction SilentlyContinue | Where-Object { $_.Path -match 'Aug26' } | Select-Object -First 1
+    if ($v4) { $app = $v4.DirectoryName }
+    elseif ($p -and $p.Path) { $app = Split-Path -Parent $p.Path; Info 'found the running copy' }
+    elseif ($found) { $app = ($found | Sort-Object LastWriteTime -Descending | Select-Object -First 1).DirectoryName; Info 'no Aug 26 v4 build found: using the newest copy' }
 }
 if (-not $app) {
     $zip = @((Join-Path $Docs 'jd_resources'), $Docs, "$env:USERPROFILE\Downloads", "$env:USERPROFILE\Desktop") | Where-Object { Test-Path $_ } |
