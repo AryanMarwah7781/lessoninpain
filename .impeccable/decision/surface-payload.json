@@ -1,0 +1,143 @@
+{
+  "title": "Choose the lesson panel layout",
+  "question": "Three layouts for the lesson monitor, all in the Connections app's own look (white title band with the green and yellow stripe, grey ground, white cards, Calibri). The Gen 4 display now has its own monitor with a yellow ring overlay, so these show the lesson and the armrest only. Pick one, steer it, or ask for another hand.",
+  "options": [
+    {
+      "id": "assigned",
+      "kind": "assigned",
+      "label": "One action, big armrest",
+      "kicker": "THE ROLL",
+      "lineage": "Instruction band over one large armrest stage",
+      "thesis": "One action across the top, and below it the armrest at full size with the manual's photo of every button to press, in order.",
+      "palette": ["#ffffff", "#e6e6e6", "#367c2b", "#ffde00", "#282828"],
+      "materials": ["manual line drawing of the handle with ringed buttons", "manual photos as numbered callouts"],
+      "viewport": "Full-width band with the one action and why; below, the handle drawing large on the left and the numbered manual photos on the right; a step rail along the bottom. The display's own monitor gets a yellow ring overlay.",
+      "risk": "Steps done only on the display leave the big armrest stage with little to say.",
+      "raised": [
+        {"from": "challenger-wayfinding", "raise": "The band carries exactly one action at monumental size; the next step waits dimmed beside it, never more."},
+        {"from": "challenger-orienteering", "raise": "The step rail punches each finished step; only the current leg wears the yellow."}
+      ],
+      "html": ".impeccable/mocks/decision/assigned.html"
+    },
+    {
+      "id": "dealt-procedure",
+      "kind": "dealt",
+      "label": "Manual procedure page",
+      "lineage": "The operator's manual procedure, live",
+      "thesis": "The lesson reads like the manual's own numbered procedure, with the manual's photo beside every step and the current step opened up.",
+      "palette": ["#ffffff", "#e6e6e6", "#367c2b", "#ffde00", "#282828"],
+      "materials": ["numbered steps with manual figures", "live armrest and display column"],
+      "viewport": "Left: the whole lesson as numbered steps, finished ones collapsed with a check, the current one expanded with why, hint and the button photos. Right: the handle drawing at full height, with a line saying what to watch on the display monitor.",
+      "risk": "With seven or more steps the list competes with the live views for attention.",
+      "html": ".impeccable/mocks/decision/dealt-procedure.html"
+    },
+    {
+      "id": "dealt-machine-log",
+      "kind": "dealt",
+      "label": "Trainee above, machine below",
+      "lineage": "Next action on top, what the machine saw underneath",
+      "thesis": "The top of the screen is for the trainee, the strip underneath shows the instructor what the machine actually saw, press by press.",
+      "palette": ["#ffffff", "#e6e6e6", "#367c2b", "#ffde00", "#282828"],
+      "materials": ["large handle drawing with the target", "live event strip: presses, lights, game changes"],
+      "viewport": "Top two thirds: the action and the manual photos on the left, the handle drawing with the targets on the right. Bottom third: a timeline of presses, cloud lights and mistakes with time on step.",
+      "risk": "A trainee may read the log instead of the instruction.",
+      "raised": [
+        {"from": "challenger-ticket-wallet", "raise": "Nothing disappears, it cancels: a mistake stays in the strip, struck through, never erased."}
+      ],
+      "html": ".impeccable/mocks/decision/dealt-machine-log.html"
+    },
+    {
+      "id": "challenger-wayfinding",
+      "kind": "challenger",
+      "catalogId": "wayfinding-cartography-signage-terminal-yellow-wayfinding",
+      "label": "Airport wayfinding",
+      "verdict": "declined",
+      "lineage": "Overhead yellow sign bands",
+      "thesis": "Only the next decision, at monumental size.",
+      "palette": ["#ffd200", "#111111", "#ffffff"],
+      "materials": ["yellow sign bands", "pictograms"],
+      "viewport": "One yellow band with the next action and its pictogram.",
+      "risk": "Yellow bands would fight the app's own yellow action button.",
+      "case": "Fuses partly: trainees know signage, but a band-only screen hides where the button is.",
+      "kept": "One action per band at monumental size."
+    },
+    {
+      "id": "challenger-orienteering",
+      "kind": "challenger",
+      "catalogId": "notation-diagram-systems-orienteering-map",
+      "label": "Orienteering course",
+      "verdict": "declined",
+      "lineage": "Course over terrain map",
+      "thesis": "Travel control to control, the active leg in one colour.",
+      "palette": ["#ffffff", "#c0287c", "#f5e04a", "#8b5a2b"],
+      "materials": ["numbered controls", "course line"],
+      "viewport": "A course line across the steps with punched controls.",
+      "risk": "Map metaphor means nothing to most operators.",
+      "case": "Fuses poorly: the map is not the machine.",
+      "kept": "Finished controls get punched; only the active leg is coloured."
+    },
+    {
+      "id": "challenger-ticket-wallet",
+      "kind": "challenger",
+      "catalogId": "vernacular-ephemera-jet-age-ticket-wallet",
+      "label": "Ticket wallet",
+      "verdict": "declined",
+      "lineage": "Carbon coupons and stamps",
+      "thesis": "Each leg tears off; states stamp themselves.",
+      "palette": ["#1b2a52", "#c8102e", "#ffffff"],
+      "materials": ["coupons", "stamps"],
+      "viewport": "Steps as coupons torn off in sequence.",
+      "risk": "Costume of paper on a working screen.",
+      "case": "Fuses poorly: coupons add ceremony, not clarity.",
+      "kept": "Nothing disappears, it cancels."
+    },
+    {
+      "id": "challenger-centre-rail",
+      "kind": "challenger",
+      "catalogId": "rw-centre-rail-reference-setting",
+      "label": "Centre-rail edition",
+      "verdict": "declined",
+      "lineage": "Wide-margin reference setting",
+      "thesis": "Two columns around a rail of keys.",
+      "palette": ["#1a1a1a", "#c0392b", "#efe9dc"],
+      "materials": ["hairline rules", "small caps"],
+      "viewport": "Twinned text columns with a key rail.",
+      "risk": "Bookish; trainees are not reading.",
+      "case": "Fuses poorly: dense reading does not fit hands-on training.",
+      "kept": "States drawn as marks, not colour alone."
+    },
+    {
+      "id": "challenger-grid-specimen",
+      "kind": "challenger",
+      "catalogId": "crouwel-grid-specimen",
+      "label": "Grid specimen",
+      "verdict": "declined",
+      "lineage": "Visible construction grid",
+      "thesis": "The grid is the proof.",
+      "palette": ["#ffffff", "#1e5aff", "#111111"],
+      "materials": ["visible grid", "constructed letters"],
+      "viewport": "Monumental grid letters over small text.",
+      "risk": "Pure form; no task fit.",
+      "case": "Fuses poorly: nothing in training is built cell by cell.",
+      "kept": "Everything snaps to one visible grid."
+    },
+    {
+      "id": "challenger-variable-font",
+      "kind": "challenger",
+      "catalogId": "variable-font-specimen",
+      "label": "Variable type specimen",
+      "verdict": "declined",
+      "lineage": "Axis sliders over a glyph grid",
+      "thesis": "One control morphs everything live.",
+      "palette": ["#fafafa", "#111111", "#ff3b00"],
+      "materials": ["giant glyph", "axis readout"],
+      "viewport": "One letter fills the screen, sliders below.",
+      "risk": "No relation to the subject.",
+      "case": "Fuses poorly: no axis in a lesson to drag.",
+      "kept": "A live readout that answers every input at once."
+    }
+  ],
+  "reroll": true,
+  "buildPath": {"value": "code"},
+  "steer": true
+}

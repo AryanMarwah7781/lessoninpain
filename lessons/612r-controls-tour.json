@@ -1,0 +1,730 @@
+{
+  "schema": "lesson/0.2",
+  "id": "612r-controls-tour",
+  "title": "Know your 612R cab: CommandARM, multi-function lever and corner post",
+  "machine": "612R Sprayer · CommandCenter display · CommandARM",
+  "build": "612R operator's manual OMKK105338; runs on the Apr 20 Display and CommandARM Simulator",
+  "manual": "OMKK105338 (400R-616R operator's manual)",
+  "level": "Intermediate",
+  "minutes": 16,
+  "objective": "Learn what every main control on the 612R multi-function lever and CommandARM does and where it sits, read the corner post display, open Controls Setup, then find and press each control on demand without help.",
+  "procedure_source": "Control names, positions and functions from OMKK105338: Multi-Function Lever and Button Configuration (30-17 to 30-20), Quick Stop Switch (30-20, 30-21), AutoTrac Resume (30-21), Operate Indexed Boom Sections (50-23, 50-24), Engine and Ground Drive, Park Brake and Transport Lock Switch (30-13, 30-14), Corner Post Display (30-5 to 30-9), Navigation Bar (30-21, 30-22) and Controls Setup Application (25-P-1 to 25-P-3). The drills and scenarios are adapted for the simulator; steps marked draft use a button whose simulator mapping is not confirmed (AutoTrac Resume, Quick Stop, configurable buttons, Transport Lock) or a drill scenario the manual does not describe.",
+  "extra_controls": {
+    "corner_post_display": {
+      "label": "Corner post display",
+      "where": "Front right-hand corner post of the cab",
+      "figure": "H137356",
+      "source": {"pages": ["30-1", "30-5"], "topic": "corner-post-display--2f66ad"}
+    },
+    "controls_setup_button": {
+      "label": "Controls Setup (navigation bar)",
+      "where": "Navigation bar below the display; also Menu, Machine Settings tab, Controls Setup",
+      "figure": "H118151C",
+      "source": {"pages": ["25-P-1"], "topic": "access-controls-setup--3a1b71"}
+    },
+    "control_group_lock": {
+      "label": "Control Group Lock button",
+      "where": "CommandARM; its light is on when the configurable buttons are locked",
+      "figure": "H117027C",
+      "source": {"pages": ["25-P-3"], "topic": "create-single-position-assignments--e90e10"}
+    }
+  },
+  "setup": {
+    "armrest": [
+      "switch foot_switch 0",
+      "switch warning_switch 0",
+      "switch park_slot 1",
+      "set steering 0",
+      "set speed_dial 0",
+      "switch foot_switch 1",
+      "wait 0.3",
+      "press centre_boom_lower 800",
+      "wait 0.3",
+      "switch foot_switch 0",
+      "wait 0.3",
+      "press engine_low_idle 300",
+      "wait 0.5"
+    ],
+    "trainer": "Machine parked: lever in PARK, engine running at low idle, boom unfolded, solution pump and spray system off, park brake switch released (P light off), Transport Lock off, foot off the boom fold switch, speed range wheel at its lowest. Have figure NX711654 (lettered multi-function lever) ready.",
+    "expect": {
+      "game": {
+        "boomUnfolded": "1"
+      }
+    }
+  },
+  "chatbot": {
+    "about": "The trainee is learning the controls of a John Deere 612R self-propelled sprayer cab (multi-function lever, CommandARM switches, corner post display, Controls Setup) on the Display and CommandARM Simulator. Answer only from the 612R operator's manual OMKK105338 and name the exact control and where it is, in 2-3 sentences. Lever letters follow figure NX711654: V Quick Stop, G/H IBS Right/Left, N IBS Reset, A HMS, B programmable F, I Spray System On/Off, F/E left tilt up/down, C/D right tilt up/down, M/K centre boom raise/lower, L/J programmable E, O AutoTrac Resume, Z BoomTrac Resume, P-U configurable, Y speed range wheel. The simulator's armrest is an R4045-style CommandARM, so its layout can differ from the 612R pictures.",
+    "send": [
+      "lesson title",
+      "section",
+      "step instruction",
+      "seconds on step",
+      "last 10 controls used",
+      "current game state",
+      "lights currently on"
+    ]
+  },
+  "sections": [
+    {
+      "title": "1. The multi-function lever",
+      "mode": "learn",
+      "steps": [
+        {
+          "id": "lever-layout",
+          "say": "Rest your hand on the multi-function lever and match its buttons to the lettered drawing beside this step.",
+          "why": "Forward drives, back reverses, the middle is neutral; the buttons run spraying, boom and guidance.",
+          "controls": ["lever", "park_slot"],
+          "done": {"confirm": "Lever layout matched to the drawing"},
+          "wrong": [
+            {
+              "if": {"sent": "PLT_NeutralSlotStatus", "eq": "0"},
+              "say": "Leave the lever in PARK for this tour: out of PARK the park brakes release and the machine can move."
+            }
+          ],
+          "wrong_demo": ["switch park_slot 0", "wait 0.4", "switch park_slot 1", "wait 0.4"],
+          "hints": [
+            {"after_s": 20, "say": "Don't move the lever: just find the yellow Quick Stop on top and HMS at the top right.", "highlight": ["lever"]},
+            {"after_s": 45, "say": "The multi-function lever is on the CommandARM, the armrest on the right-hand side of your seat.", "highlight": ["lever", "park_slot"]}
+          ],
+          "ask": "What does each button on the 612R multi-function lever do?",
+          "est_s": 45,
+          "figure": "NX711654",
+          "source": {"pages": ["30-17", "30-19"], "topic": "multi-function-lever--30db6a"},
+          "confidence": "manual"
+        },
+        {
+          "id": "hms",
+          "say": "Press HMS, the button marked HMS at the top right of the lever.",
+          "why": "HMS runs several machine systems with one press when you leave a headland.",
+          "controls": ["hms"],
+          "done": {"sent": "PLT_MHC_HMS", "eq": "1"},
+          "wrong": [
+            {
+              "if": {"sent": "PLT_MHC_MasterSprayOnOff", "eq": "1"},
+              "say": "That's the yellow Spray System On/Off button. HMS is higher up, marked HMS."
+            }
+          ],
+          "wrong_demo": ["press master_spray 300", "wait 0.5", "press master_spray 300", "wait 0.5"],
+          "hints": [
+            {"after_s": 20, "say": "HMS sits just above the small F button.", "highlight": ["hms"]},
+            {"after_s": 45, "say": "Top right of the lever's button face, marked HMS (A1 in the drawing).", "highlight": ["hms"]}
+          ],
+          "show_me": ["press hms 300"],
+          "ask": "What does the HMS button do on the 612R?",
+          "est_s": 35,
+          "figure": "N152638",
+          "source": {"pages": ["30-18"], "topic": "multi-function-lever--30db6a"},
+          "confidence": "manual"
+        },
+        {
+          "id": "centre-boom",
+          "say": "Push the top of the round centre boom switch, then the bottom.",
+          "why": "Top raises the boom centre section, bottom lowers it.",
+          "controls": ["centre_boom_raise", "centre_boom_lower"],
+          "done": {
+            "then": [
+              {"sent": "PLT_MHC_CenterBoomRaise", "eq": "1"},
+              {"sent": "PLT_MHC_CenterBoomLower", "eq": "1"}
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "any": [
+                  {"control": "foot_switch", "eq": "1"},
+                  {"game": "boomUnfolded", "eq": "0"}
+                ]
+              },
+              "say": "Foot off the fold switch: held down, it makes this switch fold or unfold the boom instead."
+            }
+          ],
+          "wrong_demo": ["switch foot_switch 1", "wait 0.4", "switch foot_switch 0", "wait 0.4"],
+          "hints": [
+            {"after_s": 20, "say": "It's the round switch on the left of the lever face.", "highlight": ["centre_boom_raise", "centre_boom_lower"]},
+            {"after_s": 45, "say": "Round pad, left side of the lever: top edge raises (M1), bottom edge lowers (K1).", "highlight": ["centre_boom_raise", "centre_boom_lower"]}
+          ],
+          "show_me": ["press centre_boom_raise 500", "wait 0.4", "press centre_boom_lower 500"],
+          "ask": "How do I raise and lower the 612R boom centre section?",
+          "est_s": 45,
+          "figure": "N152641",
+          "source": {"pages": ["30-18"], "topic": "multi-function-lever--30db6a"},
+          "confidence": "manual"
+        },
+        {
+          "id": "tilt-left",
+          "say": "Left wing: push the top of the left tilt rocker, then the bottom.",
+          "why": "Top raises the left-hand boom sections, bottom lowers them.",
+          "controls": ["left_boom_raise", "left_boom_lower"],
+          "done": {
+            "then": [
+              {"sent": "PLT_MHC_LeftBoomRaise", "eq": "1"},
+              {"sent": "PLT_MHC_LeftBoomLower", "eq": "1"}
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "any": [
+                  {"sent": "PLT_MHC_RightBoomRaise", "eq": "1"},
+                  {"sent": "PLT_MHC_RightBoomLower", "eq": "1"}
+                ]
+              },
+              "say": "That's the right wing. The left tilt rocker is the tall rocker left of centre."
+            }
+          ],
+          "wrong_demo": ["press right_boom_raise 300", "wait 0.3", "press right_boom_lower 300", "wait 0.4"],
+          "hints": [
+            {"after_s": 20, "say": "Two tall rockers sit in the middle of the lever; the left one tilts the left wing.", "highlight": ["left_boom_raise", "left_boom_lower"]},
+            {"after_s": 45, "say": "Middle of the lever, left rocker: top is F1 (up), bottom is E1 (down).", "highlight": ["left_boom_raise", "left_boom_lower"]}
+          ],
+          "show_me": ["press left_boom_raise 500", "wait 0.4", "press left_boom_lower 500"],
+          "ask": "How do I tilt the left boom wing up and down?",
+          "est_s": 40,
+          "figure": "N152642",
+          "source": {"pages": ["30-18"], "topic": "multi-function-lever--30db6a"},
+          "confidence": "manual"
+        },
+        {
+          "id": "tilt-right",
+          "say": "Right wing: push the top of the right tilt rocker, then the bottom.",
+          "why": "Top raises the right-hand boom sections, bottom lowers them.",
+          "controls": ["right_boom_raise", "right_boom_lower"],
+          "done": {
+            "then": [
+              {"sent": "PLT_MHC_RightBoomRaise", "eq": "1"},
+              {"sent": "PLT_MHC_RightBoomLower", "eq": "1"}
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "any": [
+                  {"sent": "PLT_MHC_LeftBoomRaise", "eq": "1"},
+                  {"sent": "PLT_MHC_LeftBoomLower", "eq": "1"}
+                ]
+              },
+              "say": "That's the left wing again. The right tilt rocker is the one beside the yellow spray button."
+            }
+          ],
+          "wrong_demo": ["press left_boom_raise 300", "wait 0.3", "press left_boom_lower 300", "wait 0.4"],
+          "hints": [
+            {"after_s": 20, "say": "Same shape as the left rocker, one row to the right.", "highlight": ["right_boom_raise", "right_boom_lower"]},
+            {"after_s": 45, "say": "Middle of the lever, right rocker: top is C1 (up), bottom is D1 (down).", "highlight": ["right_boom_raise", "right_boom_lower"]}
+          ],
+          "show_me": ["press right_boom_raise 500", "wait 0.4", "press right_boom_lower 500"],
+          "ask": "How do I tilt the right boom wing up and down?",
+          "est_s": 35,
+          "figure": "N152643",
+          "source": {"pages": ["30-18"], "topic": "multi-function-lever--30db6a"},
+          "confidence": "manual"
+        },
+        {
+          "id": "ibs-right",
+          "say": "A waterway angles in from the left. Press IBS Right once to shut off the left outer section.",
+          "why": "IBS Right shuts sections off one at a time, starting at the left-hand end of the boom.",
+          "controls": ["section_right_enable"],
+          "done": {"sent": "PLT_MHC_IBSRightEnable", "eq": "1"},
+          "wrong": [
+            {
+              "if": {"sent": "PLT_MHC_IBSLeftEnable", "eq": "1"},
+              "say": "IBS Left starts at the right-hand end. For the left end, use IBS Right."
+            }
+          ],
+          "wrong_demo": ["press section_left_enable 300", "wait 0.4", "press section_reset 300", "wait 0.4"],
+          "hints": [
+            {"after_s": 20, "say": "IBS Left and IBS Right share the wide rocker near the top of the lever.", "highlight": ["section_right_enable", "section_left_enable"]},
+            {"after_s": 45, "say": "Wide rocker below the Quick Stop: its right half (G1) is IBS Right.", "highlight": ["section_right_enable"]}
+          ],
+          "show_me": ["press section_right_enable 300"],
+          "ask": "Which IBS button shuts off sections starting from the left end of the boom?",
+          "est_s": 45,
+          "figure": "N155496",
+          "source": {"pages": ["50-23", "50-24"], "topic": "operate-indexed-boom-sections-ibs--001bb6"},
+          "confidence": "manual"
+        },
+        {
+          "id": "ibs-left-reset",
+          "say": "Now press IBS Left once, then IBS Reset to turn the shut-off sections back on.",
+          "why": "IBS Left starts at the right-hand end; Reset restarts all shut-off sections that are enabled.",
+          "controls": ["section_left_enable", "section_reset"],
+          "done": {
+            "then": [
+              {"sent": "PLT_MHC_IBSLeftEnable", "eq": "1"},
+              {"sent": "PLT_MHC_IBSReset", "eq": "1"}
+            ]
+          },
+          "wrong": [
+            {
+              "if": {"sent": "PLT_MHC_IBSRightEnable", "eq": "1"},
+              "say": "That's IBS Right again. IBS Left is the left half of the same rocker."
+            }
+          ],
+          "wrong_demo": ["press section_right_enable 300", "wait 0.4"],
+          "hints": [
+            {"after_s": 20, "say": "IBS Left is the other half of the wide rocker; Reset is the angled button beside it.", "highlight": ["section_left_enable", "section_reset"]},
+            {"after_s": 45, "say": "IBS Left is H1 on the wide rocker; IBS Reset is the angled button N1 at the left edge.", "highlight": ["section_left_enable", "section_reset"]}
+          ],
+          "show_me": ["press section_left_enable 300", "wait 0.4", "press section_reset 300"],
+          "ask": "How do I turn all the IBS sections back on at once?",
+          "est_s": 45,
+          "figure": "N153020",
+          "source": {"pages": ["50-23"], "topic": "operate-indexed-boom-sections-ibs--001bb6"},
+          "confidence": "manual"
+        },
+        {
+          "id": "master-spray",
+          "say": "Press the yellow Spray System On/Off button to turn spraying on, then press it again for off.",
+          "why": "It turns enabled boom sections on and off; its indicator lights while it's on.",
+          "controls": ["master_spray"],
+          "done": {
+            "then": [
+              {"sent": "PLT_MHC_MasterSprayOnOff", "eq": "1"},
+              {"sent": "PLT_MHC_MasterSprayOnOff", "eq": "0"},
+              {"sent": "PLT_MHC_MasterSprayOnOff", "eq": "1"}
+            ]
+          },
+          "wrong": [
+            {
+              "if": {"sent": "PLT_MHC_HMS", "eq": "1"},
+              "say": "That's HMS. Spray System On/Off is the yellow button on the right edge."
+            }
+          ],
+          "wrong_demo": ["press hms 300", "wait 0.4"],
+          "hints": [
+            {"after_s": 20, "say": "It's the yellow button on the right side of the lever face.", "highlight": ["master_spray"]},
+            {"after_s": 45, "say": "Yellow button (I1) on the right edge of the lever, below HMS and F. Press, then press again.", "highlight": ["master_spray"]}
+          ],
+          "show_me": ["press master_spray 300", "wait 0.6", "press master_spray 300"],
+          "ask": "How do I turn the 612R spray system on and off?",
+          "est_s": 40,
+          "figure": "N152644",
+          "source": {"pages": ["30-19"], "topic": "multi-function-lever--30db6a"},
+          "confidence": "manual"
+        },
+        {
+          "id": "auto-resume",
+          "say": "Press AutoTrac Resume (marked AUTO), then BoomTrac Resume just to its right.",
+          "why": "AUTO activates AutoTrac steering; the other one hands boom height back to BoomTrac.",
+          "controls": ["switch_4", "boomtrac"],
+          "done": {
+            "then": [
+              {"sent": "PLT_SWITCH_4", "eq": "1"},
+              {"sent": "PLT_MHC_BoomTrac", "eq": "1"}
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {"sent": "PLT_MHC_BoomTrac", "eq": "1"},
+                  {"sent": "PLT_SWITCH_4", "eq": "1"}
+                ]
+              },
+              "say": "That's BoomTrac Resume. AutoTrac Resume is the AUTO button to its left: press that first."
+            }
+          ],
+          "wrong_demo": ["press boomtrac 300", "wait 0.4"],
+          "hints": [
+            {"after_s": 20, "say": "Both sit at the bottom of the middle button group.", "highlight": ["switch_4", "boomtrac"]},
+            {"after_s": 45, "say": "Bottom of the middle group: AUTO (O1) on the left, BoomTrac Resume (Z1) on the right.", "highlight": ["switch_4", "boomtrac"]}
+          ],
+          "show_me": ["press switch_4 300", "wait 0.4", "press boomtrac 300"],
+          "ask": "What do AutoTrac Resume and BoomTrac Resume do, and what does AutoTrac need to engage?",
+          "est_s": 45,
+          "figure": "NX711654",
+          "source": {"pages": ["30-19", "30-20"], "topic": "multi-function-lever-button-configuration--163f36"},
+          "confidence": "draft"
+        },
+        {
+          "id": "quick-stop",
+          "say": "Press the yellow Quick Stop switch on top of the lever, then release it.",
+          "why": "It shuts off the solution pump, spray system and wet valves at once; you still pull the lever back.",
+          "controls": ["warning_switch"],
+          "done": {
+            "then": [
+              {"sent": "PLT_MHC_Warning", "eq": "1"},
+              {"sent": "PLT_MHC_Warning", "eq": "0"}
+            ]
+          },
+          "wrong": [
+            {
+              "if": {"sent": "PLT_MHC_MasterSprayOnOff", "eq": "1"},
+              "say": "Spray System On/Off only stops spraying. Quick Stop is the yellow switch on top of the lever."
+            }
+          ],
+          "wrong_demo": ["press master_spray 300", "wait 0.5", "press master_spray 300", "wait 0.5"],
+          "hints": [
+            {"after_s": 20, "say": "It's the yellow switch at the very top of the lever.", "highlight": ["warning_switch"]},
+            {"after_s": 45, "say": "Top of the lever, V1 in the drawing. On the simulator, switch it on and back off.", "highlight": ["warning_switch"]}
+          ],
+          "show_me": ["switch warning_switch 1", "wait 0.6", "switch warning_switch 0"],
+          "ask": "What does the Quick Stop switch shut off, and does it stop the machine?",
+          "est_s": 45,
+          "figure": "N152634",
+          "source": {"pages": ["30-20", "30-21"], "topic": "quick-stop-switch--43ba9f"},
+          "confidence": "draft"
+        },
+        {
+          "id": "speed-wheel",
+          "say": "Roll the speed range wheel up a few clicks to raise the target speed.",
+          "why": "The wheel sets target speed; you can change it moving or stopped.",
+          "controls": ["speed_dial"],
+          "done": {"sent": "PLT_MHC_Encoder", "gte": 2000},
+          "wrong": [
+            {
+              "if": {"sent": "PLT_MHC_EncoderButton", "eq": "1"},
+              "say": "Pushing the wheel in swaps Field 1 and Field 2. Roll it instead."
+            }
+          ],
+          "wrong_demo": ["press dial_push 300", "wait 0.5", "press dial_push 300", "wait 0.5"],
+          "hints": [
+            {"after_s": 20, "say": "Use the thumb wheel on the lever, not the dial on the display.", "highlight": ["speed_dial"]},
+            {"after_s": 45, "say": "Speed range wheel: the thumb wheel on the side of the grip, under the button head (Y1).", "highlight": ["speed_dial"]}
+          ],
+          "show_me": ["set speed_dial 3"],
+          "ask": "How does the speed range wheel change my target speed?",
+          "est_s": 35,
+          "figure": "N152647",
+          "source": {"pages": ["30-19"], "topic": "multi-function-lever--30db6a"},
+          "confidence": "manual"
+        },
+        {
+          "id": "configurable",
+          "say": "Press any one of the configurable buttons A, B, C or D on the side of the lever.",
+          "why": "They run what you assign in Controls Setup; there are no default assignments.",
+          "controls": ["reconfig_a", "reconfig_b", "reconfig_c", "reconfig_d", "reconfig_e", "reconfig_f"],
+          "done": {
+            "any": [
+              {"sent": "PLT_MHC_ReconfigurableButtonA", "eq": "1"},
+              {"sent": "PLT_MHC_ReconfigurableButtonB", "eq": "1"},
+              {"sent": "PLT_MHC_ReconfigurableButtonC", "eq": "1"},
+              {"sent": "PLT_MHC_ReconfigurableButtonD", "eq": "1"},
+              {"sent": "PLT_MHC_ReconfigurableButtonE", "eq": "1"},
+              {"sent": "PLT_MHC_ReconfigurableButtonF", "eq": "1"}
+            ]
+          },
+          "hints": [
+            {"after_s": 20, "say": "They're on the side of the lever head, not the front face.", "highlight": ["reconfig_a", "reconfig_b"]},
+            {"after_s": 45, "say": "Side of the lever: buttons A and B and rockers C and D (P1 to U1 in drawing NX707641).", "highlight": ["reconfig_a", "reconfig_b", "reconfig_c", "reconfig_d", "reconfig_e", "reconfig_f"]}
+          ],
+          "show_me": ["press reconfig_a 300"],
+          "ask": "How do I assign a function to a configurable button on the multi-function lever?",
+          "est_s": 35,
+          "figure": "NX707641",
+          "source": {"pages": ["30-19", "30-20"], "topic": "multi-function-lever-button-configuration--163f36"},
+          "confidence": "draft"
+        }
+      ]
+    },
+    {
+      "title": "2. CommandARM switches, corner post and Controls Setup",
+      "mode": "learn",
+      "steps": [
+        {
+          "id": "engine-idle",
+          "say": "Press High Idle, then Low Idle, on the CommandARM's engine switches.",
+          "why": "High Idle gives maximum engine speed, Low Idle minimum engine speed.",
+          "controls": ["engine_high_idle", "engine_low_idle"],
+          "done": {
+            "then": [
+              {"sent": "PLT_AIC_EngineHighIdle", "eq": "1"},
+              {"sent": "PLT_AIC_EngineLowIdle", "eq": "1"}
+            ]
+          },
+          "wrong": [
+            {
+              "if": {"sent": "PLT_AIC_ParkBrake", "eq": "1"},
+              "say": "That's the Park Brake switch (P). High and Low Idle are the engine speed switches in the same group."
+            }
+          ],
+          "wrong_demo": ["press park_brake 300", "wait 0.5", "press park_brake 300", "wait 0.5"],
+          "hints": [
+            {"after_s": 20, "say": "They're in the Engine and Ground Drive switches on the CommandARM.", "highlight": ["engine_high_idle", "engine_low_idle"]},
+            {"after_s": 45, "say": "Engine and Ground Drive group beside the lever: High Idle, then Low Idle. On the simulator: keys beside the display.", "highlight": ["engine_high_idle", "engine_low_idle"]}
+          ],
+          "show_me": ["press engine_high_idle 300", "wait 0.5", "press engine_low_idle 300"],
+          "ask": "What do the High Idle and Low Idle switches do?",
+          "est_s": 40,
+          "figure": "N151286",
+          "source": {"pages": ["30-13"], "topic": "engine-and-ground-drive--b66121"},
+          "confidence": "manual"
+        },
+        {
+          "id": "park-brake-switch",
+          "say": "Press Park Brake (P) to engage the park brakes, then press it again to release them.",
+          "why": "Brakes set with this switch never release by themselves; release it before you drive.",
+          "controls": ["park_brake"],
+          "done": {
+            "then": [
+              {"sent": "PLT_AIC_ParkBrake", "eq": "1"},
+              {"sent": "PLT_AIC_ParkBrake", "eq": "0"},
+              {"sent": "PLT_AIC_ParkBrake", "eq": "1"}
+            ]
+          },
+          "wrong": [
+            {
+              "if": {"sent": "PLT_NeutralSlotStatus", "eq": "0"},
+              "say": "Keep the lever in PARK: in PARK the park brakes are applied automatically."
+            }
+          ],
+          "wrong_demo": ["switch park_slot 0", "wait 0.4", "switch park_slot 1", "wait 0.4"],
+          "hints": [
+            {"after_s": 20, "say": "It's the switch marked P with the engine switches.", "highlight": ["park_brake"]},
+            {"after_s": 45, "say": "Engine and Ground Drive group, the switch marked P. On the simulator: keys beside the display.", "highlight": ["park_brake"]}
+          ],
+          "show_me": ["press park_brake 300", "wait 0.6", "press park_brake 300"],
+          "ask": "When do I need the park brake switch if the lever in PARK already applies the brakes?",
+          "est_s": 45,
+          "figure": "N120664",
+          "source": {"pages": ["30-14"], "topic": "park-brake--e0c23d"},
+          "confidence": "manual"
+        },
+        {
+          "id": "transport-lock",
+          "say": "Find the Transport Lock switch with the engine switches. Press it on, then off.",
+          "why": "On the road it blocks spray on/off, boom moves and tread adjust; the pump can still run.",
+          "controls": ["transport_lock"],
+          "done": {
+            "any": [
+              {
+                "then": [
+                  {"control": "transport_lock", "eq": "1"},
+                  {"control": "transport_lock", "eq": "0"},
+                  {"control": "transport_lock", "eq": "1"}
+                ]
+              },
+              {"confirm": "Transport Lock found, left off"}
+            ]
+          },
+          "hints": [
+            {"after_s": 20, "say": "It's in the Engine and Ground Drive group, with Park Brake.", "highlight": ["transport_lock"]},
+            {"after_s": 45, "say": "Engine and Ground Drive group on the CommandARM; its light shows when it's on. On the simulator: keys beside the display.", "highlight": ["transport_lock"]}
+          ],
+          "show_me": ["press transport_lock 300", "wait 0.5", "press transport_lock 300"],
+          "ask": "What does the Transport Lock switch block on the 612R?",
+          "est_s": 40,
+          "figure": "N120615",
+          "source": {"pages": ["30-14"], "topic": "transport-lock-switch--1c890e"},
+          "confidence": "draft"
+        },
+        {
+          "id": "corner-post",
+          "say": "On the corner post display, find vehicle speed, the transmission set speed, the gear and the park brake light.",
+          "why": "They show what the machine is doing; a lit red brake warning means stop at once.",
+          "controls": ["corner_post_display"],
+          "done": {"confirm": "Corner post indicators found"},
+          "hints": [
+            {"after_s": 20, "say": "The corner post display is on the front right-hand cab post.", "highlight": ["corner_post_display"]},
+            {"after_s": 45, "say": "Front right-hand corner post: speed and set speed readouts, the gear letter, and the park brake indicator.", "highlight": ["corner_post_display"]}
+          ],
+          "ask": "What do the indicators on the 612R corner post display mean?",
+          "est_s": 60,
+          "figure": "H137356",
+          "source": {"pages": ["30-5", "30-6", "30-7"], "topic": "corner-post-display--2f66ad"},
+          "confidence": "manual"
+        },
+        {
+          "id": "controls-setup",
+          "say": "Press Controls Setup on the navigation bar below the display and open the Multi-Function Lever tab.",
+          "why": "No default assignments; the buttons relock at every key cycle until you unlock them.",
+          "controls": ["controls_setup_button", "control_group_lock"],
+          "done": {"confirm": "Controls Setup opened"},
+          "hints": [
+            {"after_s": 20, "say": "Controls Setup is a button on the navigation bar under the display.", "highlight": ["controls_setup_button"]},
+            {"after_s": 45, "say": "Navigation bar below the display: Controls Setup. Or Menu, Machine Settings tab, Controls Setup.", "highlight": ["controls_setup_button", "control_group_lock"]}
+          ],
+          "ask": "How do I unlock and assign the configurable buttons in Controls Setup?",
+          "est_s": 60,
+          "figure": "H118151C",
+          "source": {"pages": ["25-P-1", "25-P-2"], "topic": "controls-setup-overview--256617"},
+          "confidence": "manual"
+        }
+      ]
+    },
+    {
+      "title": "3. Find it",
+      "mode": "practice",
+      "steps": [
+        {
+          "id": "find-right-wing",
+          "say": "A post is coming up under the right wing. Lift the right wing now.",
+          "why": "Right-hand boom tilt raises only the right-hand boom sections.",
+          "controls": ["right_boom_raise"],
+          "done": {"sent": "PLT_MHC_RightBoomRaise", "eq": "1"},
+          "wrong": [
+            {
+              "if": {"sent": "PLT_MHC_LeftBoomRaise", "eq": "1"},
+              "say": "Wrong wing: that lifts the left side."
+            }
+          ],
+          "wrong_demo": ["press left_boom_raise 300", "wait 0.3", "press left_boom_lower 300", "wait 0.4"],
+          "hints": [
+            {"after_s": 45, "say": "Right tilt rocker in the middle of the lever, push its top (C1).", "highlight": ["right_boom_raise"]}
+          ],
+          "show_me": ["press right_boom_raise 500"],
+          "ask": "Which switch lifts only the right wing?",
+          "est_s": 30,
+          "figure": "N152643",
+          "source": {"pages": ["30-18"], "topic": "multi-function-lever--30db6a"},
+          "confidence": "draft"
+        },
+        {
+          "id": "find-ibs-left",
+          "say": "A point row closes in from the right. Shut off one section, starting at the right-hand end.",
+          "why": "IBS lets you shut sections in sequence without taking your hand off the lever.",
+          "controls": ["section_left_enable"],
+          "done": {"sent": "PLT_MHC_IBSLeftEnable", "eq": "1"},
+          "wrong": [
+            {
+              "if": {"sent": "PLT_MHC_IBSRightEnable", "eq": "1"},
+              "say": "IBS Right starts at the left-hand end. You need IBS Left."
+            }
+          ],
+          "wrong_demo": ["press section_right_enable 300", "wait 0.4", "press section_reset 300", "wait 0.4"],
+          "hints": [
+            {"after_s": 45, "say": "Wide rocker near the top of the lever, left half (H1): IBS Left.", "highlight": ["section_left_enable"]}
+          ],
+          "show_me": ["press section_left_enable 300"],
+          "ask": "Which IBS button do I use for a point row on the right?",
+          "est_s": 35,
+          "figure": "N152636",
+          "source": {"pages": ["50-23"], "topic": "operate-indexed-boom-sections-ibs--001bb6"},
+          "confidence": "draft"
+        },
+        {
+          "id": "find-field-2",
+          "say": "Road ahead. Swap the set speed to Field 2, the one that reaches transport speeds.",
+          "why": "Field 1 is limited to the maximum field speed; transport speeds need Field 2.",
+          "controls": ["dial_push"],
+          "done": {"sent": "PLT_MHC_EncoderButton", "eq": "1"},
+          "wrong": [
+            {
+              "if": {"sent": "PLT_MHC_Encoder", "gte": 0},
+              "say": "Rolling the wheel changes target speed. Push the wheel in to swap Field 1 and Field 2."
+            }
+          ],
+          "wrong_demo": ["set speed_dial 4", "wait 0.5"],
+          "hints": [
+            {"after_s": 45, "say": "Press the speed range wheel in (Y1, under the lever's button head); don't roll it.", "highlight": ["dial_push"]}
+          ],
+          "show_me": ["press dial_push 300"],
+          "ask": "How do I switch between Field 1 and Field 2 set speeds?",
+          "est_s": 30,
+          "figure": "N152647",
+          "source": {"pages": ["30-19"], "topic": "multi-function-lever--30db6a"},
+          "confidence": "draft"
+        },
+        {
+          "id": "find-quick-stop",
+          "say": "Emergency! Shut off the solution pump, spraying and wet valves with one switch, then release it.",
+          "why": "Quick Stop stops them all at once; you still pull the lever back to stop the machine.",
+          "controls": ["warning_switch"],
+          "done": {
+            "then": [
+              {"sent": "PLT_MHC_Warning", "eq": "1"},
+              {"sent": "PLT_MHC_Warning", "eq": "0"}
+            ]
+          },
+          "wrong": [
+            {
+              "if": {"sent": "PLT_MHC_MasterSprayOnOff", "eq": "1"},
+              "say": "Spray System On/Off only stops spraying. Quick Stop also stops the pump and the wet valves."
+            }
+          ],
+          "wrong_demo": ["press master_spray 300", "wait 0.5", "press master_spray 300", "wait 0.5"],
+          "hints": [
+            {"after_s": 45, "say": "Yellow Quick Stop on top of the lever (V1). On the simulator, switch it on and back off.", "highlight": ["warning_switch"]}
+          ],
+          "show_me": ["switch warning_switch 1", "wait 0.6", "switch warning_switch 0"],
+          "ask": "Which systems does Quick Stop shut off?",
+          "est_s": 35,
+          "figure": "N152634",
+          "source": {"pages": ["30-20", "30-21"], "topic": "quick-stop-switch--43ba9f"},
+          "confidence": "draft"
+        }
+      ]
+    },
+    {
+      "title": "4. Prove it",
+      "mode": "assess",
+      "steps": [
+        {
+          "id": "prove-spray",
+          "say": "Turn spraying on, then off again.",
+          "why": "Spray System On/Off turns the enabled boom sections on and off.",
+          "controls": ["master_spray"],
+          "done": {
+            "then": [
+              {"sent": "PLT_MHC_MasterSprayOnOff", "eq": "1"},
+              {"sent": "PLT_MHC_MasterSprayOnOff", "eq": "0"},
+              {"sent": "PLT_MHC_MasterSprayOnOff", "eq": "1"}
+            ]
+          },
+          "wrong": [
+            {
+              "if": {"sent": "PLT_MHC_HMS", "eq": "1"},
+              "say": "That was HMS, not Spray System On/Off."
+            }
+          ],
+          "wrong_demo": ["press hms 300", "wait 0.4"],
+          "show_me": ["press master_spray 300", "wait 0.6", "press master_spray 300"],
+          "ask": "Which button turns spraying on and off?",
+          "est_s": 30,
+          "figure": "N152644",
+          "source": {"pages": ["30-19"], "topic": "multi-function-lever--30db6a"},
+          "confidence": "draft"
+        },
+        {
+          "id": "prove-left-wing",
+          "say": "Raise the left wing.",
+          "why": "Left tilt up raises the left-hand boom sections.",
+          "controls": ["left_boom_raise"],
+          "done": {"sent": "PLT_MHC_LeftBoomRaise", "eq": "1"},
+          "wrong": [
+            {
+              "if": {
+                "any": [
+                  {"sent": "PLT_MHC_RightBoomRaise", "eq": "1"},
+                  {"sent": "PLT_MHC_CenterBoomRaise", "eq": "1"}
+                ]
+              },
+              "say": "That moved the right wing or the whole boom, not the left wing."
+            }
+          ],
+          "wrong_demo": ["press right_boom_raise 300", "wait 0.3", "press right_boom_lower 300", "wait 0.4"],
+          "show_me": ["press left_boom_raise 500"],
+          "ask": "Which switch raises the left wing?",
+          "est_s": 25,
+          "figure": "N152642",
+          "source": {"pages": ["30-18"], "topic": "multi-function-lever--30db6a"},
+          "confidence": "draft"
+        },
+        {
+          "id": "prove-sections",
+          "say": "Turn every shut-off boom section back on with one press.",
+          "why": "IBS Reset restarts all shut-off sections that are enabled.",
+          "controls": ["section_reset"],
+          "done": {"sent": "PLT_MHC_IBSReset", "eq": "1"},
+          "wrong": [
+            {
+              "if": {
+                "any": [
+                  {"sent": "PLT_MHC_IBSLeftEnable", "eq": "1"},
+                  {"sent": "PLT_MHC_IBSRightEnable", "eq": "1"}
+                ]
+              },
+              "say": "IBS Left and Right step one section at a time. Reset turns them all on at once."
+            }
+          ],
+          "wrong_demo": ["press section_right_enable 300", "wait 0.4"],
+          "show_me": ["press section_reset 300"],
+          "ask": "How do I restart all shut-off sections at once?",
+          "est_s": 25,
+          "figure": "N152635",
+          "source": {"pages": ["30-17"], "topic": "multi-function-lever--30db6a"},
+          "confidence": "draft"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1725 @@
+{
+  "schema": "lesson/0.2",
+  "id": "612r-no-spray-fault",
+  "title": "No spray or the wrong rate: find the fault and recover",
+  "machine": "612R Sprayer · CommandCenter display · CommandARM",
+  "build": "612R operator's manual OMKK105338; runs on the Apr 20 Display and CommandARM Simulator",
+  "manual": "OMKK105338 (400R-616R operator's manual)",
+  "level": "Advanced",
+  "minutes": 19,
+  "objective": "Take over a 612R that has stopped spraying: stop safely, match the symptom to the manual's Solution Control System table, rule out the cab causes in order, relieve boom pressure the manual's way before touching any plumbing, open the valve that was left closed, restart and verify, then handle a faulted ExactApply nozzle with the same discipline.",
+  "procedure_source": "612R operator's manual OMKK105338: Solution Control System troubleshooting, Zero pressure and Low pressure reading (p. 160-11, 160-12), Current Tank Volume (p. 25-K-6), Drive the Machine (p. 50-17, 50-18), Clean Pressure Strainers (p. 45-6 to 45-8), Pressure Relief (p. 25-I-7, 25-I-8), Park the Machine (p. 50-27, 50-28), Wet System Valves (p. 60-9), Field Operation (p. 50-21 to 50-23), Section Status and Nozzle Turret | Status (p. 25-G-3 to 25-G-5), ExactApply Nozzle Short, Sticking, Stuck, or Open (p. 25-G-35), Repair Nozzle Solenoid (p. 125-27). The fault story and the order of the cab checks are adapted for the simulator (steps marked draft): confirm with an operator.",
+  "setup": {
+    "armrest": [
+      "switch foot_switch 0",
+      "switch park_slot 1",
+      "set steering 0",
+      "set speed_dial 0",
+      "switch foot_switch 1",
+      "wait 0.3",
+      "press centre_boom_lower 800",
+      "wait 0.3",
+      "switch foot_switch 0",
+      "wait 0.3",
+      "press centre_boom_lower 400",
+      "press engine_low_idle 300",
+      "press solution_pump 300",
+      "set speed_dial 6",
+      "switch park_slot 0",
+      "set lever 175",
+      "press master_spray 300",
+      "wait 0.5"
+    ],
+    "trainer": "612R with Solution Command (single solution) and ExactApply. Boom unfolded at spraying height, engine at LOW idle, solution pump on, master on, lever out of park and forward, speed wheel 6 clicks up, wheel straight, Rate 2 = this job's preset. Tell the trainee: the display shows zero pressure while spraying, and the day operator cleaned the pressure strainers at lunch. Hidden fault 1: the strainer/flowmeter shutoff valve was left closed (handle across the hose). Tank has solution, target speed is in field range. Hidden fault 2 (section 4): after the restart one section shows Section Fault; Nozzle Turret | Status reports a stuck plunger on one nozzle body.",
+    "expect": {
+      "game": {
+        "boomUnfolded": "1"
+      }
+    }
+  },
+  "chatbot": {
+    "about": "The trainee is diagnosing a John Deere 612R (Solution Command, ExactApply; CommandCenter display, CommandARM) that shows zero pressure while spraying. The hidden cause: after the pressure strainers were cleaned, the strainer/flowmeter shutoff valve was left closed. Do not give it away: point them to the manual's Solution Control System table ('Zero pressure with the spray system operating', p. 160-11, 160-12) and the Clean Pressure Strainers procedure (step 1 closes the flowmeter shutoff valve, step 9 opens it). Insist on the manual's Pressure Relief (p. 25-I-7, 25-I-8: Pressure Relief on, pump off, centre frame to the top, check 27 kPa (0.27 bar) (4 psi), Enable All, master) before any plumbing or nozzle body is touched, and on wearing protective clothing, eyewear and gloves. Later one nozzle body reports a stuck plunger: Nozzle Turret | Status, Light Faulted Turrets, pressure relief, then disassemble, clean and reassemble the cartridge. Never clean nozzle tips by mouth; do not pressure wash nozzle body components. Sound the horn before starting the engine. Answer in 2-3 sentences, only from the manual, and name the exact control.",
+    "send": [
+      "lesson title",
+      "section",
+      "step instruction",
+      "seconds on step",
+      "last 10 controls used",
+      "current game state",
+      "lights currently on"
+    ]
+  },
+  "extra_controls": {
+    "tank_sight_gauge": {
+      "label": "Solution tank sight gauge",
+      "where": "Left-hand side of the machine: clear tube with a graduated scale showing the solution level in liters and gallons",
+      "source": {
+        "pages": [
+          "60-3"
+        ],
+        "topic": "solution-system--544787"
+      }
+    },
+    "corner_post_display": {
+      "label": "Corner post display",
+      "where": "Cab corner post: selected target speed (A) and vehicle speed indicator (B)",
+      "figure": "NX1396836",
+      "source": {
+        "pages": [
+          "50-17"
+        ],
+        "topic": "drive-the-machine-auto-mode--c2def8"
+      }
+    },
+    "display_pressure_relief": {
+      "label": "Pressure Relief (display)",
+      "where": "CommandCenter display: Spray System application main page, Pressure Relief ON/OFF",
+      "figure": "N118056",
+      "source": {
+        "pages": [
+          "25-I-2",
+          "25-I-3"
+        ],
+        "topic": "spray-system-main-page--0e624d"
+      }
+    },
+    "display_spray_pressure": {
+      "label": "Solution system pressure (display)",
+      "where": "CommandCenter display: the solution system pressure reading checked in Pressure Relief step 4",
+      "source": {
+        "pages": [
+          "25-I-8"
+        ],
+        "topic": "pressure-relief--da45ff"
+      }
+    },
+    "display_boom_sections": {
+      "label": "Enable All (Boom Sections tab)",
+      "where": "CommandCenter display: Nozzle System application, Boom Sections tab, Section Status Preview, Enable All",
+      "figure": "N118006",
+      "source": {
+        "pages": [
+          "25-G-21"
+        ],
+        "topic": "boom-sections-section-status-preview--d69e5f"
+      }
+    },
+    "key_switch": {
+      "label": "Key switch",
+      "where": "Right-hand side of the steering column: Stop, Run, Start",
+      "figure": "H127222",
+      "source": {
+        "pages": [
+          "30-3"
+        ],
+        "topic": "key-switch--7d3ad4"
+      }
+    },
+    "flowmeter_shutoff_valve": {
+      "label": "Strainer/flowmeter shutoff valve",
+      "where": "Chassis pressure line just after the flowmeter. Handle parallel to the solution hose = open, across the hose = closed",
+      "figure": "NX1432687",
+      "source": {
+        "pages": [
+          "60-9"
+        ],
+        "topic": "wet-system-valves--2f14aa"
+      }
+    },
+    "display_nozzle_status": {
+      "label": "Nozzle Turret | Status (display)",
+      "where": "CommandCenter display: Nozzle System application, Nozzle Turret | Status page; Section Scroll buttons and the Light Faulted Turrets checkbox (ExactApply)",
+      "figure": "N127641C",
+      "source": {
+        "pages": [
+          "25-G-3",
+          "25-G-4"
+        ],
+        "topic": "nozzle-turret-status--3bc426"
+      }
+    },
+    "nozzle_body": {
+      "label": "ExactApply nozzle body (cartridge assembly)",
+      "where": "On the boom at each nozzle position. Cartridge assembly: solenoid, cartridge, spring, plunger, seat",
+      "figure": "WZ675761",
+      "source": {
+        "pages": [
+          "25-G-35"
+        ],
+        "topic": "exactapply-nozzle-short-sticking-stuck-or-open--afca0a"
+      }
+    },
+    "display_section_status": {
+      "label": "Section status (display)",
+      "where": "CommandCenter display: run page or Nozzle System application, Boom Sections tab (Ready, Applying, Fault, Indexed OFF, Disabled)",
+      "figure": "N119617",
+      "source": {
+        "pages": [
+          "25-G-5"
+        ],
+        "topic": "section-status--e3e207"
+      }
+    }
+  },
+  "sections": [
+    {
+      "title": "1. Stop and read the symptom",
+      "mode": "learn",
+      "steps": [
+        {
+          "id": "stop-spraying",
+          "say": "Zero pressure on the display while spraying. Press the master switch to stop spraying first.",
+          "why": "Master off closes the boom valves. Find the fault with spraying stopped.",
+          "controls": [
+            "master_spray"
+          ],
+          "done": {
+            "sent": "PLT_MHC_MasterSprayOnOff",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_HydroHandlePosition",
+                    "between": [
+                      120,
+                      130
+                    ]
+                  },
+                  {
+                    "sent": "PLT_MHC_MasterSprayOnOff",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "Master off first, then stop. Standing still with the master on, the pump holds minimum pressure and over-applies."
+            }
+          ],
+          "wrong_demo": [
+            "set lever 125",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The master is the Spray System On/Off button on the handle.",
+              "highlight": [
+                "master_spray"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Multi-function lever, button low on the right (I): Spray System On/Off.",
+              "highlight": [
+                "master_spray"
+              ]
+            }
+          ],
+          "show_me": [
+            "set lever 175",
+            "wait 0.3",
+            "press master_spray 300"
+          ],
+          "ask": "What does the master switch do to the boom valves?",
+          "est_s": 30,
+          "figure": "N155121",
+          "source": {
+            "pages": [
+              "60-5"
+            ],
+            "topic": "solution-system--544787"
+          },
+          "confidence": "draft"
+        },
+        {
+          "id": "stop-machine",
+          "say": "Slowly bring the multi-function lever back into the PARK position.",
+          "why": "Never service or adjust a machine while it is moving. In PARK the park brakes apply automatically.",
+          "controls": [
+            "lever",
+            "park_slot"
+          ],
+          "done": {
+            "then": [
+              {
+                "any": [
+                  {
+                    "sent": "PLT_HydroHandlePosition",
+                    "between": [
+                      120,
+                      130
+                    ]
+                  },
+                  {
+                    "sent": "PLT_NeutralSlotStatus",
+                    "eq": "1"
+                  }
+                ]
+              },
+              {
+                "sent": "PLT_NeutralSlotStatus",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "That turned the master back on. Press it again: keep it off while you find the fault."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Pull the lever back through neutral and into the park slot.",
+              "highlight": [
+                "lever",
+                "park_slot"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Multi-function lever: back to the middle, then into the PARK gate at the end of its travel.",
+              "highlight": [
+                "lever",
+                "park_slot"
+              ]
+            }
+          ],
+          "show_me": [
+            "set lever 125",
+            "wait 0.3",
+            "switch park_slot 1"
+          ],
+          "ask": "Do I need the park brake switch when I park?",
+          "est_s": 40,
+          "figure": "N166477",
+          "source": {
+            "pages": [
+              "50-27"
+            ],
+            "topic": "park-the-machine--a7f533"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "name-symptom",
+          "say": "Open the manual's Solution Control System troubleshooting table. Find the symptom that matches.",
+          "why": "The table lists every cause the manual knows for each symptom, each with its fix.",
+          "controls": [],
+          "done": {
+            "confirm": "Zero pressure with the spray system operating"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Don't test-spray: keep the master off while you diagnose."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Troubleshooting section, Solution Control System, from page 160-10."
+            },
+            {
+              "after_s": 45,
+              "say": "Page 160-11: 'Zero pressure with the spray system operating.'"
+            }
+          ],
+          "ask": "What causes zero pressure with the spray system operating?",
+          "est_s": 75,
+          "source": {
+            "pages": [
+              "160-11",
+              "160-12"
+            ],
+            "topic": "solution-control-system--e1586c"
+          },
+          "confidence": "manual"
+        }
+      ]
+    },
+    {
+      "title": "2. Rule out the cab checks first",
+      "mode": "learn",
+      "steps": [
+        {
+          "id": "tank-level",
+          "say": "First cause listed: solution tank empty. Check the level on the tank's sight gauge.",
+          "why": "The displayed tank volume is not the actual volume. Always verify it on the sight gauge.",
+          "controls": [
+            "tank_sight_gauge"
+          ],
+          "done": {
+            "confirm": "Tank has solution"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Don't test-spray yet: finish the table's checks first."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The display's tank volume is calculated; the gauge shows what's really in the tank.",
+              "highlight": [
+                "tank_sight_gauge"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Clear tube with a graduated scale on the left-hand side of the machine.",
+              "highlight": [
+                "tank_sight_gauge"
+              ]
+            }
+          ],
+          "ask": "Why can't I trust the tank volume on the display?",
+          "est_s": 45,
+          "figure": "N167217",
+          "source": {
+            "pages": [
+              "25-K-6"
+            ],
+            "topic": "current-tank-volume--02288f"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "field-range",
+          "say": "Next cause: spraying in transport range. Check the corner post: is the target speed in field range?",
+          "why": "612R with wet system: field range 8.1—40 km/h (5—25 mph), transport range 41—56 km/h (26—35 mph).",
+          "controls": [
+            "corner_post_display"
+          ],
+          "done": {
+            "confirm": "Target speed is in field range"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Don't test-spray yet: finish the table's checks first."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The target speed shows on the corner post display.",
+              "highlight": [
+                "corner_post_display"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Corner post display: selected target speed (A), next to the vehicle speed (B).",
+              "highlight": [
+                "corner_post_display"
+              ]
+            }
+          ],
+          "ask": "What's the difference between field range and transport range?",
+          "est_s": 45,
+          "figure": "NX1396836",
+          "source": {
+            "pages": [
+              "50-17",
+              "50-18"
+            ],
+            "topic": "drive-the-machine-auto-mode--c2def8"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "high-idle",
+          "say": "The engine is at low idle. Press High Idle to rule out low engine speed.",
+          "why": "The next table, Low pressure reading, starts with low engine speed: operate the engine at high idle.",
+          "controls": [
+            "engine_high_idle"
+          ],
+          "done": {
+            "any": [
+              {
+                "cloud": "PLT_AIC_EngineHighIdleSpeedIndicator",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_AIC_EngineHighIdle",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Don't test-spray yet: finish the table's checks first."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "High Idle is a key on the right-hand console.",
+              "highlight": [
+                "engine_high_idle"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Right-hand console, keys beside the display: the High Idle switch.",
+              "highlight": [
+                "engine_high_idle"
+              ]
+            }
+          ],
+          "show_me": [
+            "press engine_high_idle 300"
+          ],
+          "ask": "Why does engine speed matter for spray pressure?",
+          "est_s": 35,
+          "figure": "N137031",
+          "source": {
+            "pages": [
+              "160-12"
+            ],
+            "topic": "solution-control-system--e1586c"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "rate-check",
+          "say": "Check the rate: press Rate 2, this job's preset, and see it highlighted on the display.",
+          "why": "Field Operation step 6: select the programmed rate (1, 2 or 3); the selected rate is highlighted.",
+          "controls": [
+            "rate_2"
+          ],
+          "done": {
+            "any": [
+              {
+                "cloud": "PLT_AIC_Rate2ControlIndicator",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_AIC_Rate2Control",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Don't test-spray yet: finish the table's checks first."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The rate switches are on the armrest keypad.",
+              "highlight": [
+                "rate_2"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Armrest keypad on the right-hand console, rate control switches (A): press 2.",
+              "highlight": [
+                "rate_2"
+              ]
+            }
+          ],
+          "show_me": [
+            "press rate_2 300"
+          ],
+          "ask": "Could the wrong rate preset give zero pressure?",
+          "est_s": 35,
+          "figure": "N155118",
+          "source": {
+            "pages": [
+              "50-22"
+            ],
+            "topic": "field-operation--4b7bff"
+          },
+          "confidence": "draft"
+        },
+        {
+          "id": "suspect",
+          "say": "Cab causes ruled out. The day operator cleaned the pressure strainers at lunch. Which table cause fits?",
+          "why": "Strainer cleaning starts by closing the flowmeter shutoff valve; 'Flowmeter shutoff valve closed' is a zero-pressure cause.",
+          "controls": [
+            "flowmeter_shutoff_valve"
+          ],
+          "done": {
+            "confirm": "Suspect: strainer/flowmeter shutoff valve left closed"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Don't test-spray: decide on the cause, then relieve the pressure."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Look at the last rows of the zero-pressure causes, on page 160-12.",
+              "highlight": [
+                "flowmeter_shutoff_valve"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Clean Pressure Strainers: step 1 closes the flowmeter shutoff valve, step 9 opens it again. Was step 9 done?",
+              "highlight": [
+                "flowmeter_shutoff_valve"
+              ]
+            }
+          ],
+          "ask": "What does the pressure strainer cleaning procedure do to the valves?",
+          "est_s": 80,
+          "figure": "NX1432687",
+          "source": {
+            "pages": [
+              "45-7",
+              "45-8"
+            ],
+            "topic": "clean-pressure-strainers-daily--be6871"
+          },
+          "confidence": "draft"
+        }
+      ]
+    },
+    {
+      "title": "3. Relieve pressure, then fix",
+      "mode": "learn",
+      "steps": [
+        {
+          "id": "relief-on",
+          "say": "Before you touch any plumbing: on the display, turn Pressure Relief on in the Spray System app.",
+          "why": "The machine's decal: spray system is under pressure; conduct boom pressure relief before servicing.",
+          "controls": [
+            "display_pressure_relief"
+          ],
+          "done": {
+            "confirm": "Pressure Relief enabled"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Not yet: in Pressure Relief the master is the last step."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Spray System application, main page: Pressure Relief.",
+              "highlight": [
+                "display_pressure_relief"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Display: Spray System main page, Pressure Relief ON/OFF toggle.",
+              "highlight": [
+                "display_pressure_relief"
+              ]
+            }
+          ],
+          "ask": "Why do I have to relieve pressure before opening anything?",
+          "est_s": 45,
+          "figure": "N118056",
+          "source": {
+            "pages": [
+              "25-I-7"
+            ],
+            "topic": "pressure-relief--da45ff"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "relief-pump-off",
+          "say": "Pressure Relief step 2: press Solution Pump to turn the pump off.",
+          "why": "Pressure Relief bleeds the pressure trapped in the boom out through the nozzles, with the pump off.",
+          "controls": [
+            "solution_pump"
+          ],
+          "done": {
+            "any": [
+              {
+                "cloud": "PLT_AIC_SolutionPumpIndicator",
+                "eq": "0"
+              },
+              {
+                "sent": "PLT_AIC_SolutionPump",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_MHC_MasterSprayOnOff",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_AIC_SolutionPump",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "Pump off first. In Pressure Relief the master comes last."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Same Solution Pump switch you use to start spraying.",
+              "highlight": [
+                "solution_pump"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Armrest keypad on the right-hand console: Solution Pump switch. Its light goes out.",
+              "highlight": [
+                "solution_pump"
+              ]
+            }
+          ],
+          "show_me": [
+            "press solution_pump 300"
+          ],
+          "ask": "Why turn the pump off before relieving the pressure?",
+          "est_s": 30,
+          "figure": "N120497",
+          "source": {
+            "pages": [
+              "25-I-8"
+            ],
+            "topic": "pressure-relief--da45ff"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "relief-boom-up",
+          "say": "Step 3: raise the boom centre frame to its highest position with Centre boom raise.",
+          "why": "The manual's Pressure Relief raises the centre frame fully before the section valves open.",
+          "controls": [
+            "centre_boom_raise"
+          ],
+          "done": {
+            "sent": "PLT_MHC_CenterBoomRaise",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Too early: raise the centre frame and check the pressure before the master."
+            },
+            {
+              "if": {
+                "sent": "PLT_AIC_SolutionPump",
+                "eq": "1"
+              },
+              "say": "That turned the pump back on. Press it again: the pump stays off for Pressure Relief."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Centre boom raise is the top of the centre-boom switch on the handle.",
+              "highlight": [
+                "centre_boom_raise"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Multi-function lever, round pad on the left: push the top (M, Centre boom raise) until the frame stops.",
+              "highlight": [
+                "centre_boom_raise"
+              ]
+            }
+          ],
+          "show_me": [
+            "press centre_boom_raise 800"
+          ],
+          "ask": "Why raise the boom for pressure relief?",
+          "est_s": 35,
+          "figure": "N152641",
+          "source": {
+            "pages": [
+              "25-I-8"
+            ],
+            "topic": "pressure-relief--da45ff"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "relief-pressure",
+          "say": "Step 4: check the display shows solution system pressure of 27 kPa (0.27 bar) (4 psi).",
+          "why": "Pressure Relief step 4: verify this pressure before you open the section valves.",
+          "controls": [
+            "display_spray_pressure"
+          ],
+          "done": {
+            "confirm": "Pressure reads 27 kPa (4 psi)"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Not yet: check the pressure and enable all sections before the master."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Read the solution system pressure on the display.",
+              "highlight": [
+                "display_spray_pressure"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Display: the solution system pressure should read 27 kPa (0.27 bar) (4 psi).",
+              "highlight": [
+                "display_spray_pressure"
+              ]
+            }
+          ],
+          "ask": "What if the pressure doesn't come down to 4 psi?",
+          "est_s": 40,
+          "source": {
+            "pages": [
+              "25-I-8"
+            ],
+            "topic": "pressure-relief--da45ff"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "relief-sections",
+          "say": "Step 5: on the Boom Sections tab, select Enable All.",
+          "why": "Enable All puts every section valve under the master switch, which opens them in step 6.",
+          "controls": [
+            "display_boom_sections"
+          ],
+          "done": {
+            "confirm": "Enable All selected"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Enable all sections first, then the master."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Nozzle System application, Boom Sections tab.",
+              "highlight": [
+                "display_boom_sections"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Display: Nozzle System app, Boom Sections tab, Section Status Preview, Enable All.",
+              "highlight": [
+                "display_boom_sections"
+              ]
+            }
+          ],
+          "ask": "What's the difference between Enable All and IBS Reset?",
+          "est_s": 40,
+          "figure": "N118006",
+          "source": {
+            "pages": [
+              "25-I-8"
+            ],
+            "topic": "pressure-relief--da45ff"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "relief-master",
+          "say": "Step 6: press the master switch. The section valves open for 6 seconds, then close.",
+          "why": "This releases the trapped boom pressure through the nozzles; the valves close by themselves after 6 seconds.",
+          "controls": [
+            "master_spray"
+          ],
+          "done": {
+            "sent": "PLT_MHC_MasterSprayOnOff",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_AIC_SolutionPump",
+                "eq": "1"
+              },
+              "say": "Leave the pump off: Pressure Relief runs with the pump off."
+            }
+          ],
+          "wrong_demo": [
+            "press solution_pump 300",
+            "wait 0.4",
+            "press solution_pump 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Same master switch you use for spraying.",
+              "highlight": [
+                "master_spray"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Multi-function lever, button low on the right (I): Spray System On/Off.",
+              "highlight": [
+                "master_spray"
+              ]
+            }
+          ],
+          "show_me": [
+            "press master_spray 300"
+          ],
+          "ask": "What happens during those 6 seconds?",
+          "est_s": 35,
+          "figure": "N120251",
+          "source": {
+            "pages": [
+              "25-I-8"
+            ],
+            "topic": "pressure-relief--da45ff"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "secure",
+          "say": "Before you leave the cab: press Low Idle, then turn the key to OFF and take it out.",
+          "why": "Stop the engine and secure the machine before service. After working load, idle at least 2 minutes first.",
+          "controls": [
+            "engine_low_idle",
+            "key_switch"
+          ],
+          "done": {
+            "all": [
+              {
+                "any": [
+                  {
+                    "cloud": "PLT_AIC_EngineLowIdleSpeedIndicator",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_AIC_EngineLowIdle",
+                    "eq": "1"
+                  }
+                ]
+              },
+              {
+                "confirm": "Key OFF and removed"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_AIC_SolutionPump",
+                "eq": "1"
+              },
+              "say": "Keep the pump off: you're about to work on the solution plumbing."
+            }
+          ],
+          "wrong_demo": [
+            "press solution_pump 300",
+            "wait 0.4",
+            "press solution_pump 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Low Idle is beside High Idle on the right-hand console; the key is on the steering column.",
+              "highlight": [
+                "engine_low_idle",
+                "key_switch"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Low Idle switch (B in the Park the Machine picture), then the key switch on the right-hand side of the steering column to OFF.",
+              "highlight": [
+                "engine_low_idle",
+                "key_switch"
+              ]
+            }
+          ],
+          "show_me": [
+            "press engine_low_idle 300"
+          ],
+          "ask": "Why idle the engine before switching it off?",
+          "est_s": 45,
+          "figure": "N166477",
+          "source": {
+            "pages": [
+              "50-27",
+              "50-28"
+            ],
+            "topic": "park-the-machine--a7f533"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "open-valve",
+          "say": "Gloves and eyewear on. At the strainer/flowmeter shutoff valve, turn the handle parallel to the hose.",
+          "why": "Across the hose is closed, parallel is open. 'Flowmeter shutoff valve closed: open valve' is in the zero-pressure table.",
+          "controls": [
+            "flowmeter_shutoff_valve"
+          ],
+          "done": {
+            "confirm": "Valve was closed; now open"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_AIC_SolutionPump",
+                "eq": "1"
+              },
+              "say": "The pump stays off while anyone is at the plumbing."
+            }
+          ],
+          "wrong_demo": [
+            "press solution_pump 300",
+            "wait 0.4",
+            "press solution_pump 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "It's on the chassis pressure line, just after the flowmeter.",
+              "highlight": [
+                "flowmeter_shutoff_valve"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Strainer/flowmeter shutoff valve (A in the Clean Pressure Strainers picture): rotate the handle parallel to the solution hose.",
+              "highlight": [
+                "flowmeter_shutoff_valve"
+              ]
+            }
+          ],
+          "ask": "How do I tell if the shutoff valve is open?",
+          "est_s": 80,
+          "figure": "NX1432687",
+          "source": {
+            "pages": [
+              "60-9"
+            ],
+            "topic": "wet-system-valves--2f14aa"
+          },
+          "confidence": "manual"
+        }
+      ]
+    },
+    {
+      "title": "4. Restart, verify, and a second fault",
+      "mode": "practice",
+      "steps": [
+        {
+          "id": "restart",
+          "say": "Back in the seat, engine started: High Idle, Centre boom lower to height, then Solution Pump on.",
+          "why": "Field Operation order: boom at operating height, then the pump. High idle rules out low engine speed.",
+          "controls": [
+            "engine_high_idle",
+            "centre_boom_lower",
+            "solution_pump"
+          ],
+          "done": {
+            "all": [
+              {
+                "any": [
+                  {
+                    "cloud": "PLT_AIC_EngineHighIdleSpeedIndicator",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_AIC_EngineHighIdle",
+                    "eq": "1"
+                  }
+                ]
+              },
+              {
+                "then": [
+                  {
+                    "sent": "PLT_MHC_CenterBoomLower",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_AIC_SolutionPump",
+                    "eq": "1"
+                  }
+                ]
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_AIC_SolutionPump",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_MHC_CenterBoomLower",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "Boom to operating height first, then the pump: that's the Field Operation order."
+            },
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Not yet: the master comes last, once you're moving."
+            }
+          ],
+          "wrong_demo": [
+            "press solution_pump 300",
+            "wait 0.4",
+            "press solution_pump 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 45,
+              "say": "High Idle on the right-hand console, Centre boom lower on the handle (K), then Solution Pump on the armrest keypad.",
+              "highlight": [
+                "engine_high_idle",
+                "centre_boom_lower",
+                "solution_pump"
+              ]
+            }
+          ],
+          "show_me": [
+            "press engine_high_idle 300",
+            "press centre_boom_lower 600",
+            "press solution_pump 300"
+          ],
+          "ask": "What should I check before starting the engine?",
+          "est_s": 60,
+          "figure": "N155116",
+          "source": {
+            "pages": [
+              "50-21",
+              "50-22"
+            ],
+            "topic": "field-operation--4b7bff"
+          },
+          "confidence": "draft"
+        },
+        {
+          "id": "move-and-spray",
+          "say": "Out of park, lever slowly forward, then the master. Watch the pressure come up.",
+          "why": "Field Operation steps 7 and 9: get moving first, then press the master just before solution is needed.",
+          "controls": [
+            "park_slot",
+            "lever",
+            "master_spray"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_NeutralSlotStatus",
+                "eq": "0"
+              },
+              {
+                "sent": "PLT_HydroHandlePosition",
+                "outside": [
+                  100,
+                  150
+                ]
+              },
+              {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_MHC_MasterSprayOnOff",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_HydroHandlePosition",
+                    "outside": [
+                      100,
+                      150
+                    ]
+                  }
+                ]
+              },
+              "say": "Get moving first, then the master."
+            }
+          ],
+          "wrong_demo": [
+            "switch park_slot 0",
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "switch park_slot 1",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 45,
+              "say": "Lever out of the PARK gate and slowly forward, then the master (I) on the handle.",
+              "highlight": [
+                "park_slot",
+                "lever",
+                "master_spray"
+              ]
+            }
+          ],
+          "show_me": [
+            "switch park_slot 0",
+            "set lever 175",
+            "wait 0.3",
+            "press master_spray 300"
+          ],
+          "ask": "How long does the spray take to start after I press the master?",
+          "est_s": 45,
+          "figure": "N167055",
+          "source": {
+            "pages": [
+              "50-22"
+            ],
+            "topic": "field-operation--4b7bff"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "fault-stop",
+          "say": "Pressure is back, but one section shows Section Fault. Master off, then lever back into PARK.",
+          "why": "Section Fault: that section is not applying, a nozzle fault has occurred. Stop and find it.",
+          "controls": [
+            "master_spray",
+            "lever",
+            "park_slot",
+            "display_section_status"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              {
+                "any": [
+                  {
+                    "sent": "PLT_HydroHandlePosition",
+                    "between": [
+                      120,
+                      130
+                    ]
+                  },
+                  {
+                    "sent": "PLT_NeutralSlotStatus",
+                    "eq": "1"
+                  }
+                ]
+              },
+              {
+                "sent": "PLT_NeutralSlotStatus",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_HydroHandlePosition",
+                    "between": [
+                      120,
+                      130
+                    ]
+                  },
+                  {
+                    "sent": "PLT_MHC_MasterSprayOnOff",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "Master off first, then stop: standing still with the master on over-applies."
+            }
+          ],
+          "wrong_demo": [
+            "set lever 125",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 45,
+              "say": "Master (I) on the handle first, then the lever back through neutral into the PARK gate.",
+              "highlight": [
+                "master_spray",
+                "lever",
+                "park_slot"
+              ]
+            }
+          ],
+          "show_me": [
+            "set lever 175",
+            "wait 0.3",
+            "press master_spray 300",
+            "set lever 125",
+            "wait 0.3",
+            "switch park_slot 1"
+          ],
+          "ask": "What does Section Fault mean?",
+          "est_s": 45,
+          "figure": "N122954",
+          "source": {
+            "pages": [
+              "25-G-5"
+            ],
+            "topic": "section-status--e3e207"
+          },
+          "confidence": "draft"
+        },
+        {
+          "id": "fault-find",
+          "say": "Nozzle System app: open Nozzle Turret | Status, pick the faulted section, and turn on Light Faulted Turrets.",
+          "why": "The status page shows each nozzle body's fault; Light Faulted Turrets flashes the faulted bodies on the boom.",
+          "controls": [
+            "display_nozzle_status"
+          ],
+          "done": {
+            "confirm": "Faulted nozzle found: stuck plunger"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Keep the master off while you look for the nozzle."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 45,
+              "say": "Display: Nozzle System app, Nozzle Turret | Status, Section Scroll buttons, then tick Light Faulted Turrets.",
+              "highlight": [
+                "display_nozzle_status"
+              ]
+            }
+          ],
+          "ask": "How are the nozzles numbered along the boom?",
+          "est_s": 70,
+          "figure": "WZ1408744",
+          "source": {
+            "pages": [
+              "25-G-3",
+              "25-G-4"
+            ],
+            "topic": "nozzle-turret-status--3bc426"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "fault-relieve",
+          "say": "The fix opens the nozzle body. Relieve pressure again: pump off, centre frame to the top, then master.",
+          "why": "Repair Nozzle Solenoid step 1: perform a pressure relief procedure before servicing the nozzle body.",
+          "controls": [
+            "solution_pump",
+            "centre_boom_raise",
+            "master_spray"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_AIC_SolutionPump",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_MHC_CenterBoomRaise",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_MHC_MasterSprayOnOff",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_AIC_SolutionPump",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "Pump off first: the master is the last step of Pressure Relief."
+            },
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_MHC_MasterSprayOnOff",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_MHC_CenterBoomRaise",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "Centre frame to its highest position before the master."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 45,
+              "say": "Pressure Relief on, Solution Pump off, Centre boom raise (M) to the top, check 27 kPa (0.27 bar) (4 psi) and Enable All, then the master (I).",
+              "highlight": [
+                "solution_pump",
+                "centre_boom_raise",
+                "master_spray"
+              ]
+            }
+          ],
+          "show_me": [
+            "press solution_pump 300",
+            "press centre_boom_raise 800",
+            "press master_spray 300"
+          ],
+          "ask": "Do I have to relieve pressure again for one nozzle?",
+          "est_s": 60,
+          "figure": "N118056",
+          "source": {
+            "pages": [
+              "125-27"
+            ],
+            "topic": "repair-nozzle-solenoid--eba495"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "fault-clean",
+          "say": "Low Idle, key off and out. Then disassemble that nozzle's cartridge, clean it and reassemble.",
+          "why": "For a stuck plunger the manual says: disassemble the cartridge assembly, clean, and reassemble.",
+          "controls": [
+            "engine_low_idle",
+            "key_switch",
+            "nozzle_body"
+          ],
+          "done": {
+            "all": [
+              {
+                "any": [
+                  {
+                    "cloud": "PLT_AIC_EngineLowIdleSpeedIndicator",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_AIC_EngineLowIdle",
+                    "eq": "1"
+                  }
+                ]
+              },
+              {
+                "confirm": "Cartridge cleaned and reassembled"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_AIC_SolutionPump",
+                "eq": "1"
+              },
+              "say": "The pump stays off while the nozzle body is open."
+            }
+          ],
+          "wrong_demo": [
+            "press solution_pump 300",
+            "wait 0.4",
+            "press solution_pump 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 45,
+              "say": "Low Idle on the right-hand console, key switch on the steering column. Cartridge parts: solenoid, cartridge, spring, plunger, seat.",
+              "highlight": [
+                "engine_low_idle",
+                "key_switch",
+                "nozzle_body"
+              ]
+            }
+          ],
+          "show_me": [
+            "press engine_low_idle 300"
+          ],
+          "ask": "What if the fault is still there after cleaning?",
+          "est_s": 70,
+          "figure": "WZ675761",
+          "source": {
+            "pages": [
+              "25-G-35"
+            ],
+            "topic": "exactapply-nozzle-short-sticking-stuck-or-open--afca0a"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "fault-verify",
+          "say": "Restart and check: High Idle, boom down, pump on, move off, master. Every section should show Applying.",
+          "why": "Section Applying means that section is spraying. Verify the fix before you carry on.",
+          "controls": [
+            "engine_high_idle",
+            "centre_boom_lower",
+            "solution_pump",
+            "lever",
+            "master_spray",
+            "display_section_status"
+          ],
+          "done": {
+            "all": [
+              {
+                "any": [
+                  {
+                    "cloud": "PLT_AIC_EngineHighIdleSpeedIndicator",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_AIC_EngineHighIdle",
+                    "eq": "1"
+                  }
+                ]
+              },
+              {
+                "then": [
+                  {
+                    "sent": "PLT_MHC_CenterBoomLower",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_AIC_SolutionPump",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_HydroHandlePosition",
+                    "outside": [
+                      100,
+                      150
+                    ]
+                  },
+                  {
+                    "sent": "PLT_MHC_MasterSprayOnOff",
+                    "eq": "1"
+                  }
+                ]
+              },
+              {
+                "confirm": "Every section shows Applying"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_MHC_MasterSprayOnOff",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_MHC_CenterBoomLower",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "Boom down to operating height before the master."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 45,
+              "say": "High Idle, Centre boom lower (K), Solution Pump, lever out of PARK and forward, then the master (I). Then read Section Status on the display.",
+              "highlight": [
+                "engine_high_idle",
+                "centre_boom_lower",
+                "solution_pump",
+                "lever",
+                "master_spray",
+                "display_section_status"
+              ]
+            }
+          ],
+          "show_me": [
+            "press engine_high_idle 300",
+            "press centre_boom_lower 600",
+            "press solution_pump 300",
+            "switch park_slot 0",
+            "set lever 175",
+            "wait 0.3",
+            "press master_spray 300"
+          ],
+          "ask": "How do I prevent nozzle plugging next time?",
+          "est_s": 80,
+          "figure": "N119617",
+          "source": {
+            "pages": [
+              "25-G-5"
+            ],
+            "topic": "section-status--e3e207"
+          },
+          "confidence": "draft"
+        }
+      ]
+    }
+  ]
+}

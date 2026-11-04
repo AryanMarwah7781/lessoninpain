@@ -1,0 +1,81 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Two panes, one lit</title>
+<style>
+*{box-sizing:border-box}body{margin:0;width:1440px;height:900px;overflow:hidden;background:#e6e6e6;color:#282828;font-family:Calibri,Carlito,"Segoe UI",sans-serif}
+.top{height:64px;background:#fff;display:flex;align-items:center;gap:18px;border-bottom:4px solid #8c8c8c;position:relative;padding-left:40px}
+.top:before{content:"";position:absolute;left:0;top:0;bottom:0;width:10px;background:#367c2b;box-shadow:8px 0 0 #ffde00}
+.top b{font-size:26px;color:#5a5a5a;font-weight:400}.top .lesson{font-size:20px;color:#367c2b}
+.top .chips{margin-left:auto;margin-right:24px;display:flex;gap:10px}
+.chip{font-size:16px;padding:5px 12px;border-radius:14px;background:#eef5ec;color:#2b6322;border:1px solid #cfe3ca}
+.band{margin:18px 24px 0;background:#fff;border:1px solid #d0d0d0;border-radius:6px;padding:20px 28px;display:grid;grid-template-columns:1fr auto;gap:8px 32px}
+.eyebrow{font-size:17px;color:#666;letter-spacing:.04em;text-transform:uppercase}
+.act{font-size:46px;font-weight:700;line-height:1.05;margin:6px 0}
+.why{font-size:22px;color:#555}
+.side{display:flex;flex-direction:column;gap:10px;align-items:stretch;justify-content:center}
+.btn{font-size:22px;padding:12px 26px;border-radius:4px;border:1px solid #9a9a9a;background:#fff;text-align:center}
+.btn.y{background:#ffde00;border-color:#d8bb00;font-weight:700}
+.next{grid-column:1/-1;font-size:18px;color:#8a8a8a}
+.err{grid-column:1/-1;display:flex;gap:14px;align-items:center;background:#fdeceb;border:1px solid #f0b9b5;border-radius:4px;padding:10px 16px;font-size:20px;color:#8a1f17}
+.err i{font-style:normal;font-weight:700;background:#b3261e;color:#fff;border-radius:3px;padding:2px 8px;font-size:16px}
+.panes{margin:16px 24px 0;display:grid;grid-template-columns:1.15fr 1fr;gap:16px;height:440px}
+.pane{border-radius:6px;padding:16px 20px;display:flex;flex-direction:column;gap:10px}
+.lit{background:#fff;border:3px solid #367c2b}.dim{background:#f1f1f1;border:1px solid #d6d6d6;opacity:.8}
+.pane h3{margin:0;font-size:18px;letter-spacing:.06em;text-transform:uppercase;color:#367c2b;display:flex;gap:10px;align-items:center}
+.dim h3{color:#777}.pane h3 span{font-size:16px;text-transform:none;letter-spacing:0;color:#555;font-weight:400}
+.arm{display:grid;grid-template-columns:330px 1fr;gap:16px;flex:1}
+.photos{display:grid;grid-template-rows:1fr 1fr;gap:12px}
+.ph{display:grid;grid-template-columns:260px 1fr;gap:16px;border:1px solid #ddd;border-radius:4px;padding:12px;align-items:center}
+.ph .img{height:160px;background:#2e2e2e;border-radius:3px;color:#bbb;font-size:15px;display:flex;align-items:center;justify-content:center;text-align:center}
+.ph .n{display:inline-block;width:30px;height:30px;border-radius:50%;background:#ffde00;border:2px solid #282828;text-align:center;font-weight:700;font-size:19px;line-height:26px;margin-right:8px}
+.ph b{font-size:22px}.ph p{margin:6px 0 0;font-size:17px;color:#666}
+.disp{flex:1;background:#1d1d1d;border-radius:4px;position:relative;overflow:hidden}
+.disp .hd{height:34px;background:#1f8a1f;color:#fff;font-size:18px;padding:6px 12px}
+.disp .soft{position:absolute;left:0;right:0;bottom:0;height:46px;background:#d9d6c3;display:grid;grid-template-columns:repeat(10,1fr);gap:2px}
+.disp .soft div{background:#e9e6d4}
+.disp .p1{position:absolute;left:10px;top:44px;width:120px;height:120px;background:#f3f1e4}
+.disp .p2{position:absolute;left:10px;top:172px;width:120px;height:100px;background:#f3f1e4}
+.disp .map{position:absolute;left:140px;top:44px;right:120px;bottom:56px;background:#8f8f8f}
+.disp .ring{position:absolute;left:4px;top:166px;width:132px;height:112px;border:3px dashed #ffde00;border-radius:6px}
+.note{font-size:18px;color:#555}
+.rail{margin:16px 24px 0;height:72px;background:#fff;border:1px solid #d0d0d0;border-radius:6px;display:grid;grid-template-columns:repeat(7,1fr);gap:6px;padding:10px 14px}
+.st{border-radius:3px;background:#ececec;font-size:15px;color:#777;padding:6px 8px;display:flex;flex-direction:column;justify-content:space-between}
+.st.done{background:#e2efdf;color:#2b6322}.st.cur{background:#ffde00;color:#282828;font-weight:700}
+.st small{font-size:13px}
+.foot{position:absolute;left:0;right:0;bottom:0;height:30px;background:#dcdcdc;border-top:4px solid #367c2b;box-shadow:0 -8px 0 #ffde00;font-size:14px;color:#555;padding:5px 24px}
+</style></head><body>
+<div class="top"><b>Lesson Studio</b><span class="lesson">Headland turn with HMS, done in the right order</span>
+<div class="chips"><span class="chip">Armrest linked</span><span class="chip">Online</span><span class="chip">Game: Patriot 8.0 km/h</span></div></div>
+<div class="band">
+ <div><div class="eyebrow">Step 2 of 7 · Approaching the headland · 0:48</div>
+ <div class="act">Stop spraying, then raise the boom.</div>
+ <div class="why">The wing tips swing wide in a turn and you'd spray outside the field.</div></div>
+ <div class="side"><div class="btn y">Show me</div><div class="btn">Hint</div><div class="btn">Ask</div></div>
+ <div class="err"><i>Order</i>You raised the boom while still spraying. Turn spraying off first, then raise.</div>
+ <div class="next">Next: slow down for the turn, speed dial down 4 clicks</div>
+</div>
+<div class="panes" style="grid-template-columns:1fr">
+ <div class="pane lit"><h3>On the armrest <span>do this here · on the display monitor a yellow ring marks BoomTrac to watch</span></h3>
+  <div class="arm" style="grid-template-columns:560px 1fr">
+   <svg viewBox="0 0 330 300" width="560" height="380">
+    <path d="M70 40 L170 20 L270 70 L300 170 L250 280 L120 290 L40 220 L30 120 Z" fill="#3a3a3a" stroke="#e8891c" stroke-width="6"/>
+    <rect x="120" y="30" width="60" height="34" rx="6" fill="#555"/>
+    <rect x="110" y="96" width="110" height="36" rx="5" fill="#555"/><rect x="232" y="96" width="38" height="80" rx="5" fill="#555"/>
+    <circle cx="80" cy="190" r="36" fill="#555"/><rect x="62" y="98" width="38" height="38" rx="6" fill="#555"/>
+    <rect x="114" y="146" width="44" height="84" rx="5" fill="#555"/><rect x="168" y="146" width="44" height="84" rx="5" fill="#555"/>
+    <rect x="232" y="186" width="38" height="38" rx="5" fill="#d8c400"/>
+    <rect x="114" y="240" width="44" height="34" rx="5" fill="#555"/><rect x="168" y="240" width="44" height="34" rx="5" fill="#555"/>
+    <circle cx="251" cy="205" r="30" fill="none" stroke="#ffde00" stroke-width="5"/><circle cx="276" cy="176" r="15" fill="#ffde00" stroke="#282828" stroke-width="2"/><text x="276" y="182" text-anchor="middle" font-size="18" font-weight="700" font-family="Calibri">1</text>
+    <circle cx="80" cy="168" r="22" fill="none" stroke="#ffde00" stroke-width="5"/><circle cx="52" cy="146" r="15" fill="#ffde00" stroke="#282828" stroke-width="2"/><text x="52" y="152" text-anchor="middle" font-size="18" font-weight="700" font-family="Calibri">2</text>
+   </svg>
+   <div class="photos">
+    <div class="ph"><div class="img">Manual photo<br>N152644</div><div><span class="n">1</span><b>Master spray off</b><p>Yellow button, low on the right of the handle (I)</p></div></div>
+    <div class="ph"><div class="img">Manual photo<br>N152646</div><div><span class="n">2</span><b>Centre boom raise</b><p>Round pad on the left, push up (M)</p></div></div>
+   </div>
+  </div>
+ </div>
+</div>
+<div class="rail">
+ <div class="st done">✓ Press HMS<small>Approaching</small></div><div class="st cur">Stop spray, raise boom<small>Approaching</small></div><div class="st">Slow down<small>Approaching</small></div>
+ <div class="st">Turn left<small>The turn</small></div><div class="st">Lower, then spray<small>The turn</small></div><div class="st">Back to speed<small>The turn</small></div><div class="st">Close HMS<small>The turn</small></div>
+</div>
+<div class="foot">Lesson Studio · R4045 Sprayer (2019) · pictures from the 612R operator manual</div>
+</body></html>

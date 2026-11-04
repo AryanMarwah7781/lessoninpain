@@ -1,0 +1,6655 @@
+{
+ "schema": "lesson/0.2",
+ "id": "612r-full-shift",
+ "title": "A full spraying day on the 612R: from daily checks to parked and rinsed",
+ "machine": "612R Sprayer · CommandCenter display · CommandARM",
+ "build": "612R operator's manual OMKK105338; runs on the Apr 20 Display and CommandARM Simulator",
+ "manual": "OMKK105338 (400R-616R operator's manual)",
+ "level": "Advanced",
+ "minutes": 107,
+ "objective": "Run a whole shift on the 612R in the manual's order: daily checks, start-up, road transport, filling and loading chemical, unfolding and spraying, headlands with HMS, sections and rates, a high-pressure fault with boom pressure relief, rinsing, folding, transport back and parking safely. Then pass a no-hints assessment of the key in-cab sequence.",
+ "procedure_source": "Every step follows the 612R operator's manual OMKK105338; each step cites its pages and topic. Steps marked draft are adapted for the simulator (rephasing, headland turns, Quick Stop, the fault scenario's verify step, switching the rinse off); confirm them with an operator.",
+ "setup": {
+  "armrest": [
+   "switch foot_switch 0",
+   "switch park_slot 1",
+   "set steering 0",
+   "set speed_dial 0",
+   "switch foot_switch 1",
+   "wait 0.3",
+   "press centre_boom_raise 600",
+   "wait 0.3",
+   "switch foot_switch 0",
+   "wait 0.5"
+  ],
+  "trainer": "Yard, start of the day: machine parked on level ground, lever in Park, engine off (real rig), boom folded on its cradles, tread at narrowest, Transport Lock OFF, park brake switch engaged by the last operator, solution tank empty and rinsed, ladder down, game camera view 1. Section 7: tell the trainee the display shows a high pressure reading and the rate won't hold (two plugged tips on the left wing). Resuming at a checkpoint: 2 = as above; 3 = engine running, Auto selected; 4 = parked at the field fill spot, boom folded, Transport Lock on, ladder up; 5 = tank filled, pump and agitation on; 6 and 7 = spraying on the move with HMS set up; 8 = spraying, tank nearly empty; 9 = boom folded, parked, engine running.",
+  "expect": {
+   "game": {
+    "boomUnfolded": "0",
+    "ladderRaised": "0",
+    "cameraView": "1"
+   }
+  }
+ },
+ "chatbot": {
+  "about": "The trainee is running a whole spraying day on a John Deere 612R (CommandCenter display, CommandARM) on a simulator, following the 612R operator's manual OMKK105338: daily checks, start-up, road transport, filling with the eductor, unfolding and spraying, HMS headlands, IBS sections and rate presets, a high-pressure fault fixed with Boom Pressure Relief and nozzle cleaning, rinsing, folding and parking. Answer only from the manual and name the exact control and manual page. Keep answers to 2-3 sentences. The product label and local law govern chemical use. The manual's rinse procedures say to spray rinse water at 620—690 kPa (6.2—6.9 bar) (90—100 psi), while its generic chemical-safety page says not to exceed 345 kPa (3.5 bar) (50 psi): say both and refer the trainee to their dealer. The simulator is built on an R4045, so it cannot see display pages, the fill station, or switches outside its armrest catalogue; those steps use a Done button.",
+  "send": [
+   "lesson title",
+   "section",
+   "step instruction",
+   "seconds on step",
+   "last 10 controls used",
+   "current game state",
+   "lights currently on"
+  ]
+ },
+ "extra_controls": {
+  "key_switch": {
+   "label": "Key switch",
+   "where": "Right-hand side of the steering column (Stop, Run, Start)",
+   "figure": "H127222",
+   "source": {
+    "pages": [
+     "30-3"
+    ],
+    "topic": "key-switch--7d3ad4"
+   }
+  },
+  "horn": {
+   "label": "Horn",
+   "where": "End of the turn signal lever: push inward",
+   "figure": "H127049",
+   "source": {
+    "pages": [
+     "30-4"
+    ],
+    "topic": "operate-turn-signals-horn-and-high-low-beam--a6f574"
+   }
+  },
+  "seat_belt": {
+   "label": "Seat belt",
+   "where": "Operator's seat: lap belt with push-button quick release",
+   "figure": "N152675",
+   "source": {
+    "pages": [
+     "30-28"
+    ],
+    "topic": "seat-belts--15e188"
+   }
+  },
+  "corner_post_display": {
+   "label": "Corner post display",
+   "where": "Cab corner post: coolant temperature, target and vehicle speed, indicators",
+   "figure": "NX1396826",
+   "source": {
+    "pages": [
+     "50-6"
+    ],
+    "topic": "start-the-engine--a12543"
+   }
+  },
+  "commandcenter_display": {
+   "label": "CommandCenter display",
+   "where": "Armrest CommandCenter display on the CommandARM",
+   "figure": "H129095",
+   "source": {
+    "pages": [
+     "30-14"
+    ],
+    "topic": "console-and-display--92d57a"
+   }
+  },
+  "road_lights": {
+   "label": "Road light button",
+   "where": "CommandARM lights controls (A in the photo)",
+   "figure": "N153023",
+   "source": {
+    "pages": [
+     "50-26"
+    ],
+    "topic": "transport-machine--4216ec"
+   }
+  },
+  "hazard_lights": {
+   "label": "Hazard light button",
+   "where": "CommandARM lights controls (B in the photo)",
+   "figure": "N153023",
+   "source": {
+    "pages": [
+     "50-26"
+    ],
+    "topic": "transport-machine--4216ec"
+   }
+  },
+  "smv_emblem": {
+   "label": "SMV emblem",
+   "where": "On the boom (or rear of the machine)",
+   "source": {
+    "pages": [
+     "50-26"
+    ],
+    "topic": "transport-machine--4216ec"
+   }
+  },
+  "agitation_switch": {
+   "label": "Agitation switch",
+   "where": "CommandARM spraying controls; light on when agitation is engaged",
+   "figure": "N120490",
+   "source": {
+    "pages": [
+     "30-11"
+    ],
+    "topic": "spraying-controls--8a2c0c"
+   }
+  },
+  "boom_section_wheels": {
+   "label": "Boom section control scroll wheels",
+   "where": "CommandARM spraying controls: roll rearward to turn sections off, forward to turn them on",
+   "figure": "N151298",
+   "source": {
+    "pages": [
+     "30-11"
+    ],
+    "topic": "spraying-controls--8a2c0c"
+   }
+  },
+  "mirrors": {
+   "label": "Rear view mirrors",
+   "where": "Right-hand and left-hand mirrors, plus the right-hand undercarriage mirror",
+   "figure": "N155107",
+   "source": {
+    "pages": [
+     "45-1"
+    ],
+    "topic": "adjust-rear-view-mirrors--7348eb"
+   }
+  },
+  "engine_oil_dipstick": {
+   "label": "Engine oil fill cap and dipstick",
+   "where": "Engine; the dipstick is attached to the fill cap",
+   "figure": "N153905",
+   "source": {
+    "pages": [
+     "45-1"
+    ],
+    "topic": "check-engine-oil-level-daily--5eab09"
+   }
+  },
+  "water_separator": {
+   "label": "Fuel water separator drain valve",
+   "where": "Drain valve (A) on the primary fuel filter",
+   "figure": "N153302",
+   "source": {
+    "pages": [
+     "45-2"
+    ],
+    "topic": "drain-water-separator-daily--f9a048"
+   }
+  },
+  "coolant_tank": {
+   "label": "Coolant overflow tank",
+   "where": "Overflow tank sight tube with HOT LEVEL and COLD LEVEL marks",
+   "figure": "N99187",
+   "source": {
+    "pages": [
+     "45-2"
+    ],
+    "topic": "check-coolant-level-daily--4bd957"
+   }
+  },
+  "hydraulic_sight_tube": {
+   "label": "Hydraulic oil sight tube",
+   "where": "Hydraulic reservoir: sight tube, filler cap and fill level decal",
+   "figure": "N153001",
+   "source": {
+    "pages": [
+     "45-3"
+    ],
+    "topic": "check-hydraulic-oil-level-daily--99fd63"
+   }
+  },
+  "fuel_fill": {
+   "label": "Fuel fill",
+   "where": "Fuel fill ladder (A) and fuel tank fill cap (B)",
+   "figure": "N155102",
+   "source": {
+    "pages": [
+     "45-4"
+    ],
+    "topic": "fill-fuel-tank--966e81"
+   }
+  },
+  "def_fill": {
+   "label": "DEF tank cap",
+   "where": "DEF tank cap and filler neck",
+   "figure": "N153002",
+   "source": {
+    "pages": [
+     "45-4",
+     "45-5"
+    ],
+    "topic": "fill-diesel-exhaust-fluid-def-tank-final-tier-4-stage-v--b81914"
+   }
+  },
+  "tires": {
+   "label": "Tires",
+   "where": "All tires; pressures and loads are in the Wheels and Tires section",
+   "source": {
+    "pages": [
+     "45-5"
+    ],
+    "topic": "inspect-tires-daily--8cc0ce"
+   }
+  },
+  "air_springs": {
+   "label": "Air springs",
+   "where": "Inspection area between the rubber and the piston of each air spring",
+   "figure": "NX1432694",
+   "source": {
+    "pages": [
+     "45-5"
+    ],
+    "topic": "inspect-air-springs-for-debris-daily--fa5b82"
+   }
+  },
+  "grease_points": {
+   "label": "Suspension grease fittings",
+   "where": "600R, 612R and 616R grease fitting locations",
+   "figure": "NX1432685",
+   "source": {
+    "pages": [
+     "45-5"
+    ],
+    "topic": "lubricate-suspension-assemblies-daily--d4a033"
+   }
+  },
+  "boom_lift_grease": {
+   "label": "Boom lift arm grease fittings",
+   "where": "Front grease fittings, grease bank and grease fitting, both sides",
+   "figure": "N102003",
+   "source": {
+    "pages": [
+     "45-5",
+     "45-6"
+    ],
+    "topic": "lubricate-boom-lift-arm-pins-daily--302f38"
+   }
+  },
+  "air_tank_valve": {
+   "label": "Onboard air tank drain valve",
+   "where": "Valve (A) on the onboard air tank",
+   "figure": "N153004",
+   "source": {
+    "pages": [
+     "45-6"
+    ],
+    "topic": "drain-moisture-from-onboard-air-tanks-daily--8845e9"
+   }
+  },
+  "flowmeter_shutoff_valve": {
+   "label": "Flowmeter (strainer) shutoff valve",
+   "where": "Solution plumbing; open = handle parallel to the solution hose",
+   "figure": "NX1432687",
+   "source": {
+    "pages": [
+     "45-7"
+    ],
+    "topic": "clean-pressure-strainers-daily--be6871"
+   }
+  },
+  "pressure_strainers": {
+   "label": "Pressure strainers",
+   "where": "50 mesh pressure strainer and 80 mesh boom section pressure strainers",
+   "figure": "N99945",
+   "source": {
+    "pages": [
+     "60-10"
+    ],
+    "topic": "solution-strainers--3295d0"
+   }
+  },
+  "fill_station_keypad": {
+   "label": "Fill station keypad and micro display",
+   "where": "Fill station: raise the cover to reach the keypad",
+   "figure": "NX1435130",
+   "source": {
+    "pages": [
+     "60-5",
+     "60-6"
+    ],
+    "topic": "fill-station-keypad--3dbb03"
+   }
+  },
+  "quik_fill_valve": {
+   "label": "Quik-Fill valve and cap",
+   "where": "Side Quik-Fill at the fill station, or front Quik-Fill if equipped",
+   "figure": "NX1435337",
+   "source": {
+    "pages": [
+     "60-15"
+    ],
+    "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+   }
+  },
+  "eductor": {
+   "label": "Eductor",
+   "where": "Eductor hopper with handle, lid, sump valve and rinse valve",
+   "figure": "N98892",
+   "source": {
+    "pages": [
+     "60-16",
+     "60-17"
+    ],
+    "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+   }
+  },
+  "clean_water_tank": {
+   "label": "Clean water tank",
+   "where": "Left-hand side of the machine",
+   "figure": "N153569",
+   "source": {
+    "pages": [
+     "55-28"
+    ],
+    "topic": "clean-water-tank--2d97f5"
+   }
+  },
+  "nozzle_bodies": {
+   "label": "Nozzle bodies, tips and aspirators",
+   "where": "Along the boom",
+   "figure": "N118272",
+   "source": {
+    "pages": [
+     "55-24"
+    ],
+    "topic": "clean-fill-strainer-aspirators-nozzle-bodies-and-tips-as-req--f9977d"
+   }
+  },
+  "battery_disconnect": {
+   "label": "Battery disconnect switch and LED",
+   "where": "Battery box: switch (A) and LED (B)",
+   "figure": "N153287",
+   "source": {
+    "pages": [
+     "85-24"
+    ],
+    "topic": "battery-disconnect-switch--c9c8e5"
+   }
+  }
+ },
+ "sections": [
+  {
+   "title": "1. Daily and prestarting checks",
+   "mode": "learn",
+   "checkpoint": true,
+   "steps": [
+    {
+     "id": "s1-parked",
+     "say": "Start of the day. Check the machine is on level ground, lever in Park, engine off and key out.",
+     "why": "Daily checks are made parked on level ground with the engine stopped and the key removed.",
+     "controls": [
+      "park_slot",
+      "key_switch"
+     ],
+     "done": {
+      "confirm": "Level, parked, engine off, key out"
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_NeutralSlotStatus",
+        "eq": "0"
+       },
+       "say": "Leave the lever in Park: the machine must stay stopped and secured while you work around it."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Look at the lever, then take the key with you.",
+       "highlight": [
+        "park_slot"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Lever in the Park gate at the end of its travel; key switch on the right of the steering column.",
+       "highlight": [
+        "park_slot",
+        "key_switch"
+       ]
+      }
+     ],
+     "wrong_demo": [
+      "switch park_slot 0",
+      "wait 0.5",
+      "switch park_slot 1",
+      "wait 0.5"
+     ],
+     "ask": "What state should the 612R be in before the daily checks?",
+     "est_s": 30,
+     "figure": "N155095",
+     "source": {
+      "pages": [
+       "45-1"
+      ],
+      "topic": "check-engine-oil-level-daily--5eab09"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s1-mirrors",
+     "say": "Adjust the rear view mirrors. Use the left-hand landing for the left mirror; never stand on the fuel tank.",
+     "why": "Standing on the fuel tank risks a serious fall.",
+     "controls": [
+      "mirrors"
+     ],
+     "done": {
+      "confirm": "Mirrors adjusted"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Pivot each mirror head until you see behind the machine.",
+       "highlight": [
+        "mirrors"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Right-hand mirror: from a commercial ladder. Left-hand mirror: from the left-hand landing. Also set the right-hand undercarriage mirror.",
+       "highlight": [
+        "mirrors"
+       ]
+      }
+     ],
+     "ask": "How do I reach and adjust the mirrors on the 612R?",
+     "est_s": 60,
+     "figure": "N155107",
+     "source": {
+      "pages": [
+       "45-1"
+      ],
+      "topic": "adjust-rear-view-mirrors--7348eb"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s1-engine-bay",
+     "say": "Check the engine compartment for trash, especially around the turbocharger, exhaust manifold and muffler.",
+     "why": "Debris gathers at these hot spots; never steam clean or pour cold water on a hot injection pump.",
+     "controls": [],
+     "done": {
+      "confirm": "Engine compartment clean"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Look closely around the turbocharger, exhaust manifold and muffler."
+      },
+      {
+       "after_s": 45,
+       "say": "Clean out anything that has built up. Never pour cold water on an injection pump that is hot."
+      }
+     ],
+     "ask": "Where does trash build up in the engine compartment?",
+     "est_s": 60,
+     "source": {
+      "pages": [
+       "45-1"
+      ],
+      "topic": "check-engine-compartment-for-accumulated-trash-and-debris--993e62"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s1-engine-oil",
+     "say": "Check engine oil: wipe the dipstick, refit the cap fully, then read the level between ADD and FULL.",
+     "why": "Never run the engine below the ADD mark, and don't overfill.",
+     "controls": [
+      "engine_oil_dipstick"
+     ],
+     "done": {
+      "confirm": "Engine oil between ADD and FULL"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "The dipstick is attached to the fill cap.",
+       "highlight": [
+        "engine_oil_dipstick"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Tighten the fill cap fully before you read it, or the reading is wrong. Below ADD: add oil and recheck.",
+       "highlight": [
+        "engine_oil_dipstick"
+       ]
+      }
+     ],
+     "ask": "How do I read the engine oil level on the 612R?",
+     "est_s": 90,
+     "figure": "N153905",
+     "source": {
+      "pages": [
+       "45-1",
+       "45-2"
+      ],
+      "topic": "check-engine-oil-level-daily--5eab09"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s1-water-separator",
+     "say": "Drain water from the fuel water separator: unthread the drain valve on the primary filter completely.",
+     "why": "The valve must drop about 12 mm (0.5 in) to drain the water properly.",
+     "controls": [
+      "water_separator"
+     ],
+     "done": {
+      "confirm": "Water separator drained"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "The drain valve is on the primary fuel filter.",
+       "highlight": [
+        "water_separator"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Drain valve (A) on the primary filter (C). Lots of water or sediment means the fuel filters need replacing.",
+       "highlight": [
+        "water_separator"
+       ]
+      }
+     ],
+     "ask": "How do I drain the fuel water separator?",
+     "est_s": 60,
+     "figure": "N153302",
+     "source": {
+      "pages": [
+       "45-2"
+      ],
+      "topic": "drain-water-separator-daily--f9a048"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s1-coolant",
+     "say": "Check coolant in the overflow tank sight tube: between the HOT LEVEL and COLD LEVEL marks.",
+     "why": "Which mark applies depends on engine temperature; if low, look for leaks first.",
+     "controls": [
+      "coolant_tank"
+     ],
+     "done": {
+      "confirm": "Coolant between HOT and COLD marks"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Read the sight tube on the overflow tank.",
+       "highlight": [
+        "coolant_tank"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Low? Check for leaks and that hose clamps are tight before adding coolant to the overflow tank.",
+       "highlight": [
+        "coolant_tank"
+       ]
+      }
+     ],
+     "ask": "What coolant level is correct on the 612R?",
+     "est_s": 45,
+     "figure": "N99187",
+     "source": {
+      "pages": [
+       "45-2"
+      ],
+      "topic": "check-coolant-level-daily--4bd957"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s1-hydraulic-oil",
+     "say": "Check hydraulic oil in the sight tube against the fill-level decal for the current oil temperature.",
+     "why": "Read it level, tread narrow, booms in the cradles, engine stopped; drive and hydraulics share this oil.",
+     "controls": [
+      "hydraulic_sight_tube"
+     ],
+     "done": {
+      "confirm": "Hydraulic oil at the right level"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "The decal next to the sight tube shows the right mark for each oil temperature.",
+       "highlight": [
+        "hydraulic_sight_tube"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Below the lower mark for the temperature: remove the filler cap and add hydraulic oil.",
+       "highlight": [
+        "hydraulic_sight_tube"
+       ]
+      }
+     ],
+     "ask": "How do I check the hydraulic oil on the 612R?",
+     "est_s": 45,
+     "figure": "N153001",
+     "source": {
+      "pages": [
+       "45-3"
+      ],
+      "topic": "check-hydraulic-oil-level-daily--99fd63"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s1-fuel",
+     "say": "With the engine off, lower the fuel fill ladder and fill the fuel tank with the proper diesel fuel.",
+     "why": "Shut off the engine before refuelling; never stand on the fuel tank.",
+     "controls": [
+      "fuel_fill"
+     ],
+     "done": {
+      "confirm": "Fuel tank filled"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Lower the fuel fill ladder first.",
+       "highlight": [
+        "fuel_fill"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Fuel fill ladder (A), fuel tank fill cap (B). The 612R tank holds 566 L (149 gal).",
+       "highlight": [
+        "fuel_fill"
+       ]
+      }
+     ],
+     "ask": "Where do I refuel the 612R and how much does the tank hold?",
+     "est_s": 90,
+     "figure": "N155102",
+     "source": {
+      "pages": [
+       "45-4"
+      ],
+      "topic": "fill-fuel-tank--966e81"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s1-def",
+     "say": "Top up the DEF tank through a clean funnel, then tighten the cap. Never put DEF in the fuel tank.",
+     "why": "Fill DEF every time you refuel; never mix up DEF and diesel fuel.",
+     "controls": [
+      "def_fill"
+     ],
+     "done": {
+      "confirm": "DEF topped up"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Wipe the cap and filler neck before you open it.",
+       "highlight": [
+        "def_fill"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Rinse funnels with distilled water first; clean any spill with distilled water only.",
+       "highlight": [
+        "def_fill"
+       ]
+      }
+     ],
+     "ask": "How do I fill DEF on the 612R without contaminating it?",
+     "est_s": 75,
+     "figure": "N153002",
+     "source": {
+      "pages": [
+       "45-4",
+       "45-5"
+      ],
+      "topic": "fill-diesel-exhaust-fluid-def-tank-final-tier-4-stage-v--b81914"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s1-tires",
+     "say": "Inspect the tires. Check inflation pressures and loads against the Wheels and Tires section.",
+     "why": "The manual's tire tables set the pressures and loads for each tire.",
+     "controls": [
+      "tires"
+     ],
+     "done": {
+      "confirm": "Tires inspected"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Walk around and look at every tire.",
+       "highlight": [
+        "tires"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Pressures and loads are in Inspect Tires—Daily, in the Wheels and Tires section.",
+       "highlight": [
+        "tires"
+       ]
+      }
+     ],
+     "ask": "Where do I find the right tire pressures for the 612R?",
+     "est_s": 75,
+     "source": {
+      "pages": [
+       "45-5"
+      ],
+      "topic": "inspect-tires-daily--8cc0ce"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s1-air-springs",
+     "say": "Clean any dirt or debris from around each air spring, including between the rubber and the piston.",
+     "why": "Dirt and debris collecting around an air spring can damage it.",
+     "controls": [
+      "air_springs"
+     ],
+     "done": {
+      "confirm": "Air springs clear"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Look at the inspection area of each air spring.",
+       "highlight": [
+        "air_springs"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Inspection area (B) is between the rubber and the piston; some machines have a cover (C).",
+       "highlight": [
+        "air_springs"
+       ]
+      }
+     ],
+     "ask": "Why do I check the air springs every day?",
+     "est_s": 45,
+     "figure": "NX1432694",
+     "source": {
+      "pages": [
+       "45-5"
+      ],
+      "topic": "inspect-air-springs-for-debris-daily--fa5b82"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s1-grease-suspension",
+     "say": "Grease the suspension fittings with John Deere SD polyurea grease only: five pumps at each fitting.",
+     "why": "Other greases can wear the suspension components early.",
+     "controls": [
+      "grease_points"
+     ],
+     "done": {
+      "confirm": "Suspension greased"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Use only John Deere SD polyurea grease.",
+       "highlight": [
+        "grease_points"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "The 612R fitting locations are in figure NX1432685; five pumps each.",
+       "highlight": [
+        "grease_points"
+       ]
+      }
+     ],
+     "ask": "Which grease goes in the 612R suspension, and how much?",
+     "est_s": 90,
+     "figure": "NX1432685",
+     "source": {
+      "pages": [
+       "45-5"
+      ],
+      "topic": "lubricate-suspension-assemblies-daily--d4a033"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s1-grease-boom-pins",
+     "say": "Grease the boom lift arm pivots: front fittings, grease bank and rear fitting, on both sides.",
+     "why": "The manual calls for this every day with John Deere SD polyurea grease.",
+     "controls": [
+      "boom_lift_grease"
+     ],
+     "done": {
+      "confirm": "Boom lift arm pins greased"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Left-hand side shown in the figure; the right-hand side is similar.",
+       "highlight": [
+        "boom_lift_grease"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Front grease fittings (A), grease bank (B) and grease fitting (C).",
+       "highlight": [
+        "boom_lift_grease"
+       ]
+      }
+     ],
+     "ask": "Where are the boom lift arm grease points?",
+     "est_s": 75,
+     "figure": "N102003",
+     "source": {
+      "pages": [
+       "45-5",
+       "45-6"
+      ],
+      "topic": "lubricate-boom-lift-arm-pins-daily--302f38"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s1-air-tanks",
+     "say": "Wearing eye protection, open the valve on the onboard air tank and drain the moisture.",
+     "why": "The unloader valve and tank exhaust are at high pressure.",
+     "controls": [
+      "air_tank_valve"
+     ],
+     "done": {
+      "confirm": "Air tank drained"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Protective eyewear first.",
+       "highlight": [
+        "air_tank_valve"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Open valve (A) on the onboard air tank until the moisture is out.",
+       "highlight": [
+        "air_tank_valve"
+       ]
+      }
+     ],
+     "ask": "Why drain the air tanks every day?",
+     "est_s": 40,
+     "figure": "N153004",
+     "source": {
+      "pages": [
+       "45-6"
+      ],
+      "topic": "drain-moisture-from-onboard-air-tanks-daily--8845e9"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s1-strainers-prep",
+     "say": "Pressure strainers: put on protective clothing, eyewear and gloves, then close the flowmeter shutoff valve.",
+     "why": "The pump must be off: closing this valve with the pump running traps pressure.",
+     "controls": [
+      "flowmeter_shutoff_valve",
+      "solution_pump"
+     ],
+     "done": {
+      "confirm": "PPE on, flowmeter shutoff valve closed"
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_AIC_SolutionPump",
+        "eq": "1"
+       },
+       "say": "Keep the solution pump off: closing the flowmeter shutoff valve with the pump running traps pressure."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Check the solution pump light is off before touching the valve.",
+       "highlight": [
+        "solution_pump"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Flowmeter shutoff valve (A) in figure NX1432687. With a solution command system, check Push-On Fill is OFF too.",
+       "highlight": [
+        "flowmeter_shutoff_valve"
+       ]
+      }
+     ],
+     "wrong_demo": [
+      "press solution_pump 300",
+      "wait 0.5"
+     ],
+     "ask": "Why must the solution pump be off before I close the flowmeter shutoff valve?",
+     "est_s": 90,
+     "figure": "NX1432687",
+     "source": {
+      "pages": [
+       "45-6",
+       "45-7"
+      ],
+      "topic": "clean-pressure-strainers-daily--be6871"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s1-strainers-clean",
+     "say": "Drain the strainers into a container, wash the screens with clean water, refit them, then reopen the valves.",
+     "why": "Clean screens keep dirt out of the pump and nozzles; never drain solution onto the ground.",
+     "controls": [
+      "pressure_strainers",
+      "flowmeter_shutoff_valve"
+     ],
+     "done": {
+      "confirm": "Strainers clean, valves reopened"
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_AIC_SolutionPump",
+        "eq": "1"
+       },
+       "say": "Not yet: the strainers are open. Running the pump now sprays solution out of the housings."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Remove the plug and open the strainer drain valves over a suitable container.",
+       "highlight": [
+        "pressure_strainers"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Unscrew rings, remove housings and screens, wash, refit, plug in, drain valves shut. Then open the boom isolation, flowmeter shutoff and tank sump valves.",
+       "highlight": [
+        "pressure_strainers",
+        "flowmeter_shutoff_valve"
+       ]
+      }
+     ],
+     "wrong_demo": [
+      "press solution_pump 300",
+      "wait 0.5"
+     ],
+     "ask": "How do I clean the pressure strainers on the 612R?",
+     "est_s": 240,
+     "figure": "N99945",
+     "source": {
+      "pages": [
+       "45-7",
+       "45-8"
+      ],
+      "topic": "clean-pressure-strainers-daily--be6871"
+     },
+     "confidence": "manual"
+    }
+   ]
+  },
+  {
+   "title": "2. Start up and set up the cab",
+   "mode": "learn",
+   "checkpoint": true,
+   "steps": [
+    {
+     "id": "s2-climb-in",
+     "say": "Climb into the cab facing the machine, keeping three-point contact with the steps and handholds.",
+     "why": "Most falls happen getting on and off; never jump down.",
+     "controls": [],
+     "done": {
+      "confirm": "In the seat"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Face the machine on the way up."
+      },
+      {
+       "after_s": 45,
+       "say": "Two hands and one foot, or two feet and one hand, on the steps and handholds at all times."
+      }
+     ],
+     "ask": "How should I get on and off the 612R?",
+     "est_s": 30,
+     "figure": "T133468",
+     "source": {
+      "pages": [
+       "05-11",
+       "05-12"
+      ],
+      "topic": "use-steps-and-handholds-correctly--d57810"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s2-seat-belt",
+     "say": "Fasten the seat belt: latch it, listen for the click, tug it, then snug it across your hips.",
+     "why": "The seat belt protects you from crushing injury in a rollover.",
+     "controls": [
+      "seat_belt"
+     ],
+     "done": {
+      "confirm": "Seat belt fastened"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Hold the latch and pull the belt across your body.",
+       "highlight": [
+        "seat_belt"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Insert the latch into the buckle, tug the latch, and snug the belt low across the hips.",
+       "highlight": [
+        "seat_belt"
+       ]
+      }
+     ],
+     "ask": "How do I wear the seat belt properly?",
+     "est_s": 30,
+     "figure": "N152675",
+     "source": {
+      "pages": [
+       "05-12"
+      ],
+      "topic": "use-seat-belt-properly--f3594d"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s2-armrest",
+     "say": "Set the CommandARM: loosen the knobs, slide the console to suit you, then tighten the knobs.",
+     "why": "You will work the multi-function lever all day; set it within easy reach.",
+     "controls": [
+      "lever"
+     ],
+     "done": {
+      "confirm": "Armrest console set"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "The armrest console slides up/forward or down/back in slots on the outer plate.",
+       "highlight": [
+        "lever"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Loosen the knobs, slide, then tighten the knobs to lock it.",
+       "highlight": [
+        "lever"
+       ]
+      }
+     ],
+     "ask": "How do I adjust the CommandARM position?",
+     "est_s": 40,
+     "figure": "N166438",
+     "source": {
+      "pages": [
+       "30-14"
+      ],
+      "topic": "console-and-display--92d57a"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s2-start",
+     "say": "Lever in Park? Sound the horn, turn the key to Run, then to Start. Release it when the engine starts.",
+     "why": "The horn clears people away; start only from the seat with the lever in Park.",
+     "controls": [
+      "park_slot",
+      "horn",
+      "key_switch"
+     ],
+     "done": {
+      "confirm": "Engine running"
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_NeutralSlotStatus",
+        "eq": "0"
+       },
+       "say": "Keep the lever in Park while you start. An engine that starts out of Park means a starting-circuit fault."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Horn: push in on the end of the turn signal lever.",
+       "highlight": [
+        "horn"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Key switch: right-hand side of the steering column. Don't crank longer than 30 seconds at a time.",
+       "highlight": [
+        "key_switch",
+        "park_slot"
+       ]
+      }
+     ],
+     "wrong_demo": [
+      "switch park_slot 0",
+      "wait 0.5"
+     ],
+     "ask": "What is the starting procedure for the 612R?",
+     "est_s": 45,
+     "figure": "H127222",
+     "source": {
+      "pages": [
+       "50-5",
+       "50-6"
+      ],
+      "topic": "start-the-engine--a12543"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s2-warm-up",
+     "say": "Let it idle at about 900 rpm with no load for 1—2 minutes. Watch coolant temperature on the corner post.",
+     "why": "Protect the turbocharger: stay below 1000 rpm until normal idle is established.",
+     "controls": [
+      "corner_post_display",
+      "engine_high_idle"
+     ],
+     "done": {
+      "confirm": "Warm-up idle done"
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_AIC_EngineHighIdle",
+        "eq": "1"
+       },
+       "say": "Not yet: stay near 900 rpm for 1—2 minutes. Going above 1000 rpm too soon can damage the turbocharger."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Leave the engine speed switches alone for now.",
+       "highlight": [
+        "corner_post_display"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Coolant temperature (A) is on the corner post display. Below freezing, idle 2—4 minutes.",
+       "highlight": [
+        "corner_post_display"
+       ]
+      }
+     ],
+     "wrong_demo": [
+      "press engine_high_idle 300",
+      "wait 0.5"
+     ],
+     "ask": "How long should the 612R idle after starting?",
+     "est_s": 120,
+     "figure": "NX1396826",
+     "source": {
+      "pages": [
+       "50-8"
+      ],
+      "topic": "warm-the-engine--a6676a"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s2-steer-warm",
+     "say": "While it warms, turn the steering wheel left and right until it turns freely.",
+     "why": "Cycling the steering circulates warm hydraulic fluid.",
+     "controls": [
+      "steering"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_SteeringWheelAngleDeg",
+        "gte": 15
+       },
+       {
+        "sent": "PLT_SteeringWheelAngleDeg",
+        "lte": -15
+       }
+      ]
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Turn the wheel well to the left, then well to the right.",
+       "highlight": [
+        "steering"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Keep cycling the steering wheel back and forth until it turns freely.",
+       "highlight": [
+        "steering"
+       ]
+      }
+     ],
+     "show_me": [
+      "set steering 600",
+      "wait 1.5",
+      "set steering -600",
+      "wait 1.5",
+      "set steering 0",
+      "wait 1.0"
+     ],
+     "ask": "Why turn the steering wheel while the engine warms up?",
+     "est_s": 40,
+     "figure": "N151293",
+     "source": {
+      "pages": [
+       "50-8"
+      ],
+      "topic": "warm-the-engine--a6676a"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s2-auto-mode",
+     "say": "On the display, open the Transmission application and select Auto mode.",
+     "why": "The machine always starts in Manual mode until Auto is selected and High Idle is pressed.",
+     "controls": [
+      "commandcenter_display"
+     ],
+     "done": {
+      "confirm": "Auto mode selected"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Transmission Mode selection is on the display.",
+       "highlight": [
+        "commandcenter_display"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Select Auto on the Transmission main page; you will press High Idle before you drive.",
+       "highlight": [
+        "commandcenter_display"
+       ]
+      }
+     ],
+     "ask": "What is the difference between Auto and Manual mode on the 612R?",
+     "est_s": 40,
+     "figure": "N142909",
+     "source": {
+      "pages": [
+       "50-17"
+      ],
+      "topic": "drive-the-machine-auto-mode--c2def8"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s2-display-check",
+     "say": "Check the display settings: rates, tank volume, minimum and spray-off pressure, sections, nozzle spacing, spray width.",
+     "why": "Before Field Operation lists these display settings to verify before you go.",
+     "controls": [
+      "commandcenter_display"
+     ],
+     "done": {
+      "confirm": "Display settings checked"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Rates and pressures are in the Spray System application.",
+       "highlight": [
+        "commandcenter_display"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Also check the flowmeter calibration number and that the pressure and wheel speed sensors are calibrated.",
+       "highlight": [
+        "commandcenter_display"
+       ]
+      }
+     ],
+     "ask": "What must be programmed on the display before field work?",
+     "est_s": 120,
+     "figure": "H129095",
+     "source": {
+      "pages": [
+       "50-21"
+      ],
+      "topic": "before-field-operation--5673e0"
+     },
+     "confidence": "manual"
+    }
+   ]
+  },
+  {
+   "title": "3. Drive to the field",
+   "mode": "learn",
+   "checkpoint": true,
+   "steps": [
+    {
+     "id": "s3-smv-lights",
+     "say": "Check the SMV emblem is on, then press Road Lights and Hazard Lights. Check the amber lights flash.",
+     "why": "Public roads need the SMV emblem and working lights; keep them clean and visible.",
+     "controls": [
+      "smv_emblem",
+      "road_lights",
+      "hazard_lights"
+     ],
+     "done": {
+      "confirm": "SMV in place, road and hazard lights on"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "The SMV emblem goes on the boom or the rear of the machine.",
+       "highlight": [
+        "smv_emblem"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Road Light button (A) and Hazard Light button (B) are with the CommandARM light controls.",
+       "highlight": [
+        "road_lights",
+        "hazard_lights"
+       ]
+      }
+     ],
+     "ask": "What lights do I need for road transport on the 612R?",
+     "est_s": 60,
+     "figure": "N153023",
+     "source": {
+      "pages": [
+       "50-26"
+      ],
+      "topic": "transport-machine--4216ec"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s3-tread-boom",
+     "say": "Check the tread is at its narrowest and the boom is folded down onto its cradles.",
+     "why": "Transport only at the narrowest tread; travelling with booms off the cradles can damage the machine.",
+     "controls": [
+      "tread_in"
+     ],
+     "done": {
+      "all": [
+       {
+        "game": "boomUnfolded",
+        "eq": "0"
+       },
+       {
+        "confirm": "Tread narrowest, boom on cradles"
+       }
+      ]
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "The tread was narrow for this morning's hydraulic oil check.",
+       "highlight": [
+        "tread_in"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Look back: both booms folded in against the machine and resting in the cradles."
+      }
+     ],
+     "ask": "Why must the tread be narrow and the boom on its cradles for transport?",
+     "est_s": 30,
+     "figure": "N153424",
+     "source": {
+      "pages": [
+       "50-26"
+      ],
+      "topic": "transport-machine--4216ec"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s3-transport-lock",
+     "say": "Press the Transport Lock switch. Its light comes on.",
+     "why": "Transport Lock blocks spraying, boom movements and tread adjust on the road.",
+     "controls": [
+      "transport_lock"
+     ],
+     "done": {
+      "any": [
+       {
+        "control": "transport_lock",
+        "eq": 1
+       },
+       {
+        "confirm": "Transport lock on"
+       }
+      ]
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "It's with the engine and ground drive switches.",
+       "highlight": [
+        "transport_lock"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Transport Lock switch: CommandARM engine and ground drive controls; its indicator lights when on.",
+       "highlight": [
+        "transport_lock"
+       ]
+      }
+     ],
+     "show_me": [
+      "press transport_lock 300"
+     ],
+     "ask": "What does the Transport Lock switch block?",
+     "est_s": 20,
+     "figure": "N120615",
+     "source": {
+      "pages": [
+       "30-14"
+      ],
+      "topic": "transport-lock-switch--1c890e"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s3-high-idle",
+     "say": "Press High Idle for maximum engine speed.",
+     "why": "Transport needs full engine speed; High Idle also completes Auto mode.",
+     "controls": [
+      "engine_high_idle"
+     ],
+     "done": {
+      "any": [
+       {
+        "cloud": "PLT_AIC_EngineHighIdleSpeedIndicator",
+        "eq": "1"
+       },
+       {
+        "sent": "PLT_AIC_EngineHighIdle",
+        "eq": "1"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_AIC_EngineLowIdle",
+        "eq": "1"
+       },
+       "say": "That's Low Idle. Press High Idle for maximum engine speed."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Engine speed switches are on the CommandARM.",
+       "highlight": [
+        "engine_high_idle"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "High Idle switch: CommandARM engine and ground drive controls.",
+       "highlight": [
+        "engine_high_idle"
+       ]
+      }
+     ],
+     "show_me": [
+      "press engine_high_idle 300"
+     ],
+     "wrong_demo": [
+      "press engine_low_idle 300",
+      "wait 0.5"
+     ],
+     "ask": "Why use High Idle for transport?",
+     "est_s": 15,
+     "figure": "N137031",
+     "source": {
+      "pages": [
+       "50-27"
+      ],
+      "topic": "transport-machine--4216ec"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s3-park-brake",
+     "say": "Press the Park Brake switch to release the park brakes before you move the lever.",
+     "why": "Last night's operator engaged it, and it never releases by itself.",
+     "controls": [
+      "park_brake"
+     ],
+     "done": {
+      "any": [
+       {
+        "cloud": "PLT_AIC_ParkBrakeIndicator",
+        "eq": "0"
+       },
+       {
+        "sent": "PLT_AIC_ParkBrake",
+        "eq": "1"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "before": [
+         {
+          "sent": "PLT_NeutralSlotStatus",
+          "eq": "0"
+         },
+         {
+          "sent": "PLT_AIC_ParkBrake",
+          "eq": "1"
+         }
+        ]
+       },
+       "say": "Release the park brake switch first: when it is engaged, moving the lever does not release the brakes."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "The Park Brake switch is marked P.",
+       "highlight": [
+        "park_brake"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Park Brake switch: CommandARM engine and ground drive controls; its indicator goes out.",
+       "highlight": [
+        "park_brake"
+       ]
+      }
+     ],
+     "show_me": [
+      "press park_brake 300"
+     ],
+     "wrong_demo": [
+      "switch park_slot 0",
+      "wait 0.5",
+      "switch park_slot 1",
+      "wait 0.5"
+     ],
+     "ask": "Why didn't the park brake release when I moved the lever?",
+     "est_s": 20,
+     "figure": "N137032",
+     "source": {
+      "pages": [
+       "50-27"
+      ],
+      "topic": "transport-machine--4216ec"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s3-ladder",
+     "say": "Raise the ladder with the Ladder Up/Down switch. On the 612R it also rises by itself as you drive off.",
+     "why": "The ladder rises automatically on the real machine; the simulator needs the switch.",
+     "controls": [
+      "ladder"
+     ],
+     "done": {
+      "game": "ladderRaised",
+      "eq": "1"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Ladder Up/Down is a CommandARM switch.",
+       "highlight": [
+        "ladder"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Ladder Up/Down: CommandARM spraying controls. Press once.",
+       "highlight": [
+        "ladder"
+       ]
+      }
+     ],
+     "show_me": [
+      "press ladder 300"
+     ],
+     "ask": "When does the 612R ladder raise and lower by itself?",
+     "est_s": 15,
+     "figure": "N151287",
+     "source": {
+      "pages": [
+       "30-12"
+      ],
+      "topic": "ladder--3da11b"
+     },
+     "confidence": "draft"
+    },
+    {
+     "id": "s3-rephase",
+     "say": "Rephase the steering: creep forward, full left lock plus three turns, then full right lock plus three turns.",
+     "why": "Rephasing the steering system is required before road transport.",
+     "controls": [
+      "lever",
+      "steering"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_HydroHandlePosition",
+        "outside": [
+         100,
+         150
+        ]
+       },
+       {
+        "sent": "PLT_SteeringWheelAngleDeg",
+        "gte": 30
+       },
+       {
+        "sent": "PLT_SteeringWheelAngleDeg",
+        "lte": -30
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "before": [
+         {
+          "sent": "PLT_SteeringWheelAngleDeg",
+          "gte": 30
+         },
+         {
+          "sent": "PLT_HydroHandlePosition",
+          "outside": [
+           100,
+           150
+          ]
+         }
+        ]
+       },
+       "say": "Rephase while slowly moving forward, not standing still."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Ease the lever out of Park and slightly forward, then steer.",
+       "highlight": [
+        "lever",
+        "steering"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Around 0.8 km/h (0.5 mph): full left, three more turns; full right, three more turns. On the real machine repeat 1—3 more times.",
+       "highlight": [
+        "steering"
+       ]
+      }
+     ],
+     "show_me": [
+      "switch park_slot 0",
+      "set lever 160",
+      "wait 0.5",
+      "set steering 900",
+      "wait 2.0",
+      "set steering -900",
+      "wait 2.5",
+      "set steering 0",
+      "wait 1.5"
+     ],
+     "wrong_demo": [
+      "set steering 900",
+      "wait 1.2",
+      "set steering 0",
+      "wait 1.0"
+     ],
+     "ask": "Why do I rephase the steering before road transport?",
+     "est_s": 90,
+     "figure": "N151293",
+     "source": {
+      "pages": [
+       "100-20"
+      ],
+      "topic": "check-front-axle-toe-in-annually-or-as-needed--b4cc6e"
+     },
+     "confidence": "draft"
+    },
+    {
+     "id": "s3-road-speed",
+     "say": "Press the speed wheel to select Field 2, then roll it up to your road target speed.",
+     "why": "Field 1 is capped at field speed. Never above 48 km/h (30 mph) unless the application system is empty.",
+     "controls": [
+      "dial_push",
+      "speed_dial"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_MHC_EncoderButton",
+        "eq": "1"
+       },
+       {
+        "sent": "PLT_MHC_Encoder",
+        "gte": 6000
+       }
+      ]
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Press the wheel down once, then roll it.",
+       "highlight": [
+        "dial_push",
+        "speed_dial"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Speed range adjustment wheel under the multi-function lever: roll it for target speed, press it for Field 1 / Field 2.",
+       "highlight": [
+        "dial_push",
+        "speed_dial"
+       ]
+      }
+     ],
+     "show_me": [
+      "press dial_push 300",
+      "wait 0.3",
+      "set speed_dial 10",
+      "wait 0.3"
+     ],
+     "ask": "How do I get transport speeds on the 612R?",
+     "est_s": 40,
+     "figure": "N152647",
+     "source": {
+      "pages": [
+       "30-19"
+      ],
+      "topic": "multi-function-lever--30db6a"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s3-arrive",
+     "say": "At the field's fill spot: pull the lever back to slow and stop, then put it in Park.",
+     "why": "The lever is the primary brake; stop slowly to avoid nose-diving.",
+     "controls": [
+      "lever",
+      "park_slot"
+     ],
+     "done": {
+      "then": [
+       {
+        "any": [
+         {
+          "sent": "PLT_HydroHandlePosition",
+          "between": [
+           120,
+           130
+          ]
+         },
+         {
+          "sent": "PLT_NeutralSlotStatus",
+          "eq": "1"
+         }
+        ]
+       },
+       {
+        "sent": "PLT_NeutralSlotStatus",
+        "eq": "1"
+       }
+      ]
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Pull the multi-function lever back toward neutral.",
+       "highlight": [
+        "lever"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Then into the Park gate. Use the brake pedal only after the lever is pulled back.",
+       "highlight": [
+        "lever",
+        "park_slot"
+       ]
+      }
+     ],
+     "show_me": [
+      "set lever 125",
+      "wait 0.5",
+      "switch park_slot 1",
+      "wait 0.3"
+     ],
+     "ask": "How do I slow and stop the 612R properly?",
+     "est_s": 60,
+     "figure": "N166476",
+     "source": {
+      "pages": [
+       "50-25"
+      ],
+      "topic": "reduce-travel-speed--b6b710"
+     },
+     "confidence": "manual"
+    }
+   ]
+  },
+  {
+   "title": "4. Fill and load chemical",
+   "mode": "learn",
+   "checkpoint": true,
+   "steps": [
+    {
+     "id": "s4-label-site",
+     "say": "Read the chemical label and put on its PPE. Fill where runoff can't reach water, livestock, gardens or people.",
+     "why": "Label directions govern safe, legal use of the chemical.",
+     "controls": [],
+     "done": {
+      "confirm": "Label read, PPE on, fill site safe"
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_NeutralSlotStatus",
+        "eq": "0"
+       },
+       "say": "Stay parked: the machine must not move while you fill."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "The label lists the protective equipment for that product."
+      },
+      {
+       "after_s": 45,
+       "say": "No ponds, lakes, streams, livestock areas, gardens or people near the fill site. Keep children away."
+      }
+     ],
+     "wrong_demo": [
+      "switch park_slot 0",
+      "wait 0.5",
+      "switch park_slot 1",
+      "wait 0.5"
+     ],
+     "ask": "What protective equipment do I need to load chemical?",
+     "est_s": 120,
+     "source": {
+      "pages": [
+       "50-1"
+      ],
+      "topic": "service-and-operate-chemical-sprayers-safely--6b47f1"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s4-prime",
+     "say": "The tank is empty: prime the solution pump with a low-volume rinse cycle, and end it once primed.",
+     "why": "Running the solution pump dry damages it.",
+     "controls": [
+      "fill_station_keypad"
+     ],
+     "done": {
+      "confirm": "Pump primed"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "The Rinse Cycle button on the fill station keypad starts a rinse.",
+       "highlight": [
+        "fill_station_keypad"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Fill station keypad, under its cover. Stop the rinse cycle as soon as the pump is primed.",
+       "highlight": [
+        "fill_station_keypad"
+       ]
+      }
+     ],
+     "ask": "Why prime the pump before filling an empty tank?",
+     "est_s": 120,
+     "figure": "NX1435130",
+     "source": {
+      "pages": [
+       "60-15"
+      ],
+      "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s4-connect",
+     "say": "Check the Quik-Fill valve is closed, remove the cap, connect the nurse hose and close the lock levers.",
+     "why": "The Quik-Fill valve can hold hazardous material; check it is closed before the cap comes off.",
+     "controls": [
+      "quik_fill_valve"
+     ],
+     "done": {
+      "confirm": "Nurse hose connected"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Lock levers open, cap off, hose on, lock levers closed.",
+       "highlight": [
+        "quik_fill_valve"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Side Quik-Fill at the fill station (or the front Quik-Fill if equipped).",
+       "highlight": [
+        "quik_fill_valve"
+       ]
+      }
+     ],
+     "ask": "How do I connect a nurse tank to the 612R?",
+     "est_s": 90,
+     "figure": "NX1435337",
+     "source": {
+      "pages": [
+       "60-15"
+      ],
+      "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s4-start-fill",
+     "say": "Open the nurse tank valve. Press Pull-On Fill, open the Quik-Fill valve, then select Tank Auto Fill.",
+     "why": "Keep the nurse tank water at or above the pump's midline for the whole fill.",
+     "controls": [
+      "fill_station_keypad",
+      "quik_fill_valve"
+     ],
+     "done": {
+      "confirm": "Auto fill running"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Pull-On Fill is on the keypad; Tank Auto Fill is in the fill menu on the front micro display.",
+       "highlight": [
+        "fill_station_keypad"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Micro display: fill menu button, Pull-On Fill, then Tank Auto Fill.",
+       "highlight": [
+        "fill_station_keypad"
+       ]
+      }
+     ],
+     "ask": "How do I start filling with the sprayer pump?",
+     "est_s": 90,
+     "figure": "NX1435136",
+     "source": {
+      "pages": [
+       "60-15",
+       "60-16"
+      ],
+      "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s4-eductor-on",
+     "say": "Lower the eductor and raise its lid. When the tank is at least half full, press Eductor On/Off.",
+     "why": "Starting the eductor before half full makes the chemical foam.",
+     "controls": [
+      "eductor",
+      "fill_station_keypad"
+     ],
+     "done": {
+      "confirm": "Eductor on, tank at least half full"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Lift the eductor slightly and pull the handle to unlatch it.",
+       "highlight": [
+        "eductor"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Check the level on the micro display or the sight gauge, then Eductor On/Off on the keypad.",
+       "highlight": [
+        "fill_station_keypad"
+       ]
+      }
+     ],
+     "ask": "When can I start the eductor?",
+     "est_s": 120,
+     "figure": "NX1435325",
+     "source": {
+      "pages": [
+       "60-16"
+      ],
+      "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s4-load",
+     "say": "Open the eductor sump valve, then the rinse valve. Pour in the chemical; rinse each container on the rinse nozzle.",
+     "why": "Follow the label for how much product to add.",
+     "controls": [
+      "eductor"
+     ],
+     "done": {
+      "confirm": "Chemical loaded, containers rinsed"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Sump valve open = handle parallel with the hose. Rinse valve opens clockwise.",
+       "highlight": [
+        "eductor"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Put each container over the rinse nozzle in the hopper and push down to rinse it.",
+       "highlight": [
+        "eductor"
+       ]
+      }
+     ],
+     "ask": "How do I load chemical through the eductor?",
+     "est_s": 180,
+     "figure": "N135935",
+     "source": {
+      "pages": [
+       "60-16",
+       "60-17"
+      ],
+      "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s4-eductor-off",
+     "say": "When the eductor is empty: close the rinse and sump valves, close the lid, raise it, press Eductor On/Off.",
+     "why": "Verify the eductor is empty before you close it up.",
+     "controls": [
+      "eductor",
+      "fill_station_keypad"
+     ],
+     "done": {
+      "confirm": "Eductor empty and stowed"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Look into the hopper: it must be empty.",
+       "highlight": [
+        "eductor"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Rinse valve shut, sump valve shut, lid down, eductor lifted back, Eductor On/Off on the keypad.",
+       "highlight": [
+        "eductor",
+        "fill_station_keypad"
+       ]
+      }
+     ],
+     "ask": "How do I finish with the eductor?",
+     "est_s": 90,
+     "figure": "N98892",
+     "source": {
+      "pages": [
+       "60-17",
+       "60-18"
+      ],
+      "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s4-finish-fill",
+     "say": "Auto fill stops at the upper level switches. Close the nurse and Quik-Fill valves, remove the hose, refit the cap.",
+     "why": "A closed Quik-Fill valve is the first check before spraying.",
+     "controls": [
+      "quik_fill_valve"
+     ],
+     "done": {
+      "confirm": "Fill finished, Quik-Fill closed"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Wait for auto fill to stop by itself.",
+       "highlight": [
+        "quik_fill_valve"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Nurse tank valve and Quik-Fill valve closed before you uncouple the hose.",
+       "highlight": [
+        "quik_fill_valve"
+       ]
+      }
+     ],
+     "ask": "How do I finish filling the 612R?",
+     "est_s": 90,
+     "figure": "NX1435340",
+     "source": {
+      "pages": [
+       "60-18"
+      ],
+      "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s4-clean-water",
+     "say": "Check the clean water tank on the left-hand side is filled with clean water.",
+     "why": "It supplies clean rinse water for in-field cleaning.",
+     "controls": [
+      "clean_water_tank"
+     ],
+     "done": {
+      "confirm": "Clean water tank full"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "It's on the left-hand side of the machine.",
+       "highlight": [
+        "clean_water_tank"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Before Field Operation asks for this tank to be filled with clean water.",
+       "highlight": [
+        "clean_water_tank"
+       ]
+      }
+     ],
+     "ask": "What is the clean water tank for?",
+     "est_s": 45,
+     "figure": "N153569",
+     "source": {
+      "pages": [
+       "50-21"
+      ],
+      "topic": "before-field-operation--5673e0"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s4-agitate",
+     "say": "PPE off, back in the cab: press Solution Pump, then Agitation, to mix the tank.",
+     "why": "Agitation needs the solution pump running first.",
+     "controls": [
+      "solution_pump",
+      "agitation_switch"
+     ],
+     "done": {
+      "then": [
+       {
+        "any": [
+         {
+          "cloud": "PLT_AIC_SolutionPumpIndicator",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_AIC_SolutionPump",
+          "eq": "1"
+         }
+        ]
+       },
+       {
+        "confirm": "Agitation on"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       },
+       "say": "Not yet: spraying starts in the field, on the move. Now only the pump and agitation."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Solution Pump first; its light comes on.",
+       "highlight": [
+        "solution_pump"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Both are CommandARM spraying controls: Solution Pump, then Agitation.",
+       "highlight": [
+        "solution_pump",
+        "agitation_switch"
+       ]
+      }
+     ],
+     "show_me": [
+      "press solution_pump 300"
+     ],
+     "wrong_demo": [
+      "press master_spray 300",
+      "wait 0.5"
+     ],
+     "ask": "Why must the solution pump run before agitation?",
+     "est_s": 60,
+     "figure": "N120490",
+     "source": {
+      "pages": [
+       "30-11"
+      ],
+      "topic": "spraying-controls--8a2c0c"
+     },
+     "confidence": "draft"
+    }
+   ]
+  },
+  {
+   "title": "5. Unfold and start spraying",
+   "mode": "learn",
+   "checkpoint": true,
+   "steps": [
+    {
+     "id": "s5-conditions",
+     "say": "Check the wind: don't spray above 16 km/h (10 mph) or toward a sensitive crop, garden or populated area.",
+     "why": "Minimise drift; the product label may set tighter limits.",
+     "controls": [],
+     "done": {
+      "confirm": "Wind OK for spraying"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Check the wind speed and which way it blows."
+      },
+      {
+       "after_s": 45,
+       "say": "Over 16 km/h (10 mph), or blowing toward a sensitive crop, garden or populated area: don't spray."
+      }
+     ],
+     "ask": "What wind is too much for spraying?",
+     "est_s": 45,
+     "source": {
+      "pages": [
+       "50-1"
+      ],
+      "topic": "service-and-operate-chemical-sprayers-safely--6b47f1"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s5-lock-off",
+     "say": "Press the Transport Lock switch again so its light goes out.",
+     "why": "With Transport Lock on, the boom won't fold, unfold, raise or tilt and spraying is blocked.",
+     "controls": [
+      "transport_lock"
+     ],
+     "done": {
+      "any": [
+       {
+        "control": "transport_lock",
+        "eq": 1
+       },
+       {
+        "confirm": "Transport lock off"
+       }
+      ]
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Same switch you pressed for the road.",
+       "highlight": [
+        "transport_lock"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Transport Lock switch: CommandARM engine and ground drive controls; its indicator lights when on.",
+       "highlight": [
+        "transport_lock"
+       ]
+      }
+     ],
+     "show_me": [
+      "press transport_lock 300"
+     ],
+     "ask": "Why won't the boom unfold?",
+     "est_s": 20,
+     "figure": "N120615",
+     "source": {
+      "pages": [
+       "30-14"
+      ],
+      "topic": "transport-lock-switch--1c890e"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s5-field1",
+     "say": "Press the speed wheel back to Field 1, then roll it down to the lowest target speed.",
+     "why": "Tread adjust starts from the lowest target speed; Field 1 holds you to field speed.",
+     "controls": [
+      "dial_push",
+      "speed_dial"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_MHC_EncoderButton",
+        "eq": "1"
+       },
+       {
+        "sent": "PLT_MHC_Encoder",
+        "lte": 1500
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_HydroHandlePosition",
+        "outside": [
+         100,
+         150
+        ]
+       },
+       "say": "Change speed range while stopped: moving the speed range switch from a higher to a lower range can overspeed the engine."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Press the wheel once for Field 1, then roll it all the way down.",
+       "highlight": [
+        "dial_push",
+        "speed_dial"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Speed range adjustment wheel under the multi-function lever: roll it for target speed, press it for Field 1 / Field 2.",
+       "highlight": [
+        "dial_push",
+        "speed_dial"
+       ]
+      }
+     ],
+     "show_me": [
+      "press dial_push 300",
+      "wait 0.3",
+      "set speed_dial 0",
+      "wait 0.3"
+     ],
+     "wrong_demo": [
+      "switch park_slot 0",
+      "set lever 175",
+      "wait 0.5",
+      "set lever 125",
+      "wait 0.3",
+      "switch park_slot 1",
+      "wait 0.3"
+     ],
+     "ask": "What is the difference between Field 1 and Field 2?",
+     "est_s": 30,
+     "figure": "N118483",
+     "source": {
+      "pages": [
+       "25-L-5"
+      ],
+      "topic": "manual-tread-adjust-procedure--f69e40"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s5-tread-out",
+     "say": "Set tread for the row spacing: creep forward, hold Tread OUT to the width you want, then stop in Park.",
+     "why": "Tread adjust works only on the move, 1 through 8 km/h (1 and 5 mph), with Transport Lock off.",
+     "controls": [
+      "lever",
+      "tread_out",
+      "park_slot"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_HydroHandlePosition",
+        "outside": [
+         100,
+         150
+        ]
+       },
+       {
+        "any": [
+         {
+          "control": "tread_out",
+          "eq": 1
+         },
+         {
+          "confirm": "Tread set for the rows"
+         }
+        ]
+       },
+       {
+        "sent": "PLT_NeutralSlotStatus",
+        "eq": "1"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "before": [
+         {
+          "control": "tread_out",
+          "eq": 1
+         },
+         {
+          "sent": "PLT_HydroHandlePosition",
+          "outside": [
+           100,
+           150
+          ]
+         }
+        ]
+       },
+       "say": "Tread adjust only works on the move: creep forward first, then press Tread OUT."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Lever slightly forward first; Tread OUT only works while moving.",
+       "highlight": [
+        "lever",
+        "tread_out"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Tread Adjust OUT: CommandARM spraying controls. Release it at the width you want, then Park.",
+       "highlight": [
+        "tread_out",
+        "park_slot"
+       ]
+      }
+     ],
+     "show_me": [
+      "switch park_slot 0",
+      "set lever 160",
+      "wait 0.5",
+      "press tread_out 1500",
+      "set lever 125",
+      "wait 0.5",
+      "switch park_slot 1",
+      "wait 0.3"
+     ],
+     "wrong_demo": [
+      "press tread_out 500",
+      "wait 0.5"
+     ],
+     "ask": "How do I change the tread width on the 612R?",
+     "est_s": 90,
+     "figure": "N120614",
+     "source": {
+      "pages": [
+       "25-L-5",
+       "25-L-6"
+      ],
+      "topic": "manual-tread-adjust-procedure--f69e40"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s5-clear",
+     "say": "Before unfolding: check nobody is near the boom and there is enough space on both sides.",
+     "why": "Spray booms move quickly; only unfold where there is enough room.",
+     "controls": [],
+     "done": {
+      "confirm": "Boom area clear"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Look along both sides of the machine."
+      },
+      {
+       "after_s": 45,
+       "say": "Keep everyone out of the folding and unfolding area of the spray booms."
+      }
+     ],
+     "ask": "What do I check before unfolding the boom?",
+     "est_s": 30,
+     "figure": "N152955C",
+     "source": {
+      "pages": [
+       "30-34",
+       "30-35"
+      ],
+      "topic": "boom-fold-unfold-procedures--6a73ff"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s5-unfold",
+     "say": "Hold the boom fold floor switch, then press and hold Centre boom lower until both sides fully unfold.",
+     "why": "With the floor switch held, Centre boom lower unfolds instead of lowering.",
+     "controls": [
+      "foot_switch",
+      "centre_boom_lower"
+     ],
+     "done": {
+      "game": "boomUnfolded",
+      "eq": "1"
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_MHC_CenterBoomLower",
+        "eq": "1"
+       },
+       "say": "The boom went down instead of unfolding: hold the floor switch first, then press Centre boom lower."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Floor switch first and keep it held, then Centre boom lower.",
+       "highlight": [
+        "foot_switch",
+        "centre_boom_lower"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Boom fold/unfold floor switch: on the cab floor, hold it down with your foot. Centre boom switch: round pad on the left of the multi-function lever. Top raises, bottom lowers.",
+       "highlight": [
+        "foot_switch",
+        "centre_boom_lower"
+       ]
+      }
+     ],
+     "show_me": [
+      "switch foot_switch 1",
+      "wait 0.3",
+      "press centre_boom_lower 1200",
+      "wait 0.3",
+      "switch foot_switch 0",
+      "wait 0.3"
+     ],
+     "wrong_demo": [
+      "switch foot_switch 0",
+      "wait 0.3",
+      "press centre_boom_lower 400",
+      "wait 0.5"
+     ],
+     "ask": "How do I unfold the 612R boom?",
+     "est_s": 45,
+     "figure": "N153423",
+     "source": {
+      "pages": [
+       "30-35"
+      ],
+      "topic": "auto-boom-fold-unfold--db954d"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s5-boom-height",
+     "say": "Release both switches. Lower the boom to spraying height, then lower each wing to height.",
+     "why": "Centre frame first, then each wing with its own tilt switch.",
+     "controls": [
+      "centre_boom_lower",
+      "left_boom_lower",
+      "right_boom_lower"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_MHC_CenterBoomLower",
+        "eq": "1"
+       },
+       {
+        "all": [
+         {
+          "sent": "PLT_MHC_LeftBoomLower",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_MHC_RightBoomLower",
+          "eq": "1"
+         }
+        ]
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "game": "boomUnfolded",
+        "eq": "0"
+       },
+       "say": "The boom folded: the floor switch was still held. Unfold it again, then release the floor switch."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Foot off the floor switch. Centre boom lower, then the bottom of each wing's tilt switch.",
+       "highlight": [
+        "centre_boom_lower"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Wing tilt switches: left and right rockers in the middle of the handle; press the bottom to lower.",
+       "highlight": [
+        "left_boom_lower",
+        "right_boom_lower"
+       ]
+      }
+     ],
+     "show_me": [
+      "switch foot_switch 0",
+      "wait 0.3",
+      "press centre_boom_lower 600",
+      "press left_boom_lower 500",
+      "press right_boom_lower 500"
+     ],
+     "ask": "How do I set the boom and wings to spraying height?",
+     "est_s": 45,
+     "figure": "N155116",
+     "source": {
+      "pages": [
+       "80-1"
+      ],
+      "topic": "boom-unfold-fold-27-4-30-5-36-6-and-40-2-m-90-100-120-and-13--31675a"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s5-rth",
+     "say": "On the Boom System page: enable Return to Height, choose the height mode, then press Set to Current.",
+     "why": "HMS uses Return to Height to raise and lower the boom at headlands.",
+     "controls": [
+      "commandcenter_display"
+     ],
+     "done": {
+      "confirm": "Return to Height set"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Return to Height and Height Mode are in the Boom System application.",
+       "highlight": [
+        "commandcenter_display"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Set to Current stores the height the boom is at right now.",
+       "highlight": [
+        "commandcenter_display"
+       ]
+      }
+     ],
+     "ask": "What does Return to Height do?",
+     "est_s": 60,
+     "figure": "N153021",
+     "source": {
+      "pages": [
+       "50-24"
+      ],
+      "topic": "operate-boom-return-to-height--e3eb93"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s5-hms-setup",
+     "say": "HMS setup. Entering: Speed, Master Spray OFF, Return to Height - Raise. Exiting: Speed, Master Spray ON, Return to Height - Lower.",
+     "why": "HMS only switches what you select. Its status indicator must show Ready (green).",
+     "controls": [
+      "commandcenter_display",
+      "hms"
+     ],
+     "done": {
+      "confirm": "HMS ready (green)"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Menu, Machine Settings tab, Headland Management System.",
+       "highlight": [
+        "commandcenter_display"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Toggle on HMS, Entering Headlands and Exiting Headlands; tick the boxes on each settings page; check the status is green.",
+       "highlight": [
+        "commandcenter_display"
+       ]
+      }
+     ],
+     "ask": "How do I set up HMS on the 612R?",
+     "est_s": 150,
+     "figure": "WZ1406688",
+     "source": {
+      "pages": [
+       "25-D-1",
+       "25-D-2",
+       "25-D-3"
+      ],
+      "topic": "headland-management-system-main-page--dbc526"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s5-high-idle",
+     "say": "Check the Solution Pump light is still on, then press High Idle.",
+     "why": "Auto mode needs High Idle; the pump has been running since you mixed the tank.",
+     "controls": [
+      "solution_pump",
+      "engine_high_idle"
+     ],
+     "done": {
+      "any": [
+       {
+        "cloud": "PLT_AIC_EngineHighIdleSpeedIndicator",
+        "eq": "1"
+       },
+       {
+        "sent": "PLT_AIC_EngineHighIdle",
+        "eq": "1"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_AIC_SolutionPump",
+        "eq": "1"
+       },
+       "say": "That switched the pump off: it was already running for agitation. Press Solution Pump again to turn it back on."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Look at the pump light, then press High Idle.",
+       "highlight": [
+        "solution_pump",
+        "engine_high_idle"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "High Idle switch: CommandARM engine and ground drive controls.",
+       "highlight": [
+        "engine_high_idle"
+       ]
+      }
+     ],
+     "show_me": [
+      "press engine_high_idle 300"
+     ],
+     "wrong_demo": [
+      "press solution_pump 300",
+      "wait 0.5",
+      "press solution_pump 300",
+      "wait 0.5"
+     ],
+     "ask": "Why press High Idle before spraying in Auto mode?",
+     "est_s": 20,
+     "figure": "N137031",
+     "source": {
+      "pages": [
+       "25-Q-2"
+      ],
+      "topic": "performance-mode--a0e4fd"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s5-rate",
+     "say": "Select rate switch 1, programmed for this field's product. Check it is highlighted on the display.",
+     "why": "With a rate switch selected the system controls the rate to that preset automatically.",
+     "controls": [
+      "rate_1"
+     ],
+     "done": {
+      "any": [
+       {
+        "cloud": "PLT_AIC_Rate1ControlIndicator",
+        "eq": "1"
+       },
+       {
+        "sent": "PLT_AIC_Rate1Control",
+        "eq": "1"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "any": [
+         {
+          "sent": "PLT_AIC_Rate2Control",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_AIC_Rate3Control",
+          "eq": "1"
+         }
+        ]
+       },
+       "say": "That's another preset. This field's product is programmed on rate 1."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "The rate switches 1, 2 and 3 are on the CommandARM.",
+       "highlight": [
+        "rate_1"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "CommandARM rate selection switches: press 1; its light comes on.",
+       "highlight": [
+        "rate_1"
+       ]
+      }
+     ],
+     "show_me": [
+      "press rate_1 300"
+     ],
+     "wrong_demo": [
+      "press rate_3 300",
+      "wait 0.5"
+     ],
+     "ask": "How do I choose the application rate on the 612R?",
+     "est_s": 25,
+     "figure": "N155118",
+     "source": {
+      "pages": [
+       "50-22"
+      ],
+      "topic": "field-operation--4b7bff"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s5-drive-off",
+     "say": "Roll the speed wheel up to spraying speed, take the lever out of Park and push it slowly forward.",
+     "why": "Field Operation: get moving first, then spray.",
+     "controls": [
+      "speed_dial",
+      "park_slot",
+      "lever"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_MHC_Encoder",
+        "gte": 4000
+       },
+       {
+        "sent": "PLT_NeutralSlotStatus",
+        "eq": "0"
+       },
+       {
+        "sent": "PLT_HydroHandlePosition",
+        "outside": [
+         100,
+         150
+        ]
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "before": [
+         {
+          "sent": "PLT_MHC_MasterSprayOnOff",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_HydroHandlePosition",
+          "outside": [
+           100,
+           150
+          ]
+         }
+        ]
+       },
+       "say": "Get moving first: spraying while standing still puddles product."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Speed wheel up first, then the lever.",
+       "highlight": [
+        "speed_dial",
+        "lever"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Multi-function lever: forward drives, back slows, Park is the gate at the end of its travel.",
+       "highlight": [
+        "park_slot",
+        "lever"
+       ]
+      }
+     ],
+     "show_me": [
+      "set speed_dial 6",
+      "wait 0.3",
+      "switch park_slot 0",
+      "set lever 175",
+      "wait 0.5"
+     ],
+     "wrong_demo": [
+      "press master_spray 300",
+      "wait 0.5",
+      "press master_spray 300",
+      "wait 0.5"
+     ],
+     "ask": "What is the order to start spraying on the 612R?",
+     "est_s": 40,
+     "figure": "N166439",
+     "source": {
+      "pages": [
+       "50-22"
+      ],
+      "topic": "field-operation--4b7bff"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s5-master-on",
+     "say": "Moving on the line: press the Spray System On/Off (master) switch. Watch rate and pressure on the display.",
+     "why": "Start-up isn't instant: press it while moving, just before solution is needed.",
+     "controls": [
+      "master_spray"
+     ],
+     "done": {
+      "any": [
+       {
+        "game": "nozzleOnOffStatus",
+        "eq": "1",
+        "online": true
+       },
+       {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "any": [
+         {
+          "now_sent": "PLT_HydroHandlePosition",
+          "between": [
+           100,
+           150
+          ]
+         },
+         {
+          "now_sent": "PLT_NeutralSlotStatus",
+          "eq": "1"
+         }
+        ]
+       },
+       "say": "You've stopped. Spray only on the move: standing still, the pump holds minimum pressure and over-applies."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "The master is the yellow switch on the handle.",
+       "highlight": [
+        "master_spray"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Spray System On/Off (master): yellow button low on the right of the multi-function lever.",
+       "highlight": [
+        "master_spray"
+       ]
+      }
+     ],
+     "show_me": [
+      "press master_spray 300"
+     ],
+     "ask": "Why does spraying start a little late after I press the master?",
+     "est_s": 30,
+     "figure": "N167055",
+     "source": {
+      "pages": [
+       "50-22",
+       "50-23"
+      ],
+      "topic": "field-operation--4b7bff"
+     },
+     "confidence": "manual"
+    }
+   ]
+  },
+  {
+   "title": "6. Practice: passes, headlands, sections and rates",
+   "mode": "practice",
+   "checkpoint": true,
+   "steps": [
+    {
+     "id": "s6-hms-in-1",
+     "say": "Headland ahead. Press HMS: spraying stops, the boom rises and the speed drops.",
+     "why": "Spray off while slowing for the row end; HMS does it with one switch.",
+     "controls": [
+      "hms"
+     ],
+     "done": {
+      "sent": "PLT_MHC_HMS",
+      "eq": "1"
+     },
+     "wrong": [
+      {
+       "if": {
+        "before": [
+         {
+          "any": [
+           {
+            "sent": "PLT_SteeringWheelAngleDeg",
+            "gte": 10
+           },
+           {
+            "sent": "PLT_SteeringWheelAngleDeg",
+            "lte": -10
+           }
+          ]
+         },
+         {
+          "sent": "PLT_MHC_HMS",
+          "eq": "1"
+         }
+        ]
+       },
+       "say": "Press HMS before you turn: spray off and boom up first."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 30,
+       "say": "HMS is on the handle.",
+       "highlight": [
+        "hms"
+       ]
+      },
+      {
+       "after_s": 60,
+       "say": "HMS: top right of the multi-function lever, marked HMS.",
+       "highlight": [
+        "hms"
+       ]
+      }
+     ],
+     "show_me": [
+      "press hms 300"
+     ],
+     "wrong_demo": [
+      "set steering 400",
+      "wait 1.2",
+      "set steering 0",
+      "wait 1.0"
+     ],
+     "ask": "What does HMS do when I enter the headland?",
+     "est_s": 30,
+     "figure": "WZ1406325",
+     "source": {
+      "pages": [
+       "25-D-5"
+      ],
+      "topic": "entering-headlands-settings--986afa"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s6-turn-1",
+     "say": "Turn left onto the next pass, then straighten up.",
+     "why": "HMS only switches what you set it to; the steering is yours.",
+     "controls": [
+      "steering"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_SteeringWheelAngleDeg",
+        "gte": 25
+       },
+       {
+        "sent": "PLT_SteeringWheelAngleDeg",
+        "between": [
+         -3,
+         3
+        ]
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       },
+       "say": "Leave the master alone: HMS switched spraying off, and pressing it now sprays in the turn."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 30,
+       "say": "About two turns of the wheel to the left.",
+       "highlight": [
+        "steering"
+       ]
+      },
+      {
+       "after_s": 60,
+       "say": "Steer left near full lock, then centre the wheel on the new pass.",
+       "highlight": [
+        "steering"
+       ]
+      }
+     ],
+     "show_me": [
+      "set steering 720",
+      "wait 2.0",
+      "set steering 0",
+      "wait 2.0"
+     ],
+     "wrong_demo": [
+      "press master_spray 300",
+      "wait 0.5"
+     ],
+     "ask": "What does HMS not do for me in a headland turn?",
+     "est_s": 40,
+     "figure": "N151293",
+     "source": {
+      "pages": [
+       "25-D-3"
+      ],
+      "topic": "headland-management-system-main-page--dbc526"
+     },
+     "confidence": "draft"
+    },
+    {
+     "id": "s6-hms-out-1",
+     "say": "Lined up on the new pass: press HMS to exit. The boom lowers, and spraying and speed resume.",
+     "why": "One press runs your Exiting Headlands settings.",
+     "controls": [
+      "hms"
+     ],
+     "done": {
+      "sent": "PLT_MHC_HMS",
+      "eq": "1"
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       },
+       "say": "HMS turns the master on for you; pressing the master as well switches spraying off again."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 30,
+       "say": "Same HMS switch.",
+       "highlight": [
+        "hms"
+       ]
+      },
+      {
+       "after_s": 60,
+       "say": "HMS: top right of the multi-function lever, marked HMS.",
+       "highlight": [
+        "hms"
+       ]
+      }
+     ],
+     "show_me": [
+      "press hms 300"
+     ],
+     "wrong_demo": [
+      "press master_spray 300",
+      "wait 0.5"
+     ],
+     "ask": "What does HMS do when I leave the headland?",
+     "est_s": 30,
+     "figure": "WZ1406327",
+     "source": {
+      "pages": [
+       "25-D-7"
+      ],
+      "topic": "exiting-headlands-settings--234108"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s6-ibs-right",
+     "say": "Waterway on the left: press IBS Right once per section to shut sections off from the left end.",
+     "why": "IBS shuts sections off in sequence without taking your hand off the lever.",
+     "controls": [
+      "section_right_enable"
+     ],
+     "done": {
+      "sent": "PLT_MHC_IBSRightEnable",
+      "eq": "1"
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_MHC_IBSLeftEnable",
+        "eq": "1"
+       },
+       "say": "IBS Left shuts sections off from the right-hand end. The waterway is on the left: use IBS Right."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 30,
+       "say": "IBS Right starts at the left-hand end of the boom and works right.",
+       "highlight": [
+        "section_right_enable"
+       ]
+      },
+      {
+       "after_s": 60,
+       "say": "IBS Right: right half of the wide rocker near the top of the handle.",
+       "highlight": [
+        "section_right_enable"
+       ]
+      }
+     ],
+     "show_me": [
+      "press section_right_enable 300",
+      "wait 0.3",
+      "press section_right_enable 300"
+     ],
+     "wrong_demo": [
+      "press section_left_enable 300",
+      "wait 0.5"
+     ],
+     "ask": "Which IBS button do I use for a waterway on the left?",
+     "est_s": 30,
+     "figure": "N153020",
+     "source": {
+      "pages": [
+       "50-23",
+       "50-24"
+      ],
+      "topic": "operate-indexed-boom-sections-ibs--001bb6"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s6-ibs-reset",
+     "say": "Past the waterway: press IBS Reset to turn all the shut-off sections back on.",
+     "why": "IBS Reset restarts every shut-off section that is enabled.",
+     "controls": [
+      "section_reset"
+     ],
+     "done": {
+      "sent": "PLT_MHC_IBSReset",
+      "eq": "1"
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       },
+       "say": "Not the master: it switches the whole boom. IBS Reset brings the shut-off sections back."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 30,
+       "say": "Not the master: the IBS Reset button.",
+       "highlight": [
+        "section_reset"
+       ]
+      },
+      {
+       "after_s": 60,
+       "say": "IBS Reset: the angled button at the top left of the handle.",
+       "highlight": [
+        "section_reset"
+       ]
+      }
+     ],
+     "show_me": [
+      "press section_reset 300"
+     ],
+     "wrong_demo": [
+      "press master_spray 300",
+      "wait 0.5"
+     ],
+     "ask": "How do I turn IBS sections back on?",
+     "est_s": 20,
+     "figure": "N153020",
+     "source": {
+      "pages": [
+       "50-23"
+      ],
+      "topic": "operate-indexed-boom-sections-ibs--001bb6"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s6-rate-2",
+     "say": "This part of the field needs preset 2. Select rate switch 2 without stopping.",
+     "why": "Stopped with the spray on, the pump holds minimum pressure and over-applies.",
+     "controls": [
+      "rate_2"
+     ],
+     "done": {
+      "any": [
+       {
+        "cloud": "PLT_AIC_Rate2ControlIndicator",
+        "eq": "1"
+       },
+       {
+        "sent": "PLT_AIC_Rate2Control",
+        "eq": "1"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "any": [
+         {
+          "now_sent": "PLT_HydroHandlePosition",
+          "between": [
+           100,
+           150
+          ]
+         },
+         {
+          "now_sent": "PLT_NeutralSlotStatus",
+          "eq": "1"
+         }
+        ]
+       },
+       "say": "Keep moving: stopped with the spray on, the pump holds minimum pressure and over-applies."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 30,
+       "say": "Rate switches are on the CommandARM.",
+       "highlight": [
+        "rate_2"
+       ]
+      },
+      {
+       "after_s": 60,
+       "say": "CommandARM rate selection switches: press 2.",
+       "highlight": [
+        "rate_2"
+       ]
+      }
+     ],
+     "show_me": [
+      "set lever 175",
+      "wait 0.3",
+      "press rate_2 300"
+     ],
+     "wrong_demo": [
+      "set lever 125",
+      "wait 0.6"
+     ],
+     "ask": "Can I change the rate preset while spraying?",
+     "est_s": 25,
+     "figure": "N124435",
+     "source": {
+      "pages": [
+       "50-22"
+      ],
+      "topic": "field-operation--4b7bff"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s6-wing",
+     "say": "The ground rises under the right wing. Raise the right wing, then lower it again once you are past.",
+     "why": "Each wing has its own tilt switch.",
+     "controls": [
+      "right_boom_raise",
+      "right_boom_lower"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_MHC_RightBoomRaise",
+        "eq": "1"
+       },
+       {
+        "sent": "PLT_MHC_RightBoomLower",
+        "eq": "1"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_MHC_LeftBoomRaise",
+        "eq": "1"
+       },
+       "say": "That's the left wing. The rise is under the right wing."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 30,
+       "say": "Right-hand boom tilt: top raises, bottom lowers.",
+       "highlight": [
+        "right_boom_raise",
+        "right_boom_lower"
+       ]
+      },
+      {
+       "after_s": 60,
+       "say": "Right rocker in the middle of the handle.",
+       "highlight": [
+        "right_boom_raise",
+        "right_boom_lower"
+       ]
+      }
+     ],
+     "show_me": [
+      "press right_boom_raise 500",
+      "wait 1.0",
+      "press right_boom_lower 500"
+     ],
+     "wrong_demo": [
+      "press left_boom_raise 400",
+      "wait 0.5"
+     ],
+     "ask": "How do I lift one wing over rising ground?",
+     "est_s": 30,
+     "figure": "N152643",
+     "source": {
+      "pages": [
+       "30-18"
+      ],
+      "topic": "multi-function-lever--30db6a"
+     },
+     "confidence": "draft"
+    },
+    {
+     "id": "s6-hms-in-2",
+     "say": "Next headland: press HMS to enter it.",
+     "why": "Spray off and boom up before the turn.",
+     "controls": [
+      "hms"
+     ],
+     "done": {
+      "sent": "PLT_MHC_HMS",
+      "eq": "1"
+     },
+     "wrong": [
+      {
+       "if": {
+        "before": [
+         {
+          "any": [
+           {
+            "sent": "PLT_SteeringWheelAngleDeg",
+            "gte": 10
+           },
+           {
+            "sent": "PLT_SteeringWheelAngleDeg",
+            "lte": -10
+           }
+          ]
+         },
+         {
+          "sent": "PLT_MHC_HMS",
+          "eq": "1"
+         }
+        ]
+       },
+       "say": "Press HMS before you turn: spray off and boom up first."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 30,
+       "say": "HMS, on the handle.",
+       "highlight": [
+        "hms"
+       ]
+      },
+      {
+       "after_s": 60,
+       "say": "HMS: top right of the multi-function lever, marked HMS.",
+       "highlight": [
+        "hms"
+       ]
+      }
+     ],
+     "show_me": [
+      "press hms 300"
+     ],
+     "wrong_demo": [
+      "set steering -400",
+      "wait 1.2",
+      "set steering 0",
+      "wait 1.0"
+     ],
+     "ask": "When should I press HMS at a headland?",
+     "est_s": 20,
+     "figure": "WZ1406325",
+     "source": {
+      "pages": [
+       "25-D-5"
+      ],
+      "topic": "entering-headlands-settings--986afa"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s6-turn-2",
+     "say": "Turn right this time onto the next pass, then straighten up.",
+     "why": "Alternate turns keep you working back and forth across the field.",
+     "controls": [
+      "steering"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_SteeringWheelAngleDeg",
+        "lte": -25
+       },
+       {
+        "sent": "PLT_SteeringWheelAngleDeg",
+        "between": [
+         -3,
+         3
+        ]
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       },
+       "say": "Leave the master alone: HMS switched spraying off for the turn."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 30,
+       "say": "About two turns of the wheel to the right.",
+       "highlight": [
+        "steering"
+       ]
+      },
+      {
+       "after_s": 60,
+       "say": "Steer right near full lock, then centre the wheel.",
+       "highlight": [
+        "steering"
+       ]
+      }
+     ],
+     "show_me": [
+      "set steering -720",
+      "wait 2.0",
+      "set steering 0",
+      "wait 2.0"
+     ],
+     "wrong_demo": [
+      "press master_spray 300",
+      "wait 0.5"
+     ],
+     "ask": "Do I need to touch the master switch in an HMS turn?",
+     "est_s": 40,
+     "figure": "N151293",
+     "source": {
+      "pages": [
+       "25-D-3"
+      ],
+      "topic": "headland-management-system-main-page--dbc526"
+     },
+     "confidence": "draft"
+    },
+    {
+     "id": "s6-hms-out-2",
+     "say": "On the new pass: press HMS to exit the headland.",
+     "why": "Boom down, spray on and speed back, as you set it up.",
+     "controls": [
+      "hms"
+     ],
+     "done": {
+      "sent": "PLT_MHC_HMS",
+      "eq": "1"
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       },
+       "say": "HMS turns spraying on; pressing the master too turns it off again."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 30,
+       "say": "HMS again.",
+       "highlight": [
+        "hms"
+       ]
+      },
+      {
+       "after_s": 60,
+       "say": "HMS: top right of the multi-function lever, marked HMS.",
+       "highlight": [
+        "hms"
+       ]
+      }
+     ],
+     "show_me": [
+      "press hms 300"
+     ],
+     "wrong_demo": [
+      "press master_spray 300",
+      "wait 0.5"
+     ],
+     "ask": "How do I check HMS is active?",
+     "est_s": 30,
+     "figure": "WZ1406327",
+     "source": {
+      "pages": [
+       "25-D-7"
+      ],
+      "topic": "exiting-headlands-settings--234108"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s6-quick-stop",
+     "say": "Someone walks toward the boom! Press Quick Stop, and pull the lever back to stop the machine.",
+     "why": "Quick Stop shuts off pump, spraying and wet system valves; stopping the machine is up to you.",
+     "controls": [
+      "warning_switch",
+      "lever"
+     ],
+     "done": {
+      "all": [
+       {
+        "sent": "PLT_MHC_Warning",
+        "eq": "1"
+       },
+       {
+        "any": [
+         {
+          "sent": "PLT_HydroHandlePosition",
+          "between": [
+           120,
+           130
+          ]
+         },
+         {
+          "sent": "PLT_NeutralSlotStatus",
+          "eq": "1"
+         }
+        ]
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       },
+       "say": "In an emergency use Quick Stop: it shuts off the pump, spraying and the wet system valves together."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 30,
+       "say": "Quick Stop is on top of the handle.",
+       "highlight": [
+        "warning_switch"
+       ]
+      },
+      {
+       "after_s": 60,
+       "say": "Quick Stop: the switch on top of the multi-function lever. Then pull the lever back to neutral.",
+       "highlight": [
+        "warning_switch",
+        "lever"
+       ]
+      }
+     ],
+     "show_me": [
+      "switch warning_switch 1",
+      "wait 0.5",
+      "set lever 125",
+      "wait 0.5",
+      "switch warning_switch 0",
+      "wait 0.3"
+     ],
+     "wrong_demo": [
+      "press master_spray 300",
+      "wait 0.5"
+     ],
+     "ask": "What does the Quick Stop switch shut off?",
+     "est_s": 25,
+     "figure": "N152634",
+     "source": {
+      "pages": [
+       "30-20",
+       "30-21"
+      ],
+      "topic": "quick-stop-switch--43ba9f"
+     },
+     "confidence": "draft"
+    },
+    {
+     "id": "s6-recover",
+     "say": "All clear. Restart: Solution Pump on, lever forward, then the master switch.",
+     "why": "Quick Stop turned the pump off; nothing reaches the nozzles until it runs again.",
+     "controls": [
+      "solution_pump",
+      "lever",
+      "master_spray"
+     ],
+     "done": {
+      "then": [
+       {
+        "any": [
+         {
+          "cloud": "PLT_AIC_SolutionPumpIndicator",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_AIC_SolutionPump",
+          "eq": "1"
+         }
+        ]
+       },
+       {
+        "sent": "PLT_HydroHandlePosition",
+        "outside": [
+         100,
+         150
+        ]
+       },
+       {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "before": [
+         {
+          "sent": "PLT_MHC_MasterSprayOnOff",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_AIC_SolutionPump",
+          "eq": "1"
+         }
+        ]
+       },
+       "say": "Pump first: Quick Stop shut it off, so the master alone sprays nothing."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 30,
+       "say": "Pump, move, spray: in that order.",
+       "highlight": [
+        "solution_pump",
+        "lever",
+        "master_spray"
+       ]
+      },
+      {
+       "after_s": 60,
+       "say": "Solution Pump switch: CommandARM spraying controls; its light is on while the pump runs. Then the lever forward, then the yellow master.",
+       "highlight": [
+        "solution_pump",
+        "lever",
+        "master_spray"
+       ]
+      }
+     ],
+     "show_me": [
+      "press solution_pump 300",
+      "wait 0.3",
+      "set lever 175",
+      "wait 0.5",
+      "press master_spray 300"
+     ],
+     "wrong_demo": [
+      "press master_spray 300",
+      "wait 0.5"
+     ],
+     "ask": "How do I restart spraying after a Quick Stop?",
+     "est_s": 40,
+     "figure": "N155117",
+     "source": {
+      "pages": [
+       "50-22"
+      ],
+      "topic": "field-operation--4b7bff"
+     },
+     "confidence": "draft"
+    }
+   ]
+  },
+  {
+   "title": "7. Mid-shift fault: high pressure, rate won't hold",
+   "mode": "learn",
+   "checkpoint": true,
+   "steps": [
+    {
+     "id": "s7-master-off",
+     "say": "The display shows high pressure and the rate won't hold. Press the master switch to stop spraying.",
+     "why": "Spray off before you stop, or the pump holds minimum pressure and over-applies where you stand.",
+     "controls": [
+      "master_spray"
+     ],
+     "done": {
+      "sent": "PLT_MHC_MasterSprayOnOff",
+      "eq": "1"
+     },
+     "wrong": [
+      {
+       "if": {
+        "before": [
+         {
+          "any": [
+           {
+            "sent": "PLT_HydroHandlePosition",
+            "between": [
+             120,
+             130
+            ]
+           },
+           {
+            "sent": "PLT_NeutralSlotStatus",
+            "eq": "1"
+           }
+          ]
+         },
+         {
+          "sent": "PLT_MHC_MasterSprayOnOff",
+          "eq": "1"
+         }
+        ]
+       },
+       "say": "Spray off first, then stop: stopped with the spray on, the pump holds minimum pressure and over-applies."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Spraying off first, while still moving.",
+       "highlight": [
+        "master_spray"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Spray System On/Off (master): yellow button low on the right of the multi-function lever.",
+       "highlight": [
+        "master_spray"
+       ]
+      }
+     ],
+     "show_me": [
+      "press master_spray 300"
+     ],
+     "wrong_demo": [
+      "set lever 125",
+      "wait 0.6",
+      "set lever 175",
+      "wait 0.4"
+     ],
+     "ask": "Why does my 612R show high pressure while spraying?",
+     "est_s": 25,
+     "figure": "N155121",
+     "source": {
+      "pages": [
+       "50-22"
+      ],
+      "topic": "field-operation--4b7bff"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s7-stop",
+     "say": "Pull the lever back to stop, then put it in Park.",
+     "why": "In Park the park brakes apply automatically.",
+     "controls": [
+      "lever",
+      "park_slot"
+     ],
+     "done": {
+      "then": [
+       {
+        "any": [
+         {
+          "sent": "PLT_HydroHandlePosition",
+          "between": [
+           120,
+           130
+          ]
+         },
+         {
+          "sent": "PLT_NeutralSlotStatus",
+          "eq": "1"
+         }
+        ]
+       },
+       {
+        "sent": "PLT_NeutralSlotStatus",
+        "eq": "1"
+       }
+      ]
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Lever back, then into the Park gate.",
+       "highlight": [
+        "lever",
+        "park_slot"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Multi-function lever: forward drives, back slows, Park is the gate at the end of its travel.",
+       "highlight": [
+        "lever",
+        "park_slot"
+       ]
+      }
+     ],
+     "show_me": [
+      "set lever 125",
+      "wait 0.5",
+      "switch park_slot 1",
+      "wait 0.3"
+     ],
+     "ask": "Do I need the park brake switch when I park?",
+     "est_s": 25,
+     "figure": "N166477",
+     "source": {
+      "pages": [
+       "50-27"
+      ],
+      "topic": "park-the-machine--a7f533"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s7-diagnose",
+     "say": "In Troubleshooting, find 'High pressure reading during spraying operation'. Which causes can you check yourself?",
+     "why": "The table lists each problem with its solution; some solutions are for your dealer.",
+     "controls": [],
+     "done": {
+      "confirm": "Check nozzles and boom strainers"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Look through the problems listed under that heading."
+      },
+      {
+       "after_s": 45,
+       "say": "Spray nozzles plugged, and boom in-line strainers plugged: both say clean them."
+      }
+     ],
+     "ask": "What causes a high pressure reading while spraying?",
+     "est_s": 120,
+     "source": {
+      "pages": [
+       "160-10",
+       "160-11",
+       "160-12",
+       "160-13",
+       "160-14",
+       "160-15",
+       "160-16",
+       "160-17",
+       "160-18",
+       "160-19"
+      ],
+      "topic": "solution-control-system--e1586c"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s7-pr-enable",
+     "say": "Before anyone opens a nozzle: on the Spray System page, enable Pressure Relief.",
+     "why": "Pressure Relief bleeds the pressure trapped in the boom.",
+     "controls": [
+      "commandcenter_display"
+     ],
+     "done": {
+      "confirm": "Pressure Relief enabled"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Pressure Relief is on the Spray System main page.",
+       "highlight": [
+        "commandcenter_display"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Toggle it ON. Don't use it if non-John Deere direct injection or section control is fitted.",
+       "highlight": [
+        "commandcenter_display"
+       ]
+      }
+     ],
+     "ask": "How do I relieve spray pressure on the 612R?",
+     "est_s": 40,
+     "figure": "N118056",
+     "source": {
+      "pages": [
+       "25-I-7",
+       "25-I-8"
+      ],
+      "topic": "pressure-relief--da45ff"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s7-pump-off",
+     "say": "Press the Solution Pump switch to turn the pump OFF.",
+     "why": "Step 2 of Pressure Relief: the pump must be off.",
+     "controls": [
+      "solution_pump"
+     ],
+     "done": {
+      "any": [
+       {
+        "cloud": "PLT_AIC_SolutionPumpIndicator",
+        "eq": "0"
+       },
+       {
+        "sent": "PLT_AIC_SolutionPump",
+        "eq": "1"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       },
+       "say": "Not yet: pump OFF first, then the boom to the top, then the master releases the pressure."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "The pump light goes out.",
+       "highlight": [
+        "solution_pump"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Solution Pump switch: CommandARM spraying controls; its light is on while the pump runs.",
+       "highlight": [
+        "solution_pump"
+       ]
+      }
+     ],
+     "show_me": [
+      "press solution_pump 300"
+     ],
+     "wrong_demo": [
+      "press master_spray 300",
+      "wait 0.5"
+     ],
+     "ask": "Why turn the pump off before pressure relief?",
+     "est_s": 20,
+     "figure": "N120497",
+     "source": {
+      "pages": [
+       "25-I-7",
+       "25-I-8"
+      ],
+      "topic": "pressure-relief--da45ff"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s7-boom-top",
+     "say": "Press Centre boom raise until the boom centre frame is at its highest position.",
+     "why": "Step 3 of Pressure Relief.",
+     "controls": [
+      "centre_boom_raise"
+     ],
+     "done": {
+      "sent": "PLT_MHC_CenterBoomRaise",
+      "eq": "1"
+     },
+     "wrong": [
+      {
+       "if": {
+        "game": "boomUnfolded",
+        "eq": "0"
+       },
+       "say": "The boom folded: keep your foot off the floor switch. Unfold it again."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Foot off the floor switch, or the boom folds.",
+       "highlight": [
+        "centre_boom_raise"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Centre boom switch: round pad on the left of the multi-function lever. Top raises, bottom lowers.",
+       "highlight": [
+        "centre_boom_raise"
+       ]
+      }
+     ],
+     "show_me": [
+      "press centre_boom_raise 1500"
+     ],
+     "ask": "Why raise the boom for pressure relief?",
+     "est_s": 20,
+     "figure": "N152641",
+     "source": {
+      "pages": [
+       "25-I-7",
+       "25-I-8"
+      ],
+      "topic": "pressure-relief--da45ff"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s7-check-4psi",
+     "say": "Check the display shows 27 kPa (0.27 bar) (4 psi), and that all boom sections are enabled.",
+     "why": "Steps 4 and 5 of Pressure Relief.",
+     "controls": [
+      "commandcenter_display"
+     ],
+     "done": {
+      "confirm": "27 kPa (4 psi), all sections enabled"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Solution system pressure is shown in the Spray System application.",
+       "highlight": [
+        "commandcenter_display"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Enable sections on the Boom Sections tab of the Nozzle System application.",
+       "highlight": [
+        "commandcenter_display"
+       ]
+      }
+     ],
+     "ask": "What pressure should the display show before I release the boom pressure?",
+     "est_s": 45,
+     "figure": "WZ1408770",
+     "source": {
+      "pages": [
+       "25-I-7",
+       "25-I-8"
+      ],
+      "topic": "pressure-relief--da45ff"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s7-relief",
+     "say": "Press the Spray System Master switch. The section valves open for 6 seconds, then close.",
+     "why": "That bleeds the trapped pressure out through the nozzles.",
+     "controls": [
+      "master_spray"
+     ],
+     "done": {
+      "sent": "PLT_MHC_MasterSprayOnOff",
+      "eq": "1"
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_AIC_SolutionPump",
+        "eq": "1"
+       },
+       "say": "Keep the pump OFF during Pressure Relief, or you pressurise the boom again."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Now the master, once.",
+       "highlight": [
+        "master_spray"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Spray System On/Off (master): yellow button low on the right of the multi-function lever.",
+       "highlight": [
+        "master_spray"
+       ]
+      }
+     ],
+     "show_me": [
+      "press master_spray 300"
+     ],
+     "wrong_demo": [
+      "press solution_pump 300",
+      "wait 0.5"
+     ],
+     "ask": "What happens when I press the master during pressure relief?",
+     "est_s": 20,
+     "figure": "N120251",
+     "source": {
+      "pages": [
+       "25-I-7",
+       "25-I-8"
+      ],
+      "topic": "pressure-relief--da45ff"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s7-shutdown",
+     "say": "Lower the boom, press Low Idle, then stop the engine and take the key.",
+     "why": "Before working on the machine: lower equipment, stop the engine and secure the machine.",
+     "controls": [
+      "centre_boom_lower",
+      "engine_low_idle",
+      "key_switch"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_MHC_CenterBoomLower",
+        "eq": "1"
+       },
+       {
+        "any": [
+         {
+          "cloud": "PLT_AIC_EngineLowIdleSpeedIndicator",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_AIC_EngineLowIdle",
+          "eq": "1"
+         }
+        ]
+       },
+       {
+        "confirm": "Engine off, key out"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_NeutralSlotStatus",
+        "eq": "0"
+       },
+       "say": "Stay in Park: you are about to work on the boom."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Centre boom lower, then Low Idle, then the key.",
+       "highlight": [
+        "centre_boom_lower",
+        "engine_low_idle"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Low Idle switch: CommandARM engine and ground drive controls (B in the photo). Key switch: right of the steering column.",
+       "highlight": [
+        "engine_low_idle",
+        "key_switch"
+       ]
+      }
+     ],
+     "show_me": [
+      "press centre_boom_lower 1200",
+      "wait 0.3",
+      "press engine_low_idle 300"
+     ],
+     "wrong_demo": [
+      "switch park_slot 0",
+      "wait 0.5",
+      "switch park_slot 1",
+      "wait 0.3"
+     ],
+     "ask": "What must I do before working on the boom?",
+     "est_s": 60,
+     "figure": "N166477",
+     "source": {
+      "pages": [
+       "05-4"
+      ],
+      "topic": "park-machine-safely--00d769"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s7-remove-tips",
+     "say": "In PPE, find the plugged tips on the boom and remove them over a container.",
+     "why": "Catch the solution in a suitable container, never on the ground.",
+     "controls": [
+      "nozzle_bodies"
+     ],
+     "done": {
+      "confirm": "Plugged tips removed"
+     },
+     "wrong": [
+      {
+       "if": {
+        "any": [
+         {
+          "sent": "PLT_NeutralSlotStatus",
+          "eq": "0"
+         },
+         {
+          "sent": "PLT_AIC_SolutionPump",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_MHC_MasterSprayOnOff",
+          "eq": "1"
+         }
+        ]
+       },
+       "say": "Hands off the controls: the engine is off and someone is working on the boom."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Look for nozzles that weren't spraying properly.",
+       "highlight": [
+        "nozzle_bodies"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Remove the aspirator, nozzle body or tip; soak parts in cleaning solution if needed.",
+       "highlight": [
+        "nozzle_bodies"
+       ]
+      }
+     ],
+     "wrong_demo": [
+      "press solution_pump 300",
+      "wait 0.5"
+     ],
+     "ask": "How do I remove a plugged nozzle tip safely?",
+     "est_s": 180,
+     "figure": "N118272",
+     "source": {
+      "pages": [
+       "55-24"
+      ],
+      "topic": "clean-fill-strainer-aspirators-nozzle-bodies-and-tips-as-req--f9977d"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s7-clean-tips",
+     "say": "Clean the chemical deposits off, refit everything and check for leaks.",
+     "why": "Never put a nozzle tip to your mouth to clear it; keep spare tips to swap in.",
+     "controls": [
+      "nozzle_bodies"
+     ],
+     "done": {
+      "confirm": "Tips clean, refitted, no leaks"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Clean every part you took off.",
+       "highlight": [
+        "nozzle_bodies"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Install all removed components, then check for leaks.",
+       "highlight": [
+        "nozzle_bodies"
+       ]
+      }
+     ],
+     "ask": "How do I clean a nozzle tip without damaging it?",
+     "est_s": 180,
+     "figure": "N118272",
+     "source": {
+      "pages": [
+       "55-24"
+      ],
+      "topic": "clean-fill-strainer-aspirators-nozzle-bodies-and-tips-as-req--f9977d"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s7-restart",
+     "say": "PPE off before you climb in. Lever in Park, sound the horn and start the engine.",
+     "why": "Start only from the seat, with the lever in Park.",
+     "controls": [
+      "park_slot",
+      "horn",
+      "key_switch"
+     ],
+     "done": {
+      "confirm": "Engine running"
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_NeutralSlotStatus",
+        "eq": "0"
+       },
+       "say": "Lever stays in Park while you start the engine."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Remove and store the PPE before you get back in the cab.",
+       "highlight": [
+        "park_slot"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Horn on the end of the turn signal lever; key switch right of the steering column.",
+       "highlight": [
+        "horn",
+        "key_switch"
+       ]
+      }
+     ],
+     "wrong_demo": [
+      "switch park_slot 0",
+      "wait 0.5",
+      "switch park_slot 1",
+      "wait 0.3"
+     ],
+     "ask": "Why take off the PPE before getting back in the cab?",
+     "est_s": 60,
+     "figure": "H127222",
+     "source": {
+      "pages": [
+       "50-5",
+       "50-6"
+      ],
+      "topic": "start-the-engine--a12543"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s7-idle-pump",
+     "say": "Press High Idle and reselect Auto mode, then press Solution Pump to turn the pump back on.",
+     "why": "After a restart the machine is in Manual mode until High Idle is pressed and Auto is selected.",
+     "controls": [
+      "engine_high_idle",
+      "solution_pump"
+     ],
+     "done": {
+      "then": [
+       {
+        "any": [
+         {
+          "cloud": "PLT_AIC_EngineHighIdleSpeedIndicator",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_AIC_EngineHighIdle",
+          "eq": "1"
+         }
+        ]
+       },
+       {
+        "any": [
+         {
+          "cloud": "PLT_AIC_SolutionPumpIndicator",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_AIC_SolutionPump",
+          "eq": "1"
+         }
+        ]
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       },
+       "say": "Not yet: spray only once you're moving."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "High Idle first, then the pump.",
+       "highlight": [
+        "engine_high_idle",
+        "solution_pump"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "High Idle switch: CommandARM engine and ground drive controls. Solution Pump switch: CommandARM spraying controls; its light is on while the pump runs.",
+       "highlight": [
+        "engine_high_idle",
+        "solution_pump"
+       ]
+      }
+     ],
+     "show_me": [
+      "press engine_high_idle 300",
+      "wait 0.3",
+      "press solution_pump 300"
+     ],
+     "wrong_demo": [
+      "press master_spray 300",
+      "wait 0.5",
+      "press master_spray 300",
+      "wait 0.5"
+     ],
+     "ask": "Why is the 612R in Manual mode after a restart?",
+     "est_s": 45,
+     "figure": "N137031",
+     "source": {
+      "pages": [
+       "50-17"
+      ],
+      "topic": "drive-the-machine-auto-mode--c2def8"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s7-boom-back",
+     "say": "Raise the boom, then press and hold Centre boom lower: it stops at your Return to Height setting.",
+     "why": "With Return to Height on, the boom stops at the set point as it lowers.",
+     "controls": [
+      "centre_boom_raise",
+      "centre_boom_lower"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_MHC_CenterBoomRaise",
+        "eq": "1"
+       },
+       {
+        "sent": "PLT_MHC_CenterBoomLower",
+        "eq": "1"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "game": "boomUnfolded",
+        "eq": "0"
+       },
+       "say": "The boom folded: foot off the floor switch. Unfold it again."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Up first, then hold Centre boom lower.",
+       "highlight": [
+        "centre_boom_raise",
+        "centre_boom_lower"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Centre boom switch: round pad on the left of the multi-function lever. Top raises, bottom lowers.",
+       "highlight": [
+        "centre_boom_raise",
+        "centre_boom_lower"
+       ]
+      }
+     ],
+     "show_me": [
+      "press centre_boom_raise 800",
+      "wait 0.3",
+      "press centre_boom_lower 1000"
+     ],
+     "ask": "How does Return to Height bring the boom back to spraying height?",
+     "est_s": 40,
+     "figure": "N153021",
+     "source": {
+      "pages": [
+       "50-24",
+       "50-25"
+      ],
+      "topic": "operate-boom-return-to-height--e3eb93"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s7-verify",
+     "say": "Drive forward, then spray. Check pressure and rate are steady now.",
+     "why": "If the pressure still reads high, the boom in-line strainers are next on the list.",
+     "controls": [
+      "park_slot",
+      "lever",
+      "master_spray"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_NeutralSlotStatus",
+        "eq": "0"
+       },
+       {
+        "sent": "PLT_HydroHandlePosition",
+        "outside": [
+         100,
+         150
+        ]
+       },
+       {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       },
+       {
+        "confirm": "Pressure normal, rate holding"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "before": [
+         {
+          "sent": "PLT_MHC_MasterSprayOnOff",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_HydroHandlePosition",
+          "outside": [
+           100,
+           150
+          ]
+         }
+        ]
+       },
+       "say": "Moving first, then spray: spraying while standing still puddles product."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Out of Park, lever forward, then the master.",
+       "highlight": [
+        "lever",
+        "master_spray"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Watch the pressure and rate on the display for a few seconds before you confirm.",
+       "highlight": [
+        "master_spray"
+       ]
+      }
+     ],
+     "show_me": [
+      "switch park_slot 0",
+      "set lever 175",
+      "wait 0.5",
+      "press master_spray 300"
+     ],
+     "wrong_demo": [
+      "press master_spray 300",
+      "wait 0.5",
+      "press master_spray 300",
+      "wait 0.5"
+     ],
+     "ask": "How do I know the fault is fixed?",
+     "est_s": 90,
+     "figure": "N167055",
+     "source": {
+      "pages": [
+       "160-10",
+       "160-11",
+       "160-12",
+       "160-13",
+       "160-14",
+       "160-15",
+       "160-16",
+       "160-17",
+       "160-18",
+       "160-19"
+      ],
+      "topic": "solution-control-system--e1586c"
+     },
+     "confidence": "draft"
+    }
+   ]
+  },
+  {
+   "title": "8. Finish: rinse, fold, drive back and park",
+   "mode": "learn",
+   "checkpoint": true,
+   "steps": [
+    {
+     "id": "s8-stop-end",
+     "say": "The tank is empty at the end of the field. Spray off with the master, then stop and park.",
+     "why": "Spray off before you stop, or you puddle what's left where you stop.",
+     "controls": [
+      "master_spray",
+      "lever",
+      "park_slot"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       },
+       {
+        "any": [
+         {
+          "sent": "PLT_HydroHandlePosition",
+          "between": [
+           120,
+           130
+          ]
+         },
+         {
+          "sent": "PLT_NeutralSlotStatus",
+          "eq": "1"
+         }
+        ]
+       },
+       {
+        "sent": "PLT_NeutralSlotStatus",
+        "eq": "1"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "before": [
+         {
+          "any": [
+           {
+            "sent": "PLT_HydroHandlePosition",
+            "between": [
+             120,
+             130
+            ]
+           },
+           {
+            "sent": "PLT_NeutralSlotStatus",
+            "eq": "1"
+           }
+          ]
+         },
+         {
+          "sent": "PLT_MHC_MasterSprayOnOff",
+          "eq": "1"
+         }
+        ]
+       },
+       "say": "Spray off first, then stop."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Master first, then the lever back, then Park.",
+       "highlight": [
+        "master_spray",
+        "lever",
+        "park_slot"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Spray System On/Off (master): yellow button low on the right of the multi-function lever.",
+       "highlight": [
+        "master_spray"
+       ]
+      }
+     ],
+     "show_me": [
+      "press master_spray 300",
+      "wait 0.3",
+      "set lever 125",
+      "wait 0.5",
+      "switch park_slot 1",
+      "wait 0.3"
+     ],
+     "wrong_demo": [
+      "set lever 125",
+      "wait 0.6",
+      "set lever 175",
+      "wait 0.4"
+     ],
+     "ask": "What is the safe order to stop at the end of the field?",
+     "est_s": 40,
+     "figure": "N155121",
+     "source": {
+      "pages": [
+       "50-22"
+      ],
+      "topic": "field-operation--4b7bff"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s8-rinse-start",
+     "say": "Rinse System: choose Solution System, rinse cycles and fluid usage. Pump OFF, then select Start.",
+     "why": "Rinse daily; the tank must be empty and the pump off when you press Start.",
+     "controls": [
+      "commandcenter_display",
+      "solution_pump"
+     ],
+     "done": {
+      "then": [
+       {
+        "any": [
+         {
+          "cloud": "PLT_AIC_SolutionPumpIndicator",
+          "eq": "0"
+         },
+         {
+          "sent": "PLT_AIC_SolutionPump",
+          "eq": "1"
+         }
+        ]
+       },
+       {
+        "confirm": "Solution System rinse started"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       },
+       "say": "Not yet: Start the rinse first; the master comes after the pump."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Rinse System is on the navigation bar below the display, or Menu, Machine Settings.",
+       "highlight": [
+        "commandcenter_display"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Rinse only where people, animals, vegetation and water supply can't be contaminated. Solution Pump switch: CommandARM spraying controls; its light is on while the pump runs.",
+       "highlight": [
+        "solution_pump"
+       ]
+      }
+     ],
+     "show_me": [
+      "press solution_pump 300"
+     ],
+     "wrong_demo": [
+      "press master_spray 300",
+      "wait 0.5"
+     ],
+     "ask": "How do I rinse the whole solution system from the cab?",
+     "est_s": 90,
+     "figure": "WZ1406733",
+     "source": {
+      "pages": [
+       "25-H-6",
+       "25-H-7"
+      ],
+      "topic": "rinse-system-solution-system--7b8ab5"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s8-rinse-spray",
+     "say": "Press the Solution Pump switch, then the Spray System Master switch: rinse water sprays through the boom.",
+     "why": "Steps 9 and 10 of the Solution System rinse.",
+     "controls": [
+      "solution_pump",
+      "master_spray"
+     ],
+     "done": {
+      "then": [
+       {
+        "any": [
+         {
+          "cloud": "PLT_AIC_SolutionPumpIndicator",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_AIC_SolutionPump",
+          "eq": "1"
+         }
+        ]
+       },
+       {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "before": [
+         {
+          "sent": "PLT_MHC_MasterSprayOnOff",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_AIC_SolutionPump",
+          "eq": "1"
+         }
+        ]
+       },
+       "say": "Pump first, then the master."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Pump first, then the master.",
+       "highlight": [
+        "solution_pump",
+        "master_spray"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Solution Pump switch: CommandARM spraying controls; its light is on while the pump runs. Spray System On/Off (master): yellow button low on the right of the multi-function lever.",
+       "highlight": [
+        "solution_pump",
+        "master_spray"
+       ]
+      }
+     ],
+     "show_me": [
+      "press solution_pump 300",
+      "wait 0.3",
+      "press master_spray 300"
+     ],
+     "wrong_demo": [
+      "press master_spray 300",
+      "wait 0.5"
+     ],
+     "ask": "Why does the engine speed rise during a rinse?",
+     "est_s": 40,
+     "figure": "N120251C",
+     "source": {
+      "pages": [
+       "25-H-7"
+      ],
+      "topic": "rinse-system-solution-system--7b8ab5"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s8-rinse-off",
+     "say": "When the rinse water has sprayed out: master off, then pump off. Then select Done.",
+     "why": "Turn off the spray system and the solution pump when the tank runs empty.",
+     "controls": [
+      "master_spray",
+      "solution_pump",
+      "commandcenter_display"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       },
+       {
+        "any": [
+         {
+          "cloud": "PLT_AIC_SolutionPumpIndicator",
+          "eq": "0"
+         },
+         {
+          "sent": "PLT_AIC_SolutionPump",
+          "eq": "1"
+         }
+        ]
+       },
+       {
+        "confirm": "Done selected"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "before": [
+         {
+          "sent": "PLT_AIC_SolutionPump",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_MHC_MasterSprayOnOff",
+          "eq": "1"
+         }
+        ]
+       },
+       "say": "Spray system off first, then the pump."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Master first, then the pump, then Done on the display.",
+       "highlight": [
+        "master_spray",
+        "solution_pump"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Spray System On/Off (master): yellow button low on the right of the multi-function lever. Solution Pump switch: CommandARM spraying controls; its light is on while the pump runs.",
+       "highlight": [
+        "master_spray",
+        "solution_pump"
+       ]
+      }
+     ],
+     "show_me": [
+      "press master_spray 300",
+      "wait 0.3",
+      "press solution_pump 300"
+     ],
+     "wrong_demo": [
+      "press solution_pump 300",
+      "wait 0.5"
+     ],
+     "ask": "What do I do when the rinse tank water runs out?",
+     "est_s": 45,
+     "figure": "N119467C",
+     "source": {
+      "pages": [
+       "60-25",
+       "60-26",
+       "60-27"
+      ],
+      "topic": "operate-rinse-system--738e0d"
+     },
+     "confidence": "draft"
+    },
+    {
+     "id": "s8-boom-only",
+     "say": "Now a Boom Only rinse: select Boom Only, check the sections are enabled, then select Start.",
+     "why": "A Solution System rinse ends with a Boom Only rinse; Start begins pump priming.",
+     "controls": [
+      "commandcenter_display"
+     ],
+     "done": {
+      "confirm": "Boom Only rinse started"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Rinse Type: Boom Only.",
+       "highlight": [
+        "commandcenter_display"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Sections are enabled on the Boom Sections tab of the Nozzle System application.",
+       "highlight": [
+        "commandcenter_display"
+       ]
+      }
+     ],
+     "ask": "What does a Boom Only rinse clean?",
+     "est_s": 45,
+     "figure": "N151087",
+     "source": {
+      "pages": [
+       "25-H-4",
+       "25-H-5"
+      ],
+      "topic": "rinse-system-boom-only--03863f"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s8-boom-rinse",
+     "say": "Press the Solution Pump switch, then the master switch. Wait for the boom rinse complete message.",
+     "why": "Steps 5 to 7 of the Boom Only rinse.",
+     "controls": [
+      "solution_pump",
+      "master_spray"
+     ],
+     "done": {
+      "then": [
+       {
+        "any": [
+         {
+          "cloud": "PLT_AIC_SolutionPumpIndicator",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_AIC_SolutionPump",
+          "eq": "1"
+         }
+        ]
+       },
+       {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       },
+       {
+        "confirm": "Boom rinse complete"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "before": [
+         {
+          "sent": "PLT_MHC_MasterSprayOnOff",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_AIC_SolutionPump",
+          "eq": "1"
+         }
+        ]
+       },
+       "say": "Pump first, then the master."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Pump, then master.",
+       "highlight": [
+        "solution_pump",
+        "master_spray"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "The completion message also appears in the Status Center.",
+       "highlight": [
+        "commandcenter_display"
+       ]
+      }
+     ],
+     "show_me": [
+      "press solution_pump 300",
+      "wait 0.3",
+      "press master_spray 300"
+     ],
+     "wrong_demo": [
+      "press master_spray 300",
+      "wait 0.5"
+     ],
+     "ask": "How do I know the boom rinse is finished?",
+     "est_s": 60,
+     "figure": "N120497C",
+     "source": {
+      "pages": [
+       "25-H-5"
+      ],
+      "topic": "rinse-system-boom-only--03863f"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s8-aspirators",
+     "say": "In PPE, close every nozzle body that is not on an aspirator, and set the aspirator nozzles open.",
+     "why": "Chemical builds up in the aspirators if they aren't cleaned out regularly.",
+     "controls": [
+      "nozzle_bodies"
+     ],
+     "done": {
+      "confirm": "Nozzle bodies closed, aspirators open"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Only the aspirator nozzles stay open.",
+       "highlight": [
+        "nozzle_bodies"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Aspirator (A) and nozzle body (B) in figure N118272.",
+       "highlight": [
+        "nozzle_bodies"
+       ]
+      }
+     ],
+     "ask": "Why rinse the aspirators separately?",
+     "est_s": 120,
+     "figure": "N118272",
+     "source": {
+      "pages": [
+       "25-H-5",
+       "25-H-6"
+      ],
+      "topic": "rinse-system-boom-only--03863f"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s8-second-rinse",
+     "say": "Start a second boom rinse. Flush one section at a time, 5—10 seconds each, using the section scroll wheels.",
+     "why": "All sections at once may not give enough pressure to flush the boom plumbing.",
+     "controls": [
+      "commandcenter_display",
+      "boom_section_wheels"
+     ],
+     "done": {
+      "confirm": "Every section flushed"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Select Start again on the Rinse System page.",
+       "highlight": [
+        "commandcenter_display"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Boom section scroll wheels on the CommandARM: rearward turns sections off, forward turns them on.",
+       "highlight": [
+        "boom_section_wheels"
+       ]
+      }
+     ],
+     "ask": "Why rinse one boom section at a time?",
+     "est_s": 120,
+     "figure": "N151298",
+     "source": {
+      "pages": [
+       "25-H-6"
+      ],
+      "topic": "rinse-system-boom-only--03863f"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s8-nozzles-back",
+     "say": "Rinse done: master off, pump off. Then return the nozzle bodies to their previous positions.",
+     "why": "Leave the boom ready for the next job.",
+     "controls": [
+      "master_spray",
+      "solution_pump",
+      "nozzle_bodies"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       },
+       {
+        "any": [
+         {
+          "cloud": "PLT_AIC_SolutionPumpIndicator",
+          "eq": "0"
+         },
+         {
+          "sent": "PLT_AIC_SolutionPump",
+          "eq": "1"
+         }
+        ]
+       },
+       {
+        "confirm": "Nozzle bodies back in place"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "before": [
+         {
+          "sent": "PLT_AIC_SolutionPump",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_MHC_MasterSprayOnOff",
+          "eq": "1"
+         }
+        ]
+       },
+       "say": "Spray system off first, then the pump."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Master, then pump, then out to the boom in PPE.",
+       "highlight": [
+        "master_spray",
+        "solution_pump"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Spray System On/Off (master): yellow button low on the right of the multi-function lever. Solution Pump switch: CommandARM spraying controls; its light is on while the pump runs.",
+       "highlight": [
+        "master_spray",
+        "solution_pump"
+       ]
+      }
+     ],
+     "show_me": [
+      "press master_spray 300",
+      "wait 0.3",
+      "press solution_pump 300"
+     ],
+     "wrong_demo": [
+      "press solution_pump 300",
+      "wait 0.5"
+     ],
+     "ask": "What position do the nozzle bodies go back to?",
+     "est_s": 120,
+     "figure": "N118272",
+     "source": {
+      "pages": [
+       "25-H-6"
+      ],
+      "topic": "rinse-system-boom-only--03863f"
+     },
+     "confidence": "draft"
+    },
+    {
+     "id": "s8-fold",
+     "say": "Area clear: hold the floor switch and Centre boom raise until the boom folds into its cradles.",
+     "why": "Booms move quickly; fold below 8 km/h (5 mph) with Transport Lock off.",
+     "controls": [
+      "foot_switch",
+      "centre_boom_raise"
+     ],
+     "done": {
+      "game": "boomUnfolded",
+      "eq": "0"
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_MHC_CenterBoomRaise",
+        "eq": "1"
+       },
+       "say": "The boom only went up: hold the floor switch while you press Centre boom raise."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Floor switch held, then Centre boom raise until the booms are in the cradles.",
+       "highlight": [
+        "foot_switch",
+        "centre_boom_raise"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Boom fold/unfold floor switch: on the cab floor, hold it down with your foot. Centre boom switch: round pad on the left of the multi-function lever. Top raises, bottom lowers.",
+       "highlight": [
+        "foot_switch",
+        "centre_boom_raise"
+       ]
+      }
+     ],
+     "show_me": [
+      "switch foot_switch 1",
+      "wait 0.3",
+      "press centre_boom_raise 1200",
+      "wait 0.3",
+      "switch foot_switch 0",
+      "wait 0.3"
+     ],
+     "wrong_demo": [
+      "switch foot_switch 0",
+      "wait 0.3",
+      "press centre_boom_raise 400",
+      "wait 0.5"
+     ],
+     "ask": "How do I fold the 612R boom for transport?",
+     "est_s": 45,
+     "figure": "N153424",
+     "source": {
+      "pages": [
+       "30-35"
+      ],
+      "topic": "auto-boom-fold-unfold--db954d"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s8-tread-in",
+     "say": "Narrow the tread for the road: creep forward, hold Tread IN to the narrowest setting, then stop in Park.",
+     "why": "Always use the narrowest tread on the road; tread adjust works only on the move.",
+     "controls": [
+      "lever",
+      "tread_in",
+      "park_slot"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_HydroHandlePosition",
+        "outside": [
+         100,
+         150
+        ]
+       },
+       {
+        "any": [
+         {
+          "control": "tread_in",
+          "eq": 1
+         },
+         {
+          "confirm": "Tread at narrowest"
+         }
+        ]
+       },
+       {
+        "sent": "PLT_NeutralSlotStatus",
+        "eq": "1"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "before": [
+         {
+          "control": "tread_in",
+          "eq": 1
+         },
+         {
+          "sent": "PLT_HydroHandlePosition",
+          "outside": [
+           100,
+           150
+          ]
+         }
+        ]
+       },
+       "say": "Tread adjust only works on the move: creep forward first, then press Tread IN."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Lever slightly forward first, then Tread IN.",
+       "highlight": [
+        "lever",
+        "tread_in"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Tread Adjust IN: CommandARM spraying controls. Then the lever into Park.",
+       "highlight": [
+        "tread_in",
+        "park_slot"
+       ]
+      }
+     ],
+     "show_me": [
+      "switch park_slot 0",
+      "set lever 160",
+      "wait 0.5",
+      "press tread_in 1500",
+      "set lever 125",
+      "wait 0.5",
+      "switch park_slot 1",
+      "wait 0.3"
+     ],
+     "wrong_demo": [
+      "press tread_in 500",
+      "wait 0.5"
+     ],
+     "ask": "Why narrow the tread before the road?",
+     "est_s": 60,
+     "figure": "N120613",
+     "source": {
+      "pages": [
+       "25-L-5",
+       "25-L-6"
+      ],
+      "topic": "manual-tread-adjust-procedure--f69e40"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s8-road-ready",
+     "say": "Road Lights and Hazard Lights on, then press Transport Lock so its light comes on.",
+     "why": "Lights for the road; Transport Lock blocks spraying and boom moves on the road.",
+     "controls": [
+      "road_lights",
+      "hazard_lights",
+      "transport_lock"
+     ],
+     "done": {
+      "then": [
+       {
+        "confirm": "Road and hazard lights on"
+       },
+       {
+        "any": [
+         {
+          "control": "transport_lock",
+          "eq": 1
+         },
+         {
+          "confirm": "Transport lock on"
+         }
+        ]
+       }
+      ]
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Lights first, then Transport Lock.",
+       "highlight": [
+        "road_lights",
+        "hazard_lights"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Transport Lock switch: CommandARM engine and ground drive controls; its indicator lights when on.",
+       "highlight": [
+        "transport_lock"
+       ]
+      }
+     ],
+     "show_me": [
+      "press transport_lock 300"
+     ],
+     "ask": "What do I set before driving the 612R on the road?",
+     "est_s": 40,
+     "figure": "N153023",
+     "source": {
+      "pages": [
+       "50-26"
+      ],
+      "topic": "transport-machine--4216ec"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s8-rephase",
+     "say": "Rephase the steering again: creep forward, full left lock plus three turns, then full right plus three turns.",
+     "why": "Rephasing the steering system is required before every road transport.",
+     "controls": [
+      "lever",
+      "steering"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_HydroHandlePosition",
+        "outside": [
+         100,
+         150
+        ]
+       },
+       {
+        "sent": "PLT_SteeringWheelAngleDeg",
+        "gte": 30
+       },
+       {
+        "sent": "PLT_SteeringWheelAngleDeg",
+        "lte": -30
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "before": [
+         {
+          "sent": "PLT_SteeringWheelAngleDeg",
+          "gte": 30
+         },
+         {
+          "sent": "PLT_HydroHandlePosition",
+          "outside": [
+           100,
+           150
+          ]
+         }
+        ]
+       },
+       "say": "Rephase while slowly moving forward, not standing still."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Slowly forward, then full lock each way.",
+       "highlight": [
+        "lever",
+        "steering"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Around 0.8 km/h (0.5 mph). On the real machine repeat it 1—3 more times.",
+       "highlight": [
+        "steering"
+       ]
+      }
+     ],
+     "show_me": [
+      "switch park_slot 0",
+      "set lever 160",
+      "wait 0.5",
+      "set steering 900",
+      "wait 2.0",
+      "set steering -900",
+      "wait 2.5",
+      "set steering 0",
+      "wait 1.5"
+     ],
+     "wrong_demo": [
+      "set steering 900",
+      "wait 1.2",
+      "set steering 0",
+      "wait 1.0"
+     ],
+     "ask": "How do I rephase the steering cylinders?",
+     "est_s": 60,
+     "figure": "N151293",
+     "source": {
+      "pages": [
+       "100-20"
+      ],
+      "topic": "check-front-axle-toe-in-annually-or-as-needed--b4cc6e"
+     },
+     "confidence": "draft"
+    },
+    {
+     "id": "s8-drive-home",
+     "say": "Press the speed wheel for Field 2, roll it up to road speed, and drive back to the yard.",
+     "why": "The tank is empty and rinsed; never exceed the maximum transport speed.",
+     "controls": [
+      "dial_push",
+      "speed_dial",
+      "lever"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_MHC_EncoderButton",
+        "eq": "1"
+       },
+       {
+        "sent": "PLT_MHC_Encoder",
+        "gte": 6000
+       }
+      ]
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Press the wheel, then roll it up.",
+       "highlight": [
+        "dial_push",
+        "speed_dial"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Speed range adjustment wheel under the multi-function lever: roll it for target speed, press it for Field 1 / Field 2.",
+       "highlight": [
+        "dial_push",
+        "speed_dial"
+       ]
+      }
+     ],
+     "show_me": [
+      "press dial_push 300",
+      "wait 0.3",
+      "set speed_dial 10",
+      "wait 0.3"
+     ],
+     "ask": "How fast may I drive the 612R on the road?",
+     "est_s": 40,
+     "figure": "N152647",
+     "source": {
+      "pages": [
+       "30-19"
+      ],
+      "topic": "multi-function-lever--30db6a"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s8-park",
+     "say": "In the yard: slowly return the lever to Park, then press Low Idle.",
+     "why": "Park the Machine, steps 1 and 2: the park brakes apply in Park.",
+     "controls": [
+      "lever",
+      "park_slot",
+      "engine_low_idle"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_NeutralSlotStatus",
+        "eq": "1"
+       },
+       {
+        "any": [
+         {
+          "cloud": "PLT_AIC_EngineLowIdleSpeedIndicator",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_AIC_EngineLowIdle",
+          "eq": "1"
+         }
+        ]
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "before": [
+         {
+          "any": [
+           {
+            "cloud": "PLT_AIC_EngineLowIdleSpeedIndicator",
+            "eq": "1"
+           },
+           {
+            "sent": "PLT_AIC_EngineLowIdle",
+            "eq": "1"
+           }
+          ]
+         },
+         {
+          "sent": "PLT_NeutralSlotStatus",
+          "eq": "1"
+         }
+        ]
+       },
+       "say": "Lever to Park first, then Low Idle."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Lever back slowly, into the Park gate, then Low Idle.",
+       "highlight": [
+        "lever",
+        "park_slot",
+        "engine_low_idle"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Low Idle switch: CommandARM engine and ground drive controls (B in the photo).",
+       "highlight": [
+        "engine_low_idle"
+       ]
+      }
+     ],
+     "show_me": [
+      "set lever 125",
+      "wait 0.5",
+      "switch park_slot 1",
+      "wait 0.3",
+      "press engine_low_idle 300"
+     ],
+     "wrong_demo": [
+      "press engine_low_idle 300",
+      "wait 0.5"
+     ],
+     "ask": "What is the parking order on the 612R?",
+     "est_s": 40,
+     "figure": "N166477",
+     "source": {
+      "pages": [
+       "50-27"
+      ],
+      "topic": "park-the-machine--a7f533"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s8-shutdown",
+     "say": "Lights and accessories off. Idle at least 2 minutes, then key OFF and out. Lower the ladder.",
+     "why": "Idling cools the hot engine parts after a day at working load.",
+     "controls": [
+      "key_switch",
+      "ladder"
+     ],
+     "done": {
+      "then": [
+       {
+        "confirm": "Lights off, idled 2 minutes, key out"
+       },
+       {
+        "game": "ladderRaised",
+        "eq": "0"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "any": [
+         {
+          "sent": "PLT_AIC_EngineHighIdle",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_NeutralSlotStatus",
+          "eq": "0"
+         }
+        ]
+       },
+       "say": "Leave it parked at low idle for the 2-minute cool-down."
+      }
+     ],
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Two full minutes at low idle before the key goes off.",
+       "highlight": [
+        "key_switch"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Ladder Up/Down: CommandARM spraying controls.",
+       "highlight": [
+        "ladder"
+       ]
+      }
+     ],
+     "show_me": [
+      "press ladder 300"
+     ],
+     "wrong_demo": [
+      "press engine_high_idle 300",
+      "wait 0.5"
+     ],
+     "ask": "Why idle the engine before turning it off?",
+     "est_s": 180,
+     "figure": "N166477",
+     "source": {
+      "pages": [
+       "50-27",
+       "50-28"
+      ],
+      "topic": "park-the-machine--a7f533"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "s8-battery",
+     "say": "If you switch the battery off for the night, first wait until the LED at the battery switch goes out.",
+     "why": "The DEF lines purge after shutdown; cut power early and DEF can crystallise or freeze in them.",
+     "controls": [
+      "battery_disconnect"
+     ],
+     "done": {
+      "confirm": "Battery LED off before switching off"
+     },
+     "hints": [
+      {
+       "after_s": 20,
+       "say": "Watch the LED (B) next to the switch.",
+       "highlight": [
+        "battery_disconnect"
+       ]
+      },
+      {
+       "after_s": 45,
+       "say": "Turn the battery disconnect switch counterclockwise to switch the electrical system off.",
+       "highlight": [
+        "battery_disconnect"
+       ]
+      }
+     ],
+     "ask": "When can I turn off the battery disconnect switch?",
+     "est_s": 90,
+     "figure": "N153287",
+     "source": {
+      "pages": [
+       "85-24"
+      ],
+      "topic": "battery-disconnect-switch--c9c8e5"
+     },
+     "confidence": "manual"
+    }
+   ]
+  },
+  {
+   "title": "9. Assessment: the in-cab sequence, no hints",
+   "mode": "assess",
+   "checkpoint": true,
+   "steps": [
+    {
+     "id": "a-unfold",
+     "say": "Assessment, new field: engine running, Transport Lock off, tank filled. Unfold the boom.",
+     "why": "No hints from here: the key in-cab sequence on your own.",
+     "controls": [
+      "foot_switch",
+      "centre_boom_lower"
+     ],
+     "done": {
+      "game": "boomUnfolded",
+      "eq": "1"
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_MHC_CenterBoomLower",
+        "eq": "1"
+       },
+       "say": "That lowered the boom instead of unfolding it."
+      }
+     ],
+     "hints": [],
+     "show_me": [
+      "switch foot_switch 1",
+      "wait 0.3",
+      "press centre_boom_lower 1200",
+      "wait 0.3",
+      "switch foot_switch 0",
+      "wait 0.3"
+     ],
+     "wrong_demo": [
+      "switch foot_switch 0",
+      "wait 0.3",
+      "press centre_boom_lower 400",
+      "wait 0.5"
+     ],
+     "ask": "How do I unfold the boom?",
+     "est_s": 30,
+     "figure": "N153423",
+     "source": {
+      "pages": [
+       "30-35"
+      ],
+      "topic": "auto-boom-fold-unfold--db954d"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "a-height",
+     "say": "Lower the boom and both wings to spraying height.",
+     "why": "Set height before you spray.",
+     "controls": [
+      "centre_boom_lower",
+      "left_boom_lower",
+      "right_boom_lower"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_MHC_CenterBoomLower",
+        "eq": "1"
+       },
+       {
+        "all": [
+         {
+          "sent": "PLT_MHC_LeftBoomLower",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_MHC_RightBoomLower",
+          "eq": "1"
+         }
+        ]
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "game": "boomUnfolded",
+        "eq": "0"
+       },
+       "say": "The boom folded: the floor switch was still held."
+      }
+     ],
+     "hints": [],
+     "show_me": [
+      "press centre_boom_lower 600",
+      "press left_boom_lower 500",
+      "press right_boom_lower 500"
+     ],
+     "ask": "How do I set boom height?",
+     "est_s": 25,
+     "figure": "N155116",
+     "source": {
+      "pages": [
+       "80-1"
+      ],
+      "topic": "boom-unfold-fold-27-4-30-5-36-6-and-40-2-m-90-100-120-and-13--31675a"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "a-ready",
+     "say": "Get ready to spray: solution pump and engine speed.",
+     "why": "Pump and High Idle before you move.",
+     "controls": [
+      "solution_pump",
+      "engine_high_idle"
+     ],
+     "done": {
+      "all": [
+       {
+        "any": [
+         {
+          "cloud": "PLT_AIC_SolutionPumpIndicator",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_AIC_SolutionPump",
+          "eq": "1"
+         }
+        ]
+       },
+       {
+        "any": [
+         {
+          "cloud": "PLT_AIC_EngineHighIdleSpeedIndicator",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_AIC_EngineHighIdle",
+          "eq": "1"
+         }
+        ]
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       },
+       "say": "Spraying before you move puddles product."
+      }
+     ],
+     "hints": [],
+     "show_me": [
+      "press solution_pump 300",
+      "wait 0.3",
+      "press engine_high_idle 300"
+     ],
+     "wrong_demo": [
+      "press master_spray 300",
+      "wait 0.5"
+     ],
+     "ask": "What comes before driving off to spray?",
+     "est_s": 20,
+     "figure": "N155117",
+     "source": {
+      "pages": [
+       "50-21",
+       "50-22"
+      ],
+      "topic": "field-operation--4b7bff"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "a-spray",
+     "say": "Start the pass and start spraying.",
+     "why": "Move first, then spray.",
+     "controls": [
+      "park_slot",
+      "lever",
+      "master_spray"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_NeutralSlotStatus",
+        "eq": "0"
+       },
+       {
+        "sent": "PLT_HydroHandlePosition",
+        "outside": [
+         100,
+         150
+        ]
+       },
+       {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "before": [
+         {
+          "sent": "PLT_MHC_MasterSprayOnOff",
+          "eq": "1"
+         },
+         {
+          "sent": "PLT_HydroHandlePosition",
+          "outside": [
+           100,
+           150
+          ]
+         }
+        ]
+       },
+       "say": "Spraying while standing still puddles product."
+      }
+     ],
+     "hints": [],
+     "show_me": [
+      "switch park_slot 0",
+      "set lever 175",
+      "wait 0.5",
+      "press master_spray 300"
+     ],
+     "wrong_demo": [
+      "press master_spray 300",
+      "wait 0.5",
+      "press master_spray 300",
+      "wait 0.5"
+     ],
+     "ask": "What is the order to start spraying?",
+     "est_s": 30,
+     "figure": "N167055",
+     "source": {
+      "pages": [
+       "50-22"
+      ],
+      "topic": "field-operation--4b7bff"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "a-hms-in",
+     "say": "Headland. Enter it.",
+     "why": "One switch: spray off, boom up, speed down.",
+     "controls": [
+      "hms"
+     ],
+     "done": {
+      "sent": "PLT_MHC_HMS",
+      "eq": "1"
+     },
+     "wrong": [
+      {
+       "if": {
+        "before": [
+         {
+          "any": [
+           {
+            "sent": "PLT_SteeringWheelAngleDeg",
+            "gte": 10
+           },
+           {
+            "sent": "PLT_SteeringWheelAngleDeg",
+            "lte": -10
+           }
+          ]
+         },
+         {
+          "sent": "PLT_MHC_HMS",
+          "eq": "1"
+         }
+        ]
+       },
+       "say": "HMS comes before the turn."
+      }
+     ],
+     "hints": [],
+     "show_me": [
+      "press hms 300"
+     ],
+     "wrong_demo": [
+      "set steering 400",
+      "wait 1.2",
+      "set steering 0",
+      "wait 1.0"
+     ],
+     "ask": "What do I press at the headland?",
+     "est_s": 15,
+     "figure": "WZ1406325",
+     "source": {
+      "pages": [
+       "25-D-5"
+      ],
+      "topic": "entering-headlands-settings--986afa"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "a-turn",
+     "say": "Turn onto the next pass and line up.",
+     "why": "The steering is yours; HMS handles the rest.",
+     "controls": [
+      "steering"
+     ],
+     "done": {
+      "then": [
+       {
+        "any": [
+         {
+          "sent": "PLT_SteeringWheelAngleDeg",
+          "gte": 25
+         },
+         {
+          "sent": "PLT_SteeringWheelAngleDeg",
+          "lte": -25
+         }
+        ]
+       },
+       {
+        "sent": "PLT_SteeringWheelAngleDeg",
+        "between": [
+         -3,
+         3
+        ]
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       },
+       "say": "HMS has spraying off; the master stays alone in the turn."
+      }
+     ],
+     "hints": [],
+     "show_me": [
+      "set steering 720",
+      "wait 2.0",
+      "set steering 0",
+      "wait 2.0"
+     ],
+     "wrong_demo": [
+      "press master_spray 300",
+      "wait 0.5"
+     ],
+     "ask": "How do I make the headland turn?",
+     "est_s": 25,
+     "figure": "N151293",
+     "source": {
+      "pages": [
+       "25-D-3"
+      ],
+      "topic": "headland-management-system-main-page--dbc526"
+     },
+     "confidence": "draft"
+    },
+    {
+     "id": "a-hms-out",
+     "say": "On the new pass: leave the headland.",
+     "why": "One switch: boom down, spray on, speed back.",
+     "controls": [
+      "hms"
+     ],
+     "done": {
+      "sent": "PLT_MHC_HMS",
+      "eq": "1"
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       },
+       "say": "HMS turns spraying on; the master turns it off again."
+      }
+     ],
+     "hints": [],
+     "show_me": [
+      "press hms 300"
+     ],
+     "wrong_demo": [
+      "press master_spray 300",
+      "wait 0.5"
+     ],
+     "ask": "What do I press to leave the headland?",
+     "est_s": 15,
+     "figure": "WZ1406327",
+     "source": {
+      "pages": [
+       "25-D-7"
+      ],
+      "topic": "exiting-headlands-settings--234108"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "a-stop",
+     "say": "End of the field: stop spraying and park.",
+     "why": "Spray off before you stop.",
+     "controls": [
+      "master_spray",
+      "lever",
+      "park_slot"
+     ],
+     "done": {
+      "then": [
+       {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       },
+       {
+        "any": [
+         {
+          "sent": "PLT_HydroHandlePosition",
+          "between": [
+           120,
+           130
+          ]
+         },
+         {
+          "sent": "PLT_NeutralSlotStatus",
+          "eq": "1"
+         }
+        ]
+       },
+       {
+        "sent": "PLT_NeutralSlotStatus",
+        "eq": "1"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "before": [
+         {
+          "any": [
+           {
+            "sent": "PLT_HydroHandlePosition",
+            "between": [
+             120,
+             130
+            ]
+           },
+           {
+            "sent": "PLT_NeutralSlotStatus",
+            "eq": "1"
+           }
+          ]
+         },
+         {
+          "sent": "PLT_MHC_MasterSprayOnOff",
+          "eq": "1"
+         }
+        ]
+       },
+       "say": "Spray off first, then stop."
+      }
+     ],
+     "hints": [],
+     "show_me": [
+      "press master_spray 300",
+      "wait 0.3",
+      "set lever 125",
+      "wait 0.5",
+      "switch park_slot 1",
+      "wait 0.3"
+     ],
+     "wrong_demo": [
+      "set lever 125",
+      "wait 0.6",
+      "set lever 175",
+      "wait 0.4"
+     ],
+     "ask": "What is the safe stopping order?",
+     "est_s": 25,
+     "figure": "N155121",
+     "source": {
+      "pages": [
+       "50-22"
+      ],
+      "topic": "field-operation--4b7bff"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "a-pump-off",
+     "say": "Shut the solution pump off.",
+     "why": "Nothing more to spray here.",
+     "controls": [
+      "solution_pump"
+     ],
+     "done": {
+      "any": [
+       {
+        "cloud": "PLT_AIC_SolutionPumpIndicator",
+        "eq": "0"
+       },
+       {
+        "sent": "PLT_AIC_SolutionPump",
+        "eq": "1"
+       }
+      ]
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_MHC_MasterSprayOnOff",
+        "eq": "1"
+       },
+       "say": "The master is already off; this is the pump."
+      }
+     ],
+     "hints": [],
+     "show_me": [
+      "press solution_pump 300"
+     ],
+     "wrong_demo": [
+      "press master_spray 300",
+      "wait 0.5"
+     ],
+     "ask": "Which switch stops the solution pump?",
+     "est_s": 10,
+     "figure": "N120497",
+     "source": {
+      "pages": [
+       "30-11"
+      ],
+      "topic": "spraying-controls--8a2c0c"
+     },
+     "confidence": "manual"
+    },
+    {
+     "id": "a-fold",
+     "say": "Fold the boom for transport.",
+     "why": "Floor switch and Centre boom raise, into the cradles.",
+     "controls": [
+      "foot_switch",
+      "centre_boom_raise"
+     ],
+     "done": {
+      "game": "boomUnfolded",
+      "eq": "0"
+     },
+     "wrong": [
+      {
+       "if": {
+        "sent": "PLT_MHC_CenterBoomRaise",
+        "eq": "1"
+       },
+       "say": "That only raised the boom; folding needs the floor switch held."
+      }
+     ],
+     "hints": [],
+     "show_me": [
+      "switch foot_switch 1",
+      "wait 0.3",
+      "press centre_boom_raise 1200",
+      "wait 0.3",
+      "switch foot_switch 0",
+      "wait 0.3"
+     ],
+     "wrong_demo": [
+      "switch foot_switch 0",
+      "wait 0.3",
+      "press centre_boom_raise 400",
+      "wait 0.5"
+     ],
+     "ask": "How do I fold the boom?",
+     "est_s": 25,
+     "figure": "N153424",
+     "source": {
+      "pages": [
+       "30-35"
+      ],
+      "topic": "auto-boom-fold-unfold--db954d"
+     },
+     "confidence": "manual"
+    }
+   ]
+  }
+ ]
+}

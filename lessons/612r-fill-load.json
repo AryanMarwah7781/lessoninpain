@@ -1,0 +1,1401 @@
+{
+  "schema": "lesson/0.2",
+  "id": "612r-fill-load",
+  "title": "Fill the solution tank and load chemicals safely",
+  "machine": "612R Sprayer · CommandCenter display · CommandARM",
+  "build": "612R operator's manual OMKK105338; runs on the Apr 20 Display and CommandARM Simulator",
+  "manual": "OMKK105338 (400R-616R operator's manual)",
+  "level": "Advanced",
+  "minutes": 18,
+  "objective": "Park at the fill site and protect yourself, fill an empty 612R solution tank from a nurse tank with the sprayer pump, load the chemical through the eductor in the manual's order (and recover when it won't draw), finish the fill, mix with agitation from the cab, then repeat the eductor load with a full tank.",
+  "procedure_source": "OMKK105338 Single Solution Command System Operation: Fill Solution Tank with Sprayer Pump While Adding Chemicals Through Eductor (p. 60-15 to 60-18), Use Eductor to Load Chemicals with Full Solution Tank (60-20 to 60-22), Fill Station Keypad (60-5), Mix Solution in Tank (60-22, 60-23); Wet System: Solution Pump Maintenance and Operation Recommendations (55-3 to 55-5); Tank System Application (25-K-5, 25-K-8, 25-K-12); Eductor troubleshooting (160-19, 160-20); Park the Machine (50-27), Park Brake (30-14); chemical safety (05-14, 50-1). Steps marked draft adapt the manual for the scenario or the simulator.",
+  "extra_controls": {
+    "fill_keypad": {
+      "label": "Fill station keypad",
+      "where": "Fill station, under the keypad cover (A)",
+      "figure": "NX1434992",
+      "source": {
+        "pages": [
+          "60-5",
+          "60-6"
+        ],
+        "topic": "fill-station-keypad--3dbb03"
+      }
+    },
+    "pull_on_fill": {
+      "label": "Pull-On Fill button (I)",
+      "where": "Fill station keypad, under the cover",
+      "figure": "NX1435136",
+      "source": {
+        "pages": [
+          "60-16"
+        ],
+        "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+      }
+    },
+    "rinse_cycle": {
+      "label": "Rinse Cycle button (K)",
+      "where": "Fill station keypad, under the cover",
+      "figure": "NX1434992",
+      "source": {
+        "pages": [
+          "60-5",
+          "60-6"
+        ],
+        "topic": "fill-station-keypad--3dbb03"
+      }
+    },
+    "eductor_on_off": {
+      "label": "Eductor On/Off button (G)",
+      "where": "Fill station keypad, under the cover",
+      "figure": "NX1435325",
+      "source": {
+        "pages": [
+          "60-17"
+        ],
+        "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+      }
+    },
+    "micro_display": {
+      "label": "Fill station micro display (Fill menu, Pull-on fill, Tank auto fill)",
+      "where": "At the fill station; the fill procedure uses the front micro display",
+      "figure": "NX1440374",
+      "source": {
+        "pages": [
+          "60-16",
+          "60-17"
+        ],
+        "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+      }
+    },
+    "quik_fill_valve": {
+      "label": "Side Quik-Fill valve, lock levers and cap",
+      "where": "Side fill point: valve (A), cap (B); open = handle parallel with the plumbing",
+      "figure": "NX1435337",
+      "source": {
+        "pages": [
+          "60-15"
+        ],
+        "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+      }
+    },
+    "nurse_tank_valve": {
+      "label": "Nurse tank valve",
+      "where": "On the nurse tank, not on the sprayer",
+      "source": {
+        "pages": [
+          "60-16"
+        ],
+        "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+      }
+    },
+    "sight_gauge": {
+      "label": "Solution tank sight gauge",
+      "where": "Left-hand side of the machine: clear tube and graduated scale (liters and gallons)",
+      "source": {
+        "pages": [
+          "60-1",
+          "60-2"
+        ],
+        "topic": "solution-system--544787"
+      }
+    },
+    "eductor": {
+      "label": "Eductor hopper, handle and lid",
+      "where": "Fill station; unlatch with handle (A)",
+      "figure": "N98892",
+      "source": {
+        "pages": [
+          "60-17"
+        ],
+        "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+      }
+    },
+    "eductor_sump_valve": {
+      "label": "Eductor sump valve (A)",
+      "where": "On the eductor; open = handle parallel with the solution hose",
+      "figure": "N135935",
+      "source": {
+        "pages": [
+          "60-17"
+        ],
+        "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+      }
+    },
+    "eductor_rinse_valve": {
+      "label": "Eductor rinse valve (B)",
+      "where": "On the eductor; open = turn clockwise",
+      "figure": "N135935",
+      "source": {
+        "pages": [
+          "60-17"
+        ],
+        "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+      }
+    },
+    "rinse_nozzle": {
+      "label": "Container rinse nozzle (A)",
+      "where": "At the eductor (figure N135936, A; the manual says the nozzle is in the tank)",
+      "figure": "N135936",
+      "source": {
+        "pages": [
+          "60-18"
+        ],
+        "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+      }
+    },
+    "agitation_switch": {
+      "label": "Agitation switch (CommandARM)",
+      "where": "CommandARM console in the cab",
+      "figure": "N120490",
+      "source": {
+        "pages": [
+          "25-K-8"
+        ],
+        "topic": "agitation--995e05"
+      }
+    },
+    "display_tank_system": {
+      "label": "Tank System page (Tank Fill Volume, Agitation, Advanced Settings > Eductor Level)",
+      "where": "CommandCenter display: Menu > Machine Settings > Tank System, or the Tank System button on the navigation bar",
+      "figure": "WZ1406735",
+      "source": {
+        "pages": [
+          "25-K-1"
+        ],
+        "topic": "access-tank-system--f3b14b"
+      }
+    }
+  },
+  "setup": {
+    "armrest": [
+      "switch foot_switch 0",
+      "switch park_slot 1",
+      "set steering 0",
+      "set speed_dial 0",
+      "switch foot_switch 1",
+      "wait 0.3",
+      "press centre_boom_raise 800",
+      "wait 0.3",
+      "switch foot_switch 0",
+      "wait 0.3",
+      "press engine_low_idle 300",
+      "switch park_slot 0",
+      "set lever 160",
+      "wait 0.5"
+    ],
+    "trainer": "Boom folded, engine running at low idle, solution pump off, park brake switch off, wheel straight. Lever just out of the park slot and slightly forward: the sprayer is creeping up to the nurse tank. The solution tank is empty and the product label is at hand.",
+    "expect": {
+      "game": {
+        "boomUnfolded": "0"
+      }
+    }
+  },
+  "chatbot": {
+    "about": "The trainee is filling a John Deere 612R solution tank (Single Solution Command System, stainless tank of 4542 L (1200 gal)) from a nurse tank with the sprayer's own pump while loading chemical through the eductor, then mixing with agitation from the cab. Fill-station actions are confirmed by the trainee; parking, the park brake, engine speed and the solution pump are on the simulator's CommandARM. Answer only from the 612R operator's manual OMKK105338 (p. 60-5 to 60-23, 55-2 to 55-5, 25-K, 160-19, 50-27); the chemical label and local law govern PPE and mixing, and the manual strongly recommends not mixing different crop protection chemicals. Key rules: Quik-Fill valve closed before the cap comes off; nurse tank level at or above the pump midline for the whole fill; prime an empty pump with a low volume rinse; no eductor before the tank is half full; hopper empty before it is lifted; turn agitation off below 378.5 L (100 gal) to prevent foaming; PPE off before re-entering the cab. Keep answers to 2-3 sentences and name the exact control or valve.",
+    "send": [
+      "lesson title",
+      "section",
+      "step instruction",
+      "seconds on step",
+      "last 10 controls used",
+      "current game state",
+      "lights currently on"
+    ]
+  },
+  "sections": [
+    {
+      "title": "1. Park at the fill site and protect yourself",
+      "mode": "learn",
+      "steps": [
+        {
+          "id": "park",
+          "say": "You're creeping up to the nurse tank. Stop: bring the multi-function lever back into PARK.",
+          "why": "The park brakes apply automatically when the lever is in PARK.",
+          "controls": [
+            "lever",
+            "park_slot"
+          ],
+          "done": {
+            "then": [
+              {
+                "any": [
+                  {
+                    "sent": "PLT_HydroHandlePosition",
+                    "between": [
+                      120,
+                      130
+                    ]
+                  },
+                  {
+                    "sent": "PLT_NeutralSlotStatus",
+                    "eq": "1"
+                  }
+                ]
+              },
+              {
+                "sent": "PLT_NeutralSlotStatus",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Lever slowly back to the middle, then into the park slot.",
+              "highlight": [
+                "lever",
+                "park_slot"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Multi-function lever on the right-hand console; PARK is the gate at the end of its travel.",
+              "highlight": [
+                "lever",
+                "park_slot"
+              ]
+            }
+          ],
+          "show_me": [
+            "set lever 125",
+            "switch park_slot 1"
+          ],
+          "ask": "How do I park the 612R?",
+          "est_s": 30,
+          "figure": "N166477",
+          "source": {
+            "pages": [
+              "50-27"
+            ],
+            "topic": "park-the-machine--a7f533"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "park-brake",
+          "say": "Press the Park Brake switch so a bumped lever can't move the machine while you fill.",
+          "why": "The manual allows the park brake switch for exactly this; it must be released before you drive.",
+          "controls": [
+            "park_brake"
+          ],
+          "done": {
+            "any": [
+              {
+                "cloud": "PLT_AIC_ParkBrakeIndicator",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_AIC_ParkBrake",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_NeutralSlotStatus",
+                "eq": "0"
+              },
+              "say": "The lever left PARK. Put it back in PARK: the machine must stay put at the fill site."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The Park Brake switch has a P on it and lights when it is on.",
+              "highlight": [
+                "park_brake"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Right-hand console: the Park Brake switch marked P.",
+              "highlight": [
+                "park_brake"
+              ]
+            }
+          ],
+          "show_me": [
+            "press park_brake 300"
+          ],
+          "wrong_demo": [
+            "switch park_slot 0",
+            "wait 0.4",
+            "switch park_slot 1",
+            "wait 0.3"
+          ],
+          "ask": "Do I need the park brake switch if the lever is already in PARK?",
+          "est_s": 20,
+          "figure": "N137032",
+          "source": {
+            "pages": [
+              "50-27"
+            ],
+            "topic": "park-the-machine--a7f533"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "label-ppe",
+          "say": "Read the chemical label's directions, then put on the protective equipment the label lists.",
+          "why": "Chemicals can poison and injure; the label sets your PPE. Don't rely on the cab to protect you.",
+          "controls": [],
+          "done": {
+            "confirm": "Label read, PPE on"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Label first: it sets the PPE and the mixing instructions."
+            },
+            {
+              "after_s": 45,
+              "say": "No PPE guidance on the label? The manual's general rule: 'Danger' products need goggles, respirator, gloves and skin protection."
+            }
+          ],
+          "ask": "What protective equipment do I need to load chemicals?",
+          "est_s": 60,
+          "figure": "A34471",
+          "source": {
+            "pages": [
+              "60-15"
+            ],
+            "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+          },
+          "confidence": "manual"
+        }
+      ]
+    },
+    {
+      "title": "2. Connect the nurse tank and start the fill",
+      "mode": "learn",
+      "steps": [
+        {
+          "id": "pump-dry-check",
+          "say": "Check the fill hose is as short as possible and the nurse tank level is above the solution pump's midline.",
+          "why": "A solution pump that runs dry is damaged; the level must stay there for the whole fill.",
+          "controls": [],
+          "done": {
+            "confirm": "Short hose, nurse level above pump midline"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Both checks come from the manual's warning against running the solution pump dry."
+            },
+            {
+              "after_s": 45,
+              "say": "High flow pump: use 76.2 mm (3 in) hose and fittings on the nurse equipment if possible, and a manual valve at the hose end."
+            }
+          ],
+          "ask": "Why does the nurse tank level matter when I fill with the sprayer pump?",
+          "est_s": 45,
+          "figure": "N87475",
+          "source": {
+            "pages": [
+              "60-16"
+            ],
+            "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "quikfill-closed",
+          "say": "Check the side Quik-Fill valve is closed, then open the lock levers and remove the cap.",
+          "why": "The Quik-Fill valve can hold hazardous material: it must be closed before the cap comes off.",
+          "controls": [
+            "quik_fill_valve"
+          ],
+          "done": {
+            "confirm": "Quik-Fill closed, cap off"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Open is the handle parallel with the plumbing; closed is turned back from that.",
+              "highlight": [
+                "quik_fill_valve"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Side Quik-Fill: valve (A) and cap (B) at the side fill point.",
+              "highlight": [
+                "quik_fill_valve"
+              ]
+            }
+          ],
+          "ask": "How do I know the Quik-Fill valve is closed?",
+          "est_s": 40,
+          "figure": "NX1435337",
+          "source": {
+            "pages": [
+              "60-15"
+            ],
+            "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "connect-hose",
+          "say": "Connect the nurse tank fill hose to the Quik-Fill adapter and close the lock levers.",
+          "why": "Hose on and locked before any valve opens: manual step 3.",
+          "controls": [
+            "quik_fill_valve"
+          ],
+          "done": {
+            "confirm": "Hose connected, levers closed"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_NeutralSlotStatus",
+                "eq": "0"
+              },
+              "say": "The lever left PARK while the nurse hose is connected. Put it back in PARK before anything else."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Push the hose onto the adapter, then close both lock levers.",
+              "highlight": [
+                "quik_fill_valve"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "The adapter is on the side Quik-Fill valve (A), where the cap was.",
+              "highlight": [
+                "quik_fill_valve"
+              ]
+            }
+          ],
+          "wrong_demo": [
+            "switch park_slot 0",
+            "wait 0.4",
+            "switch park_slot 1",
+            "wait 0.3"
+          ],
+          "ask": "What do the lock levers on the Quik-Fill do?",
+          "est_s": 40,
+          "figure": "NX1435337",
+          "source": {
+            "pages": [
+              "60-15"
+            ],
+            "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "prime-if-empty",
+          "say": "The sight gauge reads empty. Prime the pump first: run a low volume rinse cycle, then end it.",
+          "why": "An empty tank lets the pump run dry; the rinse can end once the pump is primed.",
+          "controls": [
+            "rinse_cycle",
+            "sight_gauge"
+          ],
+          "done": {
+            "confirm": "Pump primed"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "System rinse must be set up on the cab display before it can run from the fill station.",
+              "highlight": [
+                "rinse_cycle"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Rinse Cycle is button K on the fill station keypad, under the keypad cover.",
+              "highlight": [
+                "rinse_cycle"
+              ]
+            }
+          ],
+          "ask": "How do I prime the solution pump when the tank is empty?",
+          "est_s": 60,
+          "figure": "NX1434992",
+          "source": {
+            "pages": [
+              "60-16"
+            ],
+            "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "start-pull-fill",
+          "say": "Open the nurse tank valve. Press Pull-On Fill on the keypad, then open the Quik-Fill valve.",
+          "why": "Manual order (steps 4-5). Pressing Pull-On Fill again stops the fill.",
+          "controls": [
+            "nurse_tank_valve",
+            "pull_on_fill",
+            "quik_fill_valve"
+          ],
+          "done": {
+            "confirm": "Nurse valve open, Pull-On Fill on, Quik-Fill open"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_NeutralSlotStatus",
+                "eq": "0"
+              },
+              "say": "The lever left PARK while the nurse hose is connected. Put it back in PARK before anything else."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Nurse tank valve, then Pull-On Fill, then turn the Quik-Fill handle parallel with the plumbing.",
+              "highlight": [
+                "nurse_tank_valve",
+                "pull_on_fill",
+                "quik_fill_valve"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Pull-On Fill is button I on the fill station keypad, under the cover.",
+              "highlight": [
+                "pull_on_fill"
+              ]
+            }
+          ],
+          "wrong_demo": [
+            "switch park_slot 0",
+            "wait 0.4",
+            "switch park_slot 1",
+            "wait 0.3"
+          ],
+          "ask": "How do I stop the fill if something goes wrong?",
+          "est_s": 50,
+          "figure": "NX1435136",
+          "source": {
+            "pages": [
+              "60-16"
+            ],
+            "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "auto-fill",
+          "say": "On the front micro display select Fill menu, then Pull-on fill, then Tank auto fill.",
+          "why": "Auto fill shuts down by itself when the upper tank level switches are reached.",
+          "controls": [
+            "micro_display"
+          ],
+          "done": {
+            "confirm": "Tank auto fill running"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Three selections on the micro display: Fill menu, Pull-on fill, Tank auto fill.",
+              "highlight": [
+                "micro_display"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Fill menu is button A on the micro display at the fill station.",
+              "highlight": [
+                "micro_display"
+              ]
+            }
+          ],
+          "ask": "Does the fill stop by itself?",
+          "est_s": 45,
+          "figure": "NX1440374",
+          "source": {
+            "pages": [
+              "60-16",
+              "60-17"
+            ],
+            "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+          },
+          "confidence": "manual"
+        }
+      ]
+    },
+    {
+      "title": "3. Load the chemical through the eductor",
+      "mode": "learn",
+      "steps": [
+        {
+          "id": "eductor-down",
+          "say": "Lift the eductor slightly, pull the handle to unlatch it, lower it and raise the lid.",
+          "why": "Manual steps 9-10: the hopper is lowered and opened before the eductor is started.",
+          "controls": [
+            "eductor"
+          ],
+          "done": {
+            "confirm": "Eductor lowered, lid up"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Raise it slightly first, then pull the handle to unlatch.",
+              "highlight": [
+                "eductor"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Handle (A) on the eductor at the fill station.",
+              "highlight": [
+                "eductor"
+              ]
+            }
+          ],
+          "ask": "How do I lower the eductor?",
+          "est_s": 35,
+          "figure": "N98892",
+          "source": {
+            "pages": [
+              "60-17"
+            ],
+            "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "half-full",
+          "say": "The tank is only a quarter full. Wait until it is at least half full, then press Eductor On/Off.",
+          "why": "Starting the eductor before half full makes the chemical foam.",
+          "controls": [
+            "eductor_on_off",
+            "micro_display",
+            "sight_gauge"
+          ],
+          "done": {
+            "confirm": "Half full, eductor on"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Tank level shows on the micro display and on the sight gauge.",
+              "highlight": [
+                "micro_display",
+                "sight_gauge"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Eductor On/Off is button G on the fill station keypad, under the cover.",
+              "highlight": [
+                "eductor_on_off"
+              ]
+            }
+          ],
+          "ask": "When can I start the eductor?",
+          "est_s": 45,
+          "figure": "NX1435325",
+          "source": {
+            "pages": [
+              "60-17"
+            ],
+            "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "eductor-valves",
+          "say": "Open the eductor sump valve (handle parallel with the hose), then the rinse valve (turn clockwise).",
+          "why": "The sump valve lets the hopper be drawn into the tank; the rinse valve washes the hopper.",
+          "controls": [
+            "eductor_sump_valve",
+            "eductor_rinse_valve"
+          ],
+          "done": {
+            "confirm": "Sump and rinse valves open"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Sump valve first, then the rinse valve.",
+              "highlight": [
+                "eductor_sump_valve",
+                "eductor_rinse_valve"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Both are on the eductor: sump valve A, rinse valve B.",
+              "highlight": [
+                "eductor_sump_valve",
+                "eductor_rinse_valve"
+              ]
+            }
+          ],
+          "ask": "Which eductor valve does what?",
+          "est_s": 35,
+          "figure": "N135935",
+          "source": {
+            "pages": [
+              "60-17"
+            ],
+            "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "pour",
+          "say": "Pour the label's measured amount of chemical into the eductor hopper.",
+          "why": "The label sets the amount; the poly eductor's level gauge helps you fill.",
+          "controls": [
+            "eductor"
+          ],
+          "done": {
+            "confirm": "Chemical poured"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Pour into the open hopper with both eductor valves open.",
+              "highlight": [
+                "eductor"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Use the level gauge (A) on the poly eductor to measure.",
+              "highlight": [
+                "eductor"
+              ]
+            }
+          ],
+          "ask": "How much chemical do I put in?",
+          "est_s": 45,
+          "figure": "N155780",
+          "source": {
+            "pages": [
+              "60-18"
+            ],
+            "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "not-drawing",
+          "say": "Chemical isn't drawn in. Valves are open, engine at low idle: take off your PPE and climb into the cab.",
+          "why": "Engine speed too low is a listed cause. PPE comes off before you re-enter the cab.",
+          "controls": [],
+          "done": {
+            "confirm": "PPE off, in the cab"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The manual's eductor table: rinse valve off, sump valve closed, pump not primed, no liquid, engine speed too low."
+            },
+            {
+              "after_s": 45,
+              "say": "Remove the PPE you used for chemicals before re-entering the cab and store it so the cab stays clean."
+            }
+          ],
+          "ask": "Why won't the eductor pull chemical out of the hopper?",
+          "est_s": 45,
+          "source": {
+            "pages": [
+              "160-19",
+              "160-20"
+            ],
+            "topic": "eductor--31f8b9"
+          },
+          "confidence": "draft"
+        },
+        {
+          "id": "high-idle",
+          "say": "Press High Idle to raise engine speed for the eductor.",
+          "why": "Eductor table: engine speed too low, increase to 1800 rpm minimum (manual controls only).",
+          "controls": [
+            "engine_high_idle"
+          ],
+          "done": {
+            "any": [
+              {
+                "cloud": "PLT_AIC_EngineHighIdleSpeedIndicator",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_AIC_EngineHighIdle",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_AIC_EngineLowIdle",
+                "eq": "1"
+              },
+              "say": "That is Low Idle: it lowers engine speed. The eductor needs more. Press High Idle."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "High Idle gives maximum engine speed.",
+              "highlight": [
+                "engine_high_idle"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Right-hand console: the High Idle switch.",
+              "highlight": [
+                "engine_high_idle"
+              ]
+            }
+          ],
+          "show_me": [
+            "press engine_high_idle 300"
+          ],
+          "wrong_demo": [
+            "press engine_low_idle 300",
+            "wait 0.4"
+          ],
+          "ask": "What engine speed does the eductor need?",
+          "est_s": 25,
+          "figure": "N137031",
+          "source": {
+            "pages": [
+              "160-19",
+              "160-20"
+            ],
+            "topic": "eductor--31f8b9"
+          },
+          "confidence": "draft"
+        },
+        {
+          "id": "rinse-container",
+          "say": "PPE back on, at the eductor: rinse the empty container over the rinse nozzle by pushing it down.",
+          "why": "The rinse goes into the tank; the manual says to triple rinse empty containers before disposal.",
+          "controls": [
+            "rinse_nozzle"
+          ],
+          "done": {
+            "confirm": "Container rinsed"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "No rinse? The nozzle only runs when you press the container down on it.",
+              "highlight": [
+                "rinse_nozzle"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Rinse nozzle (A) at the eductor, shown in figure N135936: container over it, push down.",
+              "highlight": [
+                "rinse_nozzle"
+              ]
+            }
+          ],
+          "ask": "How do I rinse the empty chemical container?",
+          "est_s": 45,
+          "figure": "N135936",
+          "source": {
+            "pages": [
+              "60-18"
+            ],
+            "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "close-valves",
+          "say": "Check the hopper is empty, then close the eductor rinse valve and the sump valve.",
+          "why": "A hopper raised with chemical still in it spills.",
+          "controls": [
+            "eductor_rinse_valve",
+            "eductor_sump_valve"
+          ],
+          "done": {
+            "confirm": "Hopper empty, valves closed"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Look into the hopper: nothing left before you close up.",
+              "highlight": [
+                "eductor"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Rinse valve B, then sump valve A, on the eductor.",
+              "highlight": [
+                "eductor_rinse_valve",
+                "eductor_sump_valve"
+              ]
+            }
+          ],
+          "ask": "Why must the hopper be empty before I raise it?",
+          "est_s": 35,
+          "figure": "N135935",
+          "source": {
+            "pages": [
+              "60-18"
+            ],
+            "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "stow-eductor",
+          "say": "Close the hopper lid, lift the eductor back up, then press Eductor On/Off to stop it.",
+          "why": "Manual steps 19-20: stow the eductor, then switch it off.",
+          "controls": [
+            "eductor",
+            "eductor_on_off"
+          ],
+          "done": {
+            "confirm": "Eductor stowed and off"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Lid, lift, then the keypad button.",
+              "highlight": [
+                "eductor",
+                "eductor_on_off"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Eductor On/Off is button G on the fill station keypad.",
+              "highlight": [
+                "eductor_on_off"
+              ]
+            }
+          ],
+          "ask": "Do I turn the eductor off before or after lifting it?",
+          "est_s": 35,
+          "figure": "NX1435325",
+          "source": {
+            "pages": [
+              "60-18"
+            ],
+            "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+          },
+          "confidence": "manual"
+        }
+      ]
+    },
+    {
+      "title": "4. Finish the fill and mix",
+      "mode": "learn",
+      "steps": [
+        {
+          "id": "close-fill",
+          "say": "Auto fill has stopped. Close the nurse tank and Quik-Fill valves, then remove the hose and refit the cap.",
+          "why": "Auto fill stops at the upper tank level switches; valves are closed before the hose comes off.",
+          "controls": [
+            "nurse_tank_valve",
+            "quik_fill_valve"
+          ],
+          "done": {
+            "confirm": "Valves closed, hose off, cap on"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Both valves first, hose last.",
+              "highlight": [
+                "nurse_tank_valve",
+                "quik_fill_valve"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Quik-Fill closed means its handle turned back from parallel with the plumbing.",
+              "highlight": [
+                "quik_fill_valve"
+              ]
+            }
+          ],
+          "ask": "What do I close first when the fill is done?",
+          "est_s": 50,
+          "figure": "NX1435337",
+          "source": {
+            "pages": [
+              "60-18"
+            ],
+            "topic": "fill-solution-tank-with-sprayer-pump-while-adding-chemicals--f26e48"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "tank-volume",
+          "say": "Back in the cab with PPE off: on the Tank System page, set the Tank Fill Volume preset.",
+          "why": "Without it the displayed tank volume and the low tank alarm are wrong.",
+          "controls": [
+            "display_tank_system"
+          ],
+          "done": {
+            "confirm": "Tank Fill Volume set"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Select preset 1 or 2; the target icon reads the current tank level.",
+              "highlight": [
+                "display_tank_system"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Menu > Machine Settings > Tank System, or the Tank System button on the navigation bar below the display.",
+              "highlight": [
+                "display_tank_system"
+              ]
+            }
+          ],
+          "ask": "Why do I set the tank fill volume after filling?",
+          "est_s": 50,
+          "figure": "N158676",
+          "source": {
+            "pages": [
+              "25-K-5"
+            ],
+            "topic": "tank-fill-volume--7949c3"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "pump-on",
+          "say": "Start mixing: press Solution Pump on the CommandARM.",
+          "why": "Agitation only works with the solution pump running.",
+          "controls": [
+            "solution_pump"
+          ],
+          "done": {
+            "any": [
+              {
+                "cloud": "PLT_AIC_SolutionPumpIndicator",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_AIC_SolutionPump",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "That is Spray System On/Off: it turns the boom sections on. Press it again to turn it off. Solution Pump is on the armrest keypad."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Solution Pump has an indicator light that comes on when the pump runs.",
+              "highlight": [
+                "solution_pump"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Right-hand console keypad: the Solution Pump switch.",
+              "highlight": [
+                "solution_pump"
+              ]
+            }
+          ],
+          "show_me": [
+            "press solution_pump 300"
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.3"
+          ],
+          "ask": "How do I start the solution pump from the cab?",
+          "est_s": 25,
+          "figure": "N155117",
+          "source": {
+            "pages": [
+              "30-11"
+            ],
+            "topic": "spraying-controls--8a2c0c"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "agitation",
+          "say": "Press Agitation on the CommandARM and mix thoroughly before you go to the field.",
+          "why": "Pump speed and agitation level set how hard it mixes; a lower rate foams less.",
+          "controls": [
+            "agitation_switch"
+          ],
+          "done": {
+            "confirm": "Agitation on"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Agitation's indicator lights when it is on; the level shows on the corner post display.",
+              "highlight": [
+                "agitation_switch"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Agitation switch on the CommandARM console; its level is set on Tank System > Agitation.",
+              "highlight": [
+                "agitation_switch",
+                "display_tank_system"
+              ]
+            }
+          ],
+          "ask": "How much agitation should I use?",
+          "est_s": 40,
+          "figure": "N120490",
+          "source": {
+            "pages": [
+              "25-K-8"
+            ],
+            "topic": "agitation--995e05"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "release-park-brake",
+          "say": "Ready to leave the fill site: release the Park Brake switch before the lever leaves PARK.",
+          "why": "Brakes set with the switch do not release by themselves when you move the lever.",
+          "controls": [
+            "park_brake"
+          ],
+          "done": {
+            "any": [
+              {
+                "cloud": "PLT_AIC_ParkBrakeIndicator",
+                "eq": "0"
+              },
+              {
+                "sent": "PLT_AIC_ParkBrake",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_NeutralSlotStatus",
+                    "eq": "0"
+                  },
+                  {
+                    "sent": "PLT_AIC_ParkBrake",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "The lever left PARK with the park brake switch still on. Back to PARK and release the switch first."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Same Park Brake switch you pressed on arrival.",
+              "highlight": [
+                "park_brake"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Right-hand console: the Park Brake switch marked P; its light goes out.",
+              "highlight": [
+                "park_brake"
+              ]
+            }
+          ],
+          "show_me": [
+            "press park_brake 300"
+          ],
+          "wrong_demo": [
+            "switch park_slot 0",
+            "wait 0.4",
+            "switch park_slot 1",
+            "wait 0.3"
+          ],
+          "ask": "Why won't the sprayer move after filling?",
+          "est_s": 20,
+          "figure": "N137032",
+          "source": {
+            "pages": [
+              "30-14"
+            ],
+            "topic": "park-brake--e0c23d"
+          },
+          "confidence": "manual"
+        }
+      ]
+    },
+    {
+      "title": "5. Practice: next load, tank already full of water",
+      "mode": "practice",
+      "steps": [
+        {
+          "id": "p-eductor-level",
+          "say": "Next load: the tank holds water only and this product foams. Set Eductor Level to Low first.",
+          "why": "Low eductor suction reduces chemical foaming while loading.",
+          "controls": [
+            "display_tank_system"
+          ],
+          "done": {
+            "confirm": "Eductor Level Low"
+          },
+          "hints": [
+            {
+              "after_s": 40,
+              "say": "Tank System > Advanced Settings > Eductor Level.",
+              "highlight": [
+                "display_tank_system"
+              ]
+            },
+            {
+              "after_s": 80,
+              "say": "Choose Low from the list; the value saves by itself.",
+              "highlight": [
+                "display_tank_system"
+              ]
+            }
+          ],
+          "ask": "Which eductor level should I use?",
+          "est_s": 40,
+          "figure": "WZ1406991",
+          "source": {
+            "pages": [
+              "25-K-12"
+            ],
+            "topic": "eductor-level--4dff43"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "p-open-load",
+          "say": "PPE on. Quik-Fill closed, eductor down and lid up, Eductor On/Off on, sump then rinse valve open.",
+          "why": "The full tank must still have room for the chemical; a full tank slows the eductor somewhat.",
+          "controls": [
+            "quik_fill_valve",
+            "eductor",
+            "eductor_on_off",
+            "eductor_sump_valve",
+            "eductor_rinse_valve"
+          ],
+          "done": {
+            "confirm": "Eductor running, valves open"
+          },
+          "hints": [
+            {
+              "after_s": 40,
+              "say": "Quik-Fill first, then the eductor, then its two valves.",
+              "highlight": [
+                "quik_fill_valve",
+                "eductor"
+              ]
+            },
+            {
+              "after_s": 80,
+              "say": "Eductor On/Off is G on the keypad; sump valve A and rinse valve B are on the eductor.",
+              "highlight": [
+                "eductor_on_off",
+                "eductor_sump_valve",
+                "eductor_rinse_valve"
+              ]
+            }
+          ],
+          "ask": "Can I use the eductor when the tank is already full?",
+          "est_s": 60,
+          "figure": "N135935",
+          "source": {
+            "pages": [
+              "60-21"
+            ],
+            "topic": "use-eductor-to-load-chemicals-with-full-solution-tank--e0f0ee"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "p-pour-rinse",
+          "say": "Pour the chemical in, then rinse the empty container over the rinse nozzle.",
+          "why": "Rinse the empty container on the nozzle, as before.",
+          "controls": [
+            "eductor",
+            "rinse_nozzle"
+          ],
+          "done": {
+            "confirm": "Poured and container rinsed"
+          },
+          "hints": [
+            {
+              "after_s": 40,
+              "say": "Container over the nozzle, push down.",
+              "highlight": [
+                "rinse_nozzle"
+              ]
+            }
+          ],
+          "ask": "What if the rinse nozzle doesn't spray?",
+          "est_s": 45,
+          "figure": "N135936",
+          "source": {
+            "pages": [
+              "60-22"
+            ],
+            "topic": "use-eductor-to-load-chemicals-with-full-solution-tank--e0f0ee"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "p-close",
+          "say": "Hopper empty? Close rinse then sump valve, close the lid, lift the eductor, press Eductor On/Off.",
+          "why": "An empty hopper doesn't spill when it is lifted.",
+          "controls": [
+            "eductor_rinse_valve",
+            "eductor_sump_valve",
+            "eductor",
+            "eductor_on_off"
+          ],
+          "done": {
+            "confirm": "Eductor closed down"
+          },
+          "hints": [
+            {
+              "after_s": 40,
+              "say": "Valves, lid, lift, then the keypad button.",
+              "highlight": [
+                "eductor_on_off"
+              ]
+            }
+          ],
+          "ask": "In what order do I shut the eductor down?",
+          "est_s": 45,
+          "figure": "NX1435325",
+          "source": {
+            "pages": [
+              "60-22"
+            ],
+            "topic": "use-eductor-to-load-chemicals-with-full-solution-tank--e0f0ee"
+          },
+          "confidence": "manual"
+        }
+      ]
+    }
+  ]
+}

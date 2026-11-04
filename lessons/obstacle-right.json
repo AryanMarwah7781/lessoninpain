@@ -1,0 +1,297 @@
+{
+  "schema": "lesson/0.1",
+  "id": "obstacle-right",
+  "title": "Obstacle on the right: protect the boom",
+  "machine": "R4045 Sprayer (2019) · Gen 4 display · CommandARM",
+  "build": "Apr 20 2026 (Connections app 3.2.0.7)",
+  "level": "Advanced",
+  "minutes": 15,
+  "objective": "Get past a power pole on the right and a ditch on the left without damaging the boom or spraying where you shouldn't.",
+  "procedure_source": "Scenario drafted from the app's Begin Spraying procedure and the controls the app reads. Every step is a draft: confirm the procedure with an operator before trainees use it.",
+  "setup": {
+    "armrest": [
+      "switch foot_switch 0",
+      "switch park_slot 1",
+      "set steering 0",
+      "set speed_dial 0",
+      "switch foot_switch 1",
+      "wait 0.3",
+      "press centre_boom_lower 800",
+      "wait 0.3",
+      "switch foot_switch 0",
+      "wait 0.3",
+      "set speed_dial 6",
+      "press solution_pump 300",
+      "press engine_high_idle 300",
+      "switch park_slot 0",
+      "set lever 175",
+      "press centre_boom_lower 400",
+      "press master_spray 300",
+      "wait 0.5"
+    ],
+    "trainer": "Boom unfolded and at spraying height, solution pump on, engine at high idle, lever out of park and forward, master on, speed dial 6 clicks up, wheel straight.",
+    "expect": {
+      "game": {
+        "boomUnfolded": "1"
+      }
+    }
+  },
+  "chatbot": {
+    "about": "The trainee is steering an R4045 sprayer simulator (Gen 4 display, CommandARM) around obstacles while spraying. Keep answers to 2-3 sentences and name the exact control.",
+    "send": [
+      "lesson title",
+      "section",
+      "step instruction",
+      "seconds on step",
+      "last 10 controls used",
+      "current game state",
+      "lights currently on"
+    ]
+  },
+  "sections": [
+    {
+      "title": "1. Power pole on the right",
+      "steps": [
+        {
+          "id": "sections-then-lift",
+          "say": "A power pole is coming up on the right. Shut off the right-hand sections, then raise the right wing.",
+          "why": "Sections first, so you never spray from wing height.",
+          "controls": [
+            "section_right_enable",
+            "right_boom_raise"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_MHC_IBSRightEnable",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_MHC_RightBoomRaise",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_MHC_RightBoomRaise",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_MHC_IBSRightEnable",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "Shut the right sections first, then lift the wing."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Right section button first, then right wing raise.",
+              "highlight": [
+                "section_right_enable",
+                "right_boom_raise"
+              ]
+            }
+          ],
+          "show_me": [
+            "press section_right_enable 300",
+            "press right_boom_raise 600"
+          ],
+          "wrong_demo": [
+            "press right_boom_raise 400",
+            "wait 0.4"
+          ],
+          "ask": "How do I get the boom past a pole?",
+          "confidence": "draft"
+        },
+        {
+          "id": "steer-around",
+          "say": "Ease left around the pole: half a turn left, then back to straight. Keep moving.",
+          "why": "Stopping beside the pole doesn't help; a smooth line does.",
+          "controls": [
+            "steering"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_SteeringWheelAngleDeg",
+                "gte": 6
+              },
+              {
+                "sent": "PLT_SteeringWheelAngleDeg",
+                "eq": "0"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "now_sent": "PLT_HydroHandlePosition",
+                "between": [
+                  120,
+                  130
+                ]
+              },
+              "say": "Keep moving through the manoeuvre."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Half a turn left on the wheel, then back to centre.",
+              "highlight": [
+                "steering"
+              ]
+            }
+          ],
+          "show_me": [
+            "set lever 175",
+            "set steering 180",
+            "wait 1.2",
+            "set steering 0",
+            "wait 1.2"
+          ],
+          "wrong_demo": [
+            "set lever 125",
+            "wait 0.4"
+          ],
+          "ask": "How far should I steer around an obstacle?",
+          "confidence": "draft"
+        },
+        {
+          "id": "lower-then-sections",
+          "say": "Past the pole: lower the right wing, then turn the sections back on.",
+          "why": "Wing down first, so the sections spray at the right height.",
+          "controls": [
+            "right_boom_lower",
+            "section_reset"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_MHC_RightBoomLower",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_MHC_IBSReset",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_MHC_IBSReset",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_MHC_RightBoomLower",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "Lower the wing before the sections come back on."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Right wing lower, then the section reset button.",
+              "highlight": [
+                "right_boom_lower",
+                "section_reset"
+              ]
+            }
+          ],
+          "show_me": [
+            "press right_boom_lower 600",
+            "press section_reset 300"
+          ],
+          "wrong_demo": [
+            "press section_reset 300",
+            "wait 0.4"
+          ],
+          "ask": "When do I turn sections back on after an obstacle?",
+          "confidence": "draft"
+        }
+      ]
+    },
+    {
+      "title": "2. Ditch on the left",
+      "steps": [
+        {
+          "id": "follow-ditch",
+          "say": "A ditch runs along the left: lower the left wing to follow it, then raise it back once you're past.",
+          "why": "Following the ground keeps the spray height even.",
+          "controls": [
+            "left_boom_lower",
+            "left_boom_raise"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_MHC_LeftBoomLower",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_MHC_LeftBoomRaise",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Left wing lower, then left wing raise, both on the handle.",
+              "highlight": [
+                "left_boom_lower",
+                "left_boom_raise"
+              ]
+            }
+          ],
+          "show_me": [
+            "press left_boom_lower 500",
+            "wait 0.4",
+            "press left_boom_raise 500"
+          ],
+          "ask": "How do I follow a ditch with one wing?",
+          "confidence": "draft"
+        },
+        {
+          "id": "mark-skip",
+          "say": "Drop a foam mark on the right where you went round the pole, so you can come back to it.",
+          "why": "The skip round the pole needs a spot treatment later.",
+          "controls": [
+            "foam_marker_right"
+          ],
+          "done": {
+            "sent": "PLT_MHC_RightHandFoamMarker",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Right foam marker button, on the handle.",
+              "highlight": [
+                "foam_marker_right"
+              ]
+            }
+          ],
+          "show_me": [
+            "press foam_marker_right 300"
+          ],
+          "ask": "How do I mark a spot I skipped?",
+          "confidence": "draft"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+# build output (dist/LessonStudio is the ready-built copy and IS committed)
+lesson-panel/bin/
+lesson-panel/obj/
+__pycache__/
+*.pyc
+
+# logs, run results, local state
+*.log
+results/
+virtual-commandarm/SBMEmulator.apr20-only.exe
+
+# large or reproducible
+demo/*.mp4
+demo/rec-tool/node_modules/
+fs25-mod/backups/
+.superpowers/

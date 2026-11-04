@@ -1,0 +1,694 @@
+{
+  "schema": "lesson/0.2",
+  "id": "612r-drive-transport",
+  "title": "Drive in Auto mode and transport safely",
+  "machine": "612R Sprayer · CommandCenter display · CommandARM",
+  "build": "612R operator's manual OMKK105338; runs on the Apr 20 Display and CommandARM Simulator",
+  "manual": "OMKK105338 (400R-616R operator's manual)",
+  "level": "Intermediate",
+  "minutes": 17,
+  "objective": "Move off in Auto mode in the manual's order, slow and stop with the lever before the pedal, back up, park and shut down safely, prepare the machine for the road and drive off in transport mode, then park again without help.",
+  "procedure_source": "OMKK105338 Operate the Machine: Drive the Machine—Auto Mode (50-17 to 50-19), CommandDrive Theory of Operation (50-15, 50-16), Reduce Travel Speed (50-25, 50-26), Transport Machine (50-26, 50-27), Park the Machine (50-27, 50-28); CommandDrive Transmission Application (25-Q-1, 25-Q-2); Park Brake and Transport Lock Switch (30-14); Auto Boom Fold/Unfold (30-35); safety topics Operate Safely (05-10), Transport and Operate Safely (05-12, 05-13), Axle Load Decal (10-2), Operate AutoTrac (140-3). Lever checks are direction-neutral because the simulator lever's forward end is not confirmed yet; Transport Lock and Tread IN are only seen on the virtual armrest.",
+  "extra_controls": {
+    "transmission_mode": {
+      "label": "Transmission Mode selection (Manual / Auto)",
+      "where": "Display: Menu, Machine Settings tab, Transmission; Mode toggle bar on the Transmission main page",
+      "figure": "N142909",
+      "source": {"pages": ["25-Q-1", "50-17"], "topic": "transmission-main-page--1436f2"}
+    },
+    "brake_pedal": {
+      "label": "Brake pedal",
+      "where": "Bottom of the steering column",
+      "figure": "N152625",
+      "source": {"pages": ["30-5"], "topic": "operate-brake-pedal--5cfda7"}
+    },
+    "key_switch": {
+      "label": "Key switch",
+      "where": "Right-hand side of the steering column",
+      "figure": "H127222",
+      "source": {"pages": ["30-3"], "topic": "key-switch--7d3ad4"}
+    },
+    "road_lights": {
+      "label": "Road Light button",
+      "where": "Light buttons on the CommandARM (A in figure N153023)",
+      "figure": "N153023",
+      "source": {"pages": ["50-26"], "topic": "transport-machine--4216ec"}
+    },
+    "hazard_lights": {
+      "label": "Hazard Light button",
+      "where": "Light buttons on the CommandARM (B in figure N153023)",
+      "figure": "N153023",
+      "source": {"pages": ["50-26"], "topic": "transport-machine--4216ec"}
+    },
+    "smv_emblem": {
+      "label": "Slow-moving vehicle (SMV) emblem",
+      "where": "On the boom (or rear of machine); outside the cab",
+      "figure": "N155495",
+      "source": {"pages": ["50-26"], "topic": "transport-machine--4216ec"}
+    },
+    "corner_post_display": {
+      "label": "Corner post display",
+      "where": "Front right-hand corner post; shows target speed and vehicle speed",
+      "figure": "NX1396836",
+      "source": {"pages": ["50-19"], "topic": "drive-the-machine-auto-mode--c2def8"}
+    }
+  },
+  "setup": {
+    "armrest": [
+      "switch foot_switch 0",
+      "switch warning_switch 0",
+      "switch park_slot 1",
+      "set steering 0",
+      "set speed_dial 0",
+      "switch foot_switch 1",
+      "wait 0.3",
+      "press centre_boom_lower 800",
+      "wait 0.3",
+      "switch foot_switch 0",
+      "wait 0.3",
+      "press engine_low_idle 300",
+      "wait 0.5"
+    ],
+    "trainer": "Field edge after spraying: boom unfolded, solution pump and spray system off, engine running at low idle, lever in PARK, park brake switch engaged (P light on; press Park Brake once if it is off), Transport Lock off, ladder up, speed range wheel at its lowest, wheels straight, transmission mode on the display set to Manual. The tread is already at its narrowest.",
+    "expect": {
+      "game": {
+        "boomUnfolded": "1",
+        "ladderRaised": "1"
+      }
+    }
+  },
+  "chatbot": {
+    "about": "The trainee is driving a John Deere 612R self-propelled sprayer on the Display and CommandARM Simulator: Auto mode move-off, slowing and stopping, reversing, parking, road transport preparation and parking again. Answer only from the 612R operator's manual OMKK105338 in 2-3 sentences and name the exact control. Key manual facts: Auto mode order is Auto on the display, High Idle, release the park brake switch, lever forward, speed range wheel; changing engine speed in Auto switches to Manual; pull the lever back before using the brake pedal; reverse = lever to neutral, brake pedal to a complete stop, lever right and rear; in PARK the park brakes apply automatically, the secondary brake is not used for parking, and brakes set with the park brake switch must be released by hand; transport uses the narrowest tread, booms folded onto the cradles, Transport Lock on, Field 2 for transport speeds, no more than 48 km/h (30 mph) unless the application system is empty, AutoTrac off on roads. The manual's transport procedure also includes relieving boom pressure if nozzles drip and rephasing the steering cylinders; this lesson does not practise those two.",
+    "send": [
+      "lesson title",
+      "section",
+      "step instruction",
+      "seconds on step",
+      "last 10 controls used",
+      "current game state",
+      "lights currently on"
+    ]
+  },
+  "sections": [
+    {
+      "title": "1. Move off in Auto mode",
+      "mode": "learn",
+      "steps": [
+        {
+          "id": "auto-mode",
+          "say": "On the display open Menu, Machine Settings, Transmission, and select Auto.",
+          "why": "The machine always starts in Manual mode until you select Auto and press High Idle.",
+          "controls": ["transmission_mode"],
+          "done": {"confirm": "Auto selected on the display"},
+          "wrong": [
+            {
+              "if": {"sent": "PLT_NeutralSlotStatus", "eq": "0"},
+              "say": "Not yet: Auto, then High Idle, then release the park brake switch, then the lever."
+            }
+          ],
+          "wrong_demo": ["switch park_slot 0", "wait 0.4", "switch park_slot 1", "wait 0.4"],
+          "hints": [
+            {"after_s": 20, "say": "Transmission is in Machine Settings on the display menu.", "highlight": ["transmission_mode"]},
+            {"after_s": 45, "say": "Display: Menu, Machine Settings tab, Transmission. Choose Auto on the Mode toggle bar.", "highlight": ["transmission_mode"]}
+          ],
+          "ask": "How do I put the 612R transmission in Auto mode?",
+          "est_s": 60,
+          "figure": "N142909",
+          "source": {"pages": ["50-17"], "topic": "drive-the-machine-auto-mode--c2def8"},
+          "confidence": "manual"
+        },
+        {
+          "id": "high-idle",
+          "say": "Press the High Idle switch for maximum engine speed.",
+          "why": "Auto mode is fully active only with Auto selected and the engine at high idle.",
+          "controls": ["engine_high_idle"],
+          "done": {"sent": "PLT_AIC_EngineHighIdle", "eq": "1"},
+          "wrong": [
+            {
+              "if": {"sent": "PLT_AIC_EngineLowIdle", "eq": "1"},
+              "say": "That's Low Idle, the wrong idle. Auto mode needs High Idle."
+            },
+            {
+              "if": {"sent": "PLT_NeutralSlotStatus", "eq": "0"},
+              "say": "Lever back to PARK. High Idle first, then the park brake switch, then the lever."
+            }
+          ],
+          "wrong_demo": ["press engine_low_idle 300", "wait 0.5"],
+          "hints": [
+            {"after_s": 20, "say": "High Idle is with the engine speed switches on the CommandARM.", "highlight": ["engine_high_idle"]},
+            {"after_s": 45, "say": "Engine and Ground Drive switches beside the lever: High Idle. On the simulator: keys beside the display.", "highlight": ["engine_high_idle"]}
+          ],
+          "show_me": ["press engine_high_idle 300"],
+          "ask": "Why does Auto mode need the engine at high idle?",
+          "est_s": 35,
+          "figure": "N137031",
+          "source": {"pages": ["50-18"], "topic": "drive-the-machine-auto-mode--c2def8"},
+          "confidence": "manual"
+        },
+        {
+          "id": "release-park-brake",
+          "say": "Press the Park Brake switch to release the park brakes.",
+          "why": "Brakes set with this switch don't release by themselves when you move the lever.",
+          "controls": ["park_brake"],
+          "done": {"sent": "PLT_AIC_ParkBrake", "eq": "1"},
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {"sent": "PLT_NeutralSlotStatus", "eq": "0"},
+                  {"sent": "PLT_AIC_ParkBrake", "eq": "1"}
+                ]
+              },
+              "say": "Stop: the park brake switch is still on. Lever back to PARK and release the switch first."
+            },
+            {
+              "if": {"sent": "PLT_AIC_EngineLowIdle", "eq": "1"},
+              "say": "Leave the engine at High Idle: changing engine speed takes you out of Auto mode."
+            }
+          ],
+          "wrong_demo": ["switch park_slot 0", "set lever 175", "wait 0.6", "set lever 125", "switch park_slot 1", "wait 0.5"],
+          "hints": [
+            {"after_s": 20, "say": "The Park Brake switch is marked P, with the engine switches.", "highlight": ["park_brake"]},
+            {"after_s": 45, "say": "Engine and Ground Drive group on the CommandARM, the P switch. On the simulator: keys beside the display.", "highlight": ["park_brake"]}
+          ],
+          "show_me": ["press park_brake 300"],
+          "ask": "Why must I release the park brake switch before I move the lever?",
+          "est_s": 40,
+          "figure": "N137032",
+          "source": {"pages": ["50-18"], "topic": "drive-the-machine-auto-mode--c2def8"},
+          "confidence": "manual"
+        },
+        {
+          "id": "move-off",
+          "say": "Check around the machine, then move the lever out of PARK and push it slowly forward.",
+          "why": "Auto mode raises engine rpm and shifts the transmission for you as needed.",
+          "controls": ["park_slot", "lever"],
+          "done": {
+            "then": [
+              {"sent": "PLT_NeutralSlotStatus", "eq": "0"},
+              {"sent": "PLT_HydroHandlePosition", "outside": [100, 150]}
+            ]
+          },
+          "wrong": [
+            {
+              "if": {"sent": "PLT_AIC_EngineLowIdle", "eq": "1"},
+              "say": "Changing engine speed in Auto drops you into Manual mode. Press High Idle and reselect Auto."
+            }
+          ],
+          "wrong_demo": ["press engine_low_idle 300", "wait 0.4", "press engine_high_idle 300", "wait 0.4"],
+          "hints": [
+            {"after_s": 20, "say": "Out of PARK first, then gently forward.", "highlight": ["park_slot", "lever"]},
+            {"after_s": 45, "say": "Multi-function lever on the CommandARM: move it out of the PARK position and push it slowly forward.", "highlight": ["park_slot", "lever"]}
+          ],
+          "show_me": ["switch park_slot 0", "set lever 175", "wait 0.5"],
+          "ask": "How do I start moving in Auto mode?",
+          "est_s": 40,
+          "figure": "N166439",
+          "source": {"pages": ["50-18"], "topic": "drive-the-machine-auto-mode--c2def8"},
+          "confidence": "manual"
+        },
+        {
+          "id": "target-speed",
+          "say": "Roll the speed range wheel up a few clicks to raise the target speed.",
+          "why": "The corner post shows target and vehicle speed; with the lever fully forward, Auto holds the target.",
+          "controls": ["speed_dial", "corner_post_display"],
+          "done": {"sent": "PLT_MHC_Encoder", "gte": 2000},
+          "wrong": [
+            {
+              "if": {"sent": "PLT_MHC_EncoderButton", "eq": "1"},
+              "say": "Pushing the wheel in swaps Field 1 and Field 2. Roll it to change the target speed."
+            }
+          ],
+          "wrong_demo": ["press dial_push 300", "wait 0.5", "press dial_push 300", "wait 0.5"],
+          "hints": [
+            {"after_s": 20, "say": "Use the thumb wheel on the lever, not the dial on the display.", "highlight": ["speed_dial"]},
+            {"after_s": 45, "say": "Speed range wheel: the thumb wheel under the lever's button head (Y1). Roll it up.", "highlight": ["speed_dial"]}
+          ],
+          "show_me": ["set speed_dial 4"],
+          "ask": "How do I set my target speed in Auto mode?",
+          "est_s": 40,
+          "figure": "N166440",
+          "source": {"pages": ["50-18", "50-19"], "topic": "drive-the-machine-auto-mode--c2def8"},
+          "confidence": "manual"
+        }
+      ]
+    },
+    {
+      "title": "2. Slow, stop, back up and park",
+      "mode": "learn",
+      "steps": [
+        {
+          "id": "slow-stop",
+          "say": "Pull the lever back to neutral, then press the brake pedal to stop completely.",
+          "why": "The lever does the main braking; braking with the pedal instead wears the brakes early.",
+          "controls": ["lever", "brake_pedal"],
+          "done": {
+            "then": [
+              {"sent": "PLT_HydroHandlePosition", "between": [120, 130]},
+              {"confirm": "Stopped with the brake pedal"}
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {"confirm": "Stopped with the brake pedal"},
+                  {"sent": "PLT_HydroHandlePosition", "between": [120, 130]}
+                ]
+              },
+              "say": "Lever back first, then the pedal: braking with the pedal alone wears the brakes."
+            }
+          ],
+          "hints": [
+            {"after_s": 20, "say": "Lever back to the middle first, then the brake pedal.", "highlight": ["lever", "brake_pedal"]},
+            {"after_s": 45, "say": "Pull the multi-function lever back to neutral; the brake pedal is at the bottom of the steering column.", "highlight": ["lever", "brake_pedal"]}
+          ],
+          "show_me": ["set lever 125", "wait 0.5"],
+          "ask": "Why pull the lever back before using the brake pedal?",
+          "est_s": 55,
+          "figure": "N166476",
+          "source": {"pages": ["50-25"], "topic": "reduce-travel-speed--b6b710"},
+          "confidence": "manual"
+        },
+        {
+          "id": "back-up",
+          "say": "Check behind you. Move the lever right and rearward to back up a short way, then return it to neutral.",
+          "why": "Reverse speed follows how far you move the lever; the backup alarm warns people nearby.",
+          "controls": ["lever"],
+          "done": {
+            "then": [
+              {"sent": "PLT_HydroHandlePosition", "outside": [100, 150]},
+              {"sent": "PLT_HydroHandlePosition", "between": [120, 130]}
+            ]
+          },
+          "wrong": [
+            {
+              "if": {"sent": "PLT_NeutralSlotStatus", "eq": "1"},
+              "say": "That's PARK. To back up, move the lever right and rearward from neutral."
+            }
+          ],
+          "hints": [
+            {"after_s": 20, "say": "From neutral: right, then rearward. The further you move it, the faster you back up.", "highlight": ["lever"]},
+            {"after_s": 45, "say": "Multi-function lever: to the right and to the rear of neutral, then back to the middle.", "highlight": ["lever"]}
+          ],
+          "show_me": ["set lever 75", "wait 1.0", "set lever 125", "wait 0.5"],
+          "ask": "How do I reverse the 612R safely?",
+          "est_s": 55,
+          "figure": "N155115",
+          "source": {"pages": ["50-19"], "topic": "drive-the-machine-auto-mode--c2def8"},
+          "confidence": "manual"
+        },
+        {
+          "id": "lever-park",
+          "say": "Slowly return the lever to the PARK position.",
+          "why": "In PARK the park brakes apply automatically; never park with the secondary brake.",
+          "controls": ["lever", "park_slot"],
+          "done": {"sent": "PLT_NeutralSlotStatus", "eq": "1"},
+          "wrong": [
+            {
+              "if": {"sent": "PLT_AIC_EngineLowIdle", "eq": "1"},
+              "say": "Lever to PARK first, then Low Idle: that's the manual's parking order."
+            }
+          ],
+          "wrong_demo": ["press engine_low_idle 300", "wait 0.4", "press engine_high_idle 300", "wait 0.4"],
+          "hints": [
+            {"after_s": 20, "say": "Bring the lever all the way back into PARK.", "highlight": ["park_slot"]},
+            {"after_s": 45, "say": "Multi-function lever: slowly back through neutral into the PARK position.", "highlight": ["lever", "park_slot"]}
+          ],
+          "show_me": ["set lever 125", "wait 0.3", "switch park_slot 1"],
+          "ask": "Do I need the secondary brake or park brake switch when I park?",
+          "est_s": 30,
+          "figure": "N166477",
+          "source": {"pages": ["50-27"], "topic": "park-the-machine--a7f533"},
+          "confidence": "manual"
+        },
+        {
+          "id": "brake-switch-on",
+          "say": "Press the Park Brake switch so a bumped lever can't move the machine.",
+          "why": "Optional in PARK, but it holds the machine; remember it must be released by hand later.",
+          "controls": ["park_brake"],
+          "done": {"sent": "PLT_AIC_ParkBrake", "eq": "1"},
+          "wrong": [
+            {
+              "if": {"sent": "PLT_NeutralSlotStatus", "eq": "0"},
+              "say": "Leave the lever in PARK."
+            }
+          ],
+          "wrong_demo": ["switch park_slot 0", "wait 0.4", "switch park_slot 1", "wait 0.4"],
+          "hints": [
+            {"after_s": 20, "say": "The same P switch you released to move off.", "highlight": ["park_brake"]},
+            {"after_s": 45, "say": "Engine and Ground Drive group, the P switch. On the simulator: keys beside the display.", "highlight": ["park_brake"]}
+          ],
+          "show_me": ["press park_brake 300"],
+          "ask": "Why engage the park brake switch when the lever is already in PARK?",
+          "est_s": 35,
+          "figure": "N137032",
+          "source": {"pages": ["50-27"], "topic": "park-the-machine--a7f533"},
+          "confidence": "manual"
+        },
+        {
+          "id": "low-idle",
+          "say": "Press Low Idle to bring the engine down to low idle.",
+          "why": "The manual's parking order: lever in PARK, then low idle, then lights off and key.",
+          "controls": ["engine_low_idle"],
+          "done": {"sent": "PLT_AIC_EngineLowIdle", "eq": "1"},
+          "wrong": [
+            {
+              "if": {"sent": "PLT_AIC_EngineHighIdle", "eq": "1"},
+              "say": "That's High Idle, the wrong idle. Press Low Idle to bring the engine down."
+            }
+          ],
+          "wrong_demo": ["press engine_high_idle 300", "wait 0.4"],
+          "hints": [
+            {"after_s": 20, "say": "Low Idle is with the engine speed switches.", "highlight": ["engine_low_idle"]},
+            {"after_s": 45, "say": "Low Idle switch (B in the figure), beside the lever. On the simulator: keys beside the display.", "highlight": ["engine_low_idle"]}
+          ],
+          "show_me": ["press engine_low_idle 300"],
+          "ask": "Why go to low idle before turning the key off?",
+          "est_s": 30,
+          "figure": "N166477",
+          "source": {"pages": ["50-27"], "topic": "park-the-machine--a7f533"},
+          "confidence": "manual"
+        },
+        {
+          "id": "shut-down",
+          "say": "Turn off lights and accessories, then turn the key to OFF and remove it.",
+          "why": "After working load, idle at least 2 minutes first to cool the hot engine parts.",
+          "controls": ["key_switch"],
+          "done": {"confirm": "Lights off, key OFF and removed"},
+          "wrong": [
+            {
+              "if": {"sent": "PLT_AIC_EngineHighIdle", "eq": "1"},
+              "say": "Stay at low idle before you stop the engine."
+            }
+          ],
+          "hints": [
+            {"after_s": 20, "say": "Lights first, then the key.", "highlight": ["key_switch"]},
+            {"after_s": 45, "say": "Key switch: right-hand side of the steering column. Turn it to OFF and take the key.", "highlight": ["key_switch"]}
+          ],
+          "ask": "How long should the engine idle before I turn it off, and why?",
+          "est_s": 60,
+          "figure": "H127222",
+          "source": {"pages": ["50-27", "50-28"], "topic": "park-the-machine--a7f533"},
+          "confidence": "manual"
+        },
+        {
+          "id": "ladder-down",
+          "say": "Lower the ladder with the Ladder Up/Down switch.",
+          "why": "It's the last step of parking; on the machine the ladder also lowers when shut off.",
+          "controls": ["ladder"],
+          "done": {"game": "ladderRaised", "eq": "0"},
+          "hints": [
+            {"after_s": 20, "say": "Ladder Up/Down is with the spraying controls on the CommandARM.", "highlight": ["ladder"]},
+            {"after_s": 45, "say": "Ladder Up/Down switch on the CommandARM. On the simulator: the ladder key beside the display.", "highlight": ["ladder"]}
+          ],
+          "show_me": ["press ladder 300", "wait 0.6"],
+          "ask": "When does the 612R ladder raise and lower by itself?",
+          "est_s": 30,
+          "figure": "N151287",
+          "source": {"pages": ["50-28"], "topic": "park-the-machine--a7f533"},
+          "confidence": "manual"
+        }
+      ]
+    },
+    {
+      "title": "3. Ready for the road",
+      "mode": "learn",
+      "steps": [
+        {
+          "id": "smv-start",
+          "say": "Check the SMV emblem is on the boom, then start the engine from the seat, lever in PARK.",
+          "why": "The emblem warns traffic; an engine that starts out of PARK has a starting-circuit fault.",
+          "controls": ["smv_emblem", "key_switch", "park_slot"],
+          "done": {
+            "then": [
+              {"confirm": "SMV emblem in place"},
+              {"confirm": "Engine started, lever in PARK"}
+            ]
+          },
+          "wrong": [
+            {
+              "if": {"sent": "PLT_NeutralSlotStatus", "eq": "0"},
+              "say": "Lever back to PARK: start the engine only with the lever in PARK."
+            }
+          ],
+          "wrong_demo": ["switch park_slot 0", "wait 0.4", "switch park_slot 1", "wait 0.4"],
+          "hints": [
+            {"after_s": 20, "say": "SMV emblem first (on the boom or rear). Sound the horn before you start.", "highlight": ["smv_emblem"]},
+            {"after_s": 45, "say": "Key switch: right-hand side of the steering column. The lever stays in PARK.", "highlight": ["key_switch", "park_slot"]}
+          ],
+          "ask": "What do I check before starting the 612R for road transport?",
+          "est_s": 75,
+          "figure": "N155495",
+          "source": {"pages": ["50-26"], "topic": "transport-machine--4216ec"},
+          "confidence": "manual"
+        },
+        {
+          "id": "lights",
+          "say": "Press Road Lights and Hazard Lights, then check the amber warning lights are flashing.",
+          "why": "Lights and the SMV emblem warn other traffic, day or night.",
+          "controls": ["road_lights", "hazard_lights"],
+          "done": {"confirm": "Road and hazard lights on, amber lights flashing"},
+          "hints": [
+            {"after_s": 20, "say": "Both are light buttons on the CommandARM.", "highlight": ["road_lights", "hazard_lights"]},
+            {"after_s": 45, "say": "CommandARM light buttons: Road Light (A) and Hazard Light (B) in figure N153023.", "highlight": ["road_lights", "hazard_lights"]}
+          ],
+          "ask": "Which lights do I need for road transport?",
+          "est_s": 50,
+          "figure": "N153023",
+          "source": {"pages": ["50-26"], "topic": "transport-machine--4216ec"},
+          "confidence": "manual"
+        },
+        {
+          "id": "tread",
+          "say": "Check the tread is at its narrowest setting before the road.",
+          "why": "Always transport at the narrowest tread; top transport speeds need it.",
+          "controls": ["tread_in"],
+          "done": {"confirm": "Tread at narrowest"},
+          "hints": [
+            {"after_s": 20, "say": "Tread width shows on the Tread Adjust page.", "highlight": ["tread_in"]},
+            {"after_s": 45, "say": "If it isn't narrowest: Tread IN on the CommandARM, driving 1 through 8 km/h (1 and 5 mph), Transport Lock off.", "highlight": ["tread_in"]}
+          ],
+          "ask": "How do I narrow the tread on the 612R before transport?",
+          "est_s": 45,
+          "figure": "N120613",
+          "source": {"pages": ["50-26"], "topic": "transport-machine--4216ec"},
+          "confidence": "manual"
+        },
+        {
+          "id": "fold",
+          "say": "Fold the boom: hold the fold foot switch and hold centre boom raise until it's in the cradles.",
+          "why": "Booms move quickly, so keep everyone clear; off the cradles, transport can damage the machine.",
+          "controls": ["foot_switch", "centre_boom_raise"],
+          "done": {"game": "boomUnfolded", "eq": "0"},
+          "wrong": [
+            {
+              "if": {"sent": "PLT_MHC_CenterBoomRaise", "eq": "1"},
+              "say": "That only raised the boom. Hold the fold foot switch down, then press centre boom raise."
+            },
+            {
+              "if": {
+                "before": [
+                  {"control": "transport_lock", "eq": "1"},
+                  {"game": "boomUnfolded", "eq": "0"}
+                ]
+              },
+              "say": "Fold first: with Transport Lock on, the boom can't fold."
+            }
+          ],
+          "wrong_demo": ["press centre_boom_raise 400", "wait 0.4", "press centre_boom_lower 400", "wait 0.4"],
+          "hints": [
+            {"after_s": 20, "say": "Foot switch down and held, then the top of the round centre boom switch.", "highlight": ["foot_switch", "centre_boom_raise"]},
+            {"after_s": 45, "say": "Boom fold/unfold foot switch on the cab floor, plus the top of the round switch on the lever (M1). Hold both.", "highlight": ["foot_switch", "centre_boom_raise"]}
+          ],
+          "show_me": ["switch foot_switch 1", "wait 0.3", "press centre_boom_raise 800", "wait 0.3", "switch foot_switch 0", "wait 0.5"],
+          "ask": "How do I fold the 612R boom for transport, and why might it stop above the cradles?",
+          "est_s": 70,
+          "figure": "WZ1409986",
+          "source": {"pages": ["30-35"], "topic": "auto-boom-fold-unfold--db954d"},
+          "confidence": "manual"
+        },
+        {
+          "id": "transport-lock",
+          "say": "Press the Transport Lock switch to put the machine in transport mode.",
+          "why": "It blocks spray on/off, boom moves and tread adjust on the road; its light shows it's on.",
+          "controls": ["transport_lock"],
+          "done": {
+            "any": [
+              {"control": "transport_lock", "eq": "1"},
+              {"confirm": "Transport Lock on"}
+            ]
+          },
+          "hints": [
+            {"after_s": 20, "say": "It's with the engine and park brake switches.", "highlight": ["transport_lock"]},
+            {"after_s": 45, "say": "Engine and Ground Drive group on the CommandARM: Transport Lock. On the simulator: keys beside the display.", "highlight": ["transport_lock"]}
+          ],
+          "show_me": ["press transport_lock 300"],
+          "ask": "What does Transport Lock stop working?",
+          "est_s": 40,
+          "figure": "N120615",
+          "source": {"pages": ["50-26"], "topic": "transport-machine--4216ec"},
+          "confidence": "draft"
+        },
+        {
+          "id": "high-idle-road",
+          "say": "Press High Idle for maximum engine speed.",
+          "why": "Maximum engine speed before you move off; Auto mode needs it to be fully active.",
+          "controls": ["engine_high_idle"],
+          "done": {"sent": "PLT_AIC_EngineHighIdle", "eq": "1"},
+          "wrong": [
+            {
+              "if": {"sent": "PLT_AIC_EngineLowIdle", "eq": "1"},
+              "say": "That's Low Idle, the wrong idle for the road. Press High Idle."
+            },
+            {
+              "if": {"sent": "PLT_AIC_ParkBrake", "eq": "1"},
+              "say": "Not yet: High Idle and the speed range first, then release the park brake switch."
+            }
+          ],
+          "wrong_demo": ["press engine_low_idle 300", "wait 0.4"],
+          "hints": [
+            {"after_s": 20, "say": "Same High Idle switch you used to move off.", "highlight": ["engine_high_idle"]},
+            {"after_s": 45, "say": "Engine and Ground Drive group beside the lever: High Idle. On the simulator: keys beside the display.", "highlight": ["engine_high_idle"]}
+          ],
+          "show_me": ["press engine_high_idle 300"],
+          "ask": "Why press High Idle before transport?",
+          "est_s": 30,
+          "figure": "N137031",
+          "source": {"pages": ["50-27"], "topic": "transport-machine--4216ec"},
+          "confidence": "manual"
+        },
+        {
+          "id": "field-2",
+          "say": "Press the speed range wheel in to switch to Field 2 for transport speeds.",
+          "why": "Field 1 stops at maximum field speed. Unless the application system is empty, don't exceed 48 km/h (30 mph).",
+          "controls": ["dial_push", "speed_dial"],
+          "done": {"sent": "PLT_MHC_EncoderButton", "eq": "1"},
+          "wrong": [
+            {
+              "if": {"sent": "PLT_MHC_Encoder", "gte": 0},
+              "say": "Rolling changes the target speed. Push the wheel in to swap to Field 2."
+            }
+          ],
+          "wrong_demo": ["set speed_dial 5", "wait 0.5"],
+          "hints": [
+            {"after_s": 20, "say": "Push the thumb wheel in; don't roll it.", "highlight": ["dial_push"]},
+            {"after_s": 45, "say": "Speed range wheel under the lever's button head (Y1): press it in once.", "highlight": ["dial_push"]}
+          ],
+          "show_me": ["press dial_push 300"],
+          "ask": "What is the maximum transport speed for the 612R, loaded and empty?",
+          "est_s": 40,
+          "figure": "N152647",
+          "source": {"pages": ["30-19"], "topic": "multi-function-lever--30db6a"},
+          "confidence": "manual"
+        },
+        {
+          "id": "release-drive",
+          "say": "Release the Park Brake switch, then push the lever slowly forward onto the road.",
+          "why": "Switch-set brakes stay on until released. Before a downhill, choose a speed for the load and slope.",
+          "controls": ["park_brake", "park_slot", "lever"],
+          "done": {
+            "then": [
+              {"sent": "PLT_AIC_ParkBrake", "eq": "1"},
+              {"sent": "PLT_NeutralSlotStatus", "eq": "0"},
+              {"sent": "PLT_HydroHandlePosition", "outside": [100, 150]}
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {"sent": "PLT_NeutralSlotStatus", "eq": "0"},
+                  {"sent": "PLT_AIC_ParkBrake", "eq": "1"}
+                ]
+              },
+              "say": "The park brake switch is still on. Lever back to PARK and release the switch first."
+            },
+            {
+              "if": {"sent": "PLT_SWITCH_4", "eq": "1"},
+              "say": "Never turn AutoTrac on while transporting on a road."
+            }
+          ],
+          "wrong_demo": ["switch park_slot 0", "set lever 175", "wait 0.6", "set lever 125", "switch park_slot 1", "wait 0.5"],
+          "hints": [
+            {"after_s": 20, "say": "Park Brake switch first, then the lever.", "highlight": ["park_brake", "lever"]},
+            {"after_s": 45, "say": "P switch in the Engine and Ground Drive group, then the multi-function lever out of PARK and slowly forward.", "highlight": ["park_brake", "park_slot", "lever"]}
+          ],
+          "show_me": ["press park_brake 300", "wait 0.4", "switch park_slot 0", "set lever 175", "wait 0.5"],
+          "ask": "What should I watch for when driving the 612R downhill at transport speed?",
+          "est_s": 55,
+          "figure": "N137032",
+          "source": {"pages": ["50-27"], "topic": "transport-machine--4216ec"},
+          "confidence": "manual"
+        }
+      ]
+    },
+    {
+      "title": "4. Arrive and park (no help)",
+      "mode": "assess",
+      "steps": [
+        {
+          "id": "arrive-stop",
+          "say": "You're at the yard. Slow down with the lever and stop in PARK.",
+          "why": "Stop slowly to avoid nose diving; the lever does the main braking.",
+          "controls": ["lever", "park_slot"],
+          "done": {"sent": "PLT_NeutralSlotStatus", "eq": "1"},
+          "wrong": [
+            {
+              "if": {"sent": "PLT_AIC_EngineLowIdle", "eq": "1"},
+              "say": "Lever to PARK first, then Low Idle."
+            }
+          ],
+          "wrong_demo": ["press engine_low_idle 300", "wait 0.4", "press engine_high_idle 300", "wait 0.4"],
+          "show_me": ["set lever 125", "wait 0.4", "switch park_slot 1"],
+          "ask": "How do I stop the machine smoothly?",
+          "est_s": 35,
+          "figure": "N166477",
+          "source": {"pages": ["50-27"], "topic": "park-the-machine--a7f533"},
+          "confidence": "manual"
+        },
+        {
+          "id": "arrive-secure",
+          "say": "Secure it: Park Brake switch on, then Low Idle.",
+          "why": "A bumped lever can't move the machine, and the engine comes down to idle.",
+          "controls": ["park_brake", "engine_low_idle"],
+          "done": {
+            "then": [
+              {"sent": "PLT_AIC_ParkBrake", "eq": "1"},
+              {"sent": "PLT_AIC_EngineLowIdle", "eq": "1"}
+            ]
+          },
+          "wrong": [
+            {
+              "if": {"sent": "PLT_AIC_EngineHighIdle", "eq": "1"},
+              "say": "Wrong idle: parking needs Low Idle."
+            },
+            {
+              "if": {"sent": "PLT_NeutralSlotStatus", "eq": "0"},
+              "say": "Keep the lever in PARK."
+            }
+          ],
+          "wrong_demo": ["press engine_high_idle 300", "wait 0.4"],
+          "show_me": ["press park_brake 300", "wait 0.4", "press engine_low_idle 300"],
+          "ask": "What is the order for parking the 612R?",
+          "est_s": 35,
+          "figure": "N166477",
+          "source": {"pages": ["50-27"], "topic": "park-the-machine--a7f533"},
+          "confidence": "manual"
+        },
+        {
+          "id": "arrive-shut-down",
+          "say": "Shut down: lights off, then key OFF and removed.",
+          "why": "Remove the key whenever you leave the machine unattended.",
+          "controls": ["road_lights", "hazard_lights", "key_switch"],
+          "done": {"confirm": "Lights off, key OFF and removed"},
+          "ask": "Can I disconnect the battery straight after shutting down?",
+          "est_s": 40,
+          "figure": "H127222",
+          "source": {"pages": ["50-27", "50-28"], "topic": "park-the-machine--a7f533"},
+          "confidence": "manual"
+        }
+      ]
+    }
+  ]
+}

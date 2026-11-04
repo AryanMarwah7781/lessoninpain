@@ -1,0 +1,240 @@
+{
+  "figure": "NX707642",
+  "size": [
+    1000,
+    600
+  ],
+  "note": "Button boxes in pixels of the manual's lettered multi-function lever drawing (612R manual, p. 30-20). Front view left, side view right. Letters and functions from the manual's table on the same page. 'views' are the two drawings' areas (front, right side) for zooming.",
+  "buttons": {
+    "V": {
+      "box": [
+        186,
+        92,
+        262,
+        142
+      ],
+      "function": "Quick Stop"
+    },
+    "H": {
+      "box": [
+        178,
+        208,
+        234,
+        252
+      ],
+      "function": "Left index enable"
+    },
+    "G": {
+      "box": [
+        236,
+        208,
+        293,
+        252
+      ],
+      "function": "Right index enable"
+    },
+    "A": {
+      "box": [
+        306,
+        213,
+        350,
+        262
+      ],
+      "function": "Headland Management System (HMS)"
+    },
+    "B": {
+      "box": [
+        306,
+        264,
+        350,
+        312
+      ],
+      "function": "Configurable button"
+    },
+    "N": {
+      "box": [
+        112,
+        218,
+        170,
+        274
+      ],
+      "function": "IBS index enable"
+    },
+    "M": {
+      "box": [
+        96,
+        292,
+        140,
+        324
+      ],
+      "function": "Center frame raise"
+    },
+    "L": {
+      "box": [
+        72,
+        322,
+        108,
+        358
+      ],
+      "function": "Configurable button"
+    },
+    "J": {
+      "box": [
+        124,
+        322,
+        160,
+        358
+      ],
+      "function": "Configurable button"
+    },
+    "K": {
+      "box": [
+        96,
+        352,
+        140,
+        386
+      ],
+      "function": "Center frame lower"
+    },
+    "F": {
+      "box": [
+        181,
+        272,
+        232,
+        320
+      ],
+      "function": "Left tilt up"
+    },
+    "E": {
+      "box": [
+        181,
+        322,
+        232,
+        372
+      ],
+      "function": "Left tilt down"
+    },
+    "C": {
+      "box": [
+        242,
+        267,
+        292,
+        317
+      ],
+      "function": "Right tilt up"
+    },
+    "D": {
+      "box": [
+        242,
+        319,
+        292,
+        370
+      ],
+      "function": "Right tilt down"
+    },
+    "I": {
+      "box": [
+        308,
+        330,
+        355,
+        378
+      ],
+      "function": "Master spray on"
+    },
+    "O": {
+      "box": [
+        181,
+        380,
+        231,
+        428
+      ],
+      "function": "AutoTrac resume"
+    },
+    "Z": {
+      "box": [
+        242,
+        378,
+        292,
+        426
+      ],
+      "function": "BoomTrac resume"
+    },
+    "S": {
+      "box": [
+        784,
+        238,
+        828,
+        282
+      ],
+      "function": "Configurable button"
+    },
+    "R": {
+      "box": [
+        830,
+        238,
+        875,
+        282
+      ],
+      "function": "Configurable button"
+    },
+    "P": {
+      "box": [
+        890,
+        238,
+        937,
+        282
+      ],
+      "function": "Configurable button"
+    },
+    "U": {
+      "box": [
+        784,
+        296,
+        828,
+        340
+      ],
+      "function": "Configurable button"
+    },
+    "T": {
+      "box": [
+        830,
+        296,
+        875,
+        340
+      ],
+      "function": "Configurable button"
+    },
+    "Q": {
+      "box": [
+        890,
+        296,
+        937,
+        340
+      ],
+      "function": "Configurable button"
+    },
+    "XY": {
+      "box": [
+        756,
+        395,
+        800,
+        448
+      ],
+      "function": "Encoder: scroll = speed range (gear shift), push = configurable"
+    }
+  },
+  "views": {
+    "front": [
+      0,
+      50,
+      440,
+      500
+    ],
+    "side": [
+      560,
+      80,
+      1000,
+      480
+    ]
+  }
+}

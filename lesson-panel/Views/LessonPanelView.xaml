@@ -1,0 +1,379 @@
+<UserControl x:Class="LessonPanel.Views.LessonPanelView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:LessonPanel.Controls"
+             xmlns:vm="clr-namespace:LessonPanel.ViewModels"
+             FontFamily="{StaticResource Face}" Foreground="{StaticResource Ink}"
+             TextOptions.TextFormattingMode="Ideal" UseLayoutRounding="True">
+    <UserControl.Resources>
+        <c:NotEmptyToVisibility x:Key="NotEmpty"/>
+        <c:EqualsToVisibility x:Key="Is"/>
+        <c:BoolToVisibility x:Key="Shown"/>
+
+        <!-- number disc: done = green with a drawn check, current = yellow, skipped = grey, upcoming = outline -->
+        <DataTemplate x:Key="Disc" DataType="{x:Type vm:StepRow}">
+            <Grid Width="40" Height="40">
+                <Ellipse x:Name="d" Fill="{StaticResource Card}" Stroke="#B8B8B8" StrokeThickness="2"/>
+                <TextBlock x:Name="n" Text="{Binding Number}" FontSize="19" FontWeight="Bold" Foreground="{StaticResource Faint}"
+                           HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-1,0,0"/>
+                <Path x:Name="ok" Data="M2,8 L7,13 L18,2" Stroke="White" StrokeThickness="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                      StrokeLineJoin="Round" Width="17" Height="13" Stretch="Uniform" Visibility="Collapsed"/>
+                <Path x:Name="sk" Data="M0,0 L14,0" Stroke="White" StrokeThickness="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                      Width="14" Height="3" Stretch="Fill" Visibility="Collapsed"/>
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding State}" Value="done">
+                    <Setter TargetName="d" Property="Fill" Value="{StaticResource Green}"/><Setter TargetName="d" Property="Stroke" Value="{StaticResource Green}"/>
+                    <Setter TargetName="n" Property="Visibility" Value="Collapsed"/><Setter TargetName="ok" Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding State}" Value="skipped">
+                    <Setter TargetName="d" Property="Fill" Value="#9A9A9A"/><Setter TargetName="d" Property="Stroke" Value="#9A9A9A"/>
+                    <Setter TargetName="n" Property="Visibility" Value="Collapsed"/><Setter TargetName="sk" Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding State}" Value="current">
+                    <Setter TargetName="d" Property="Fill" Value="{StaticResource Yellow}"/><Setter TargetName="d" Property="Stroke" Value="{StaticResource Ink}"/>
+                    <Setter TargetName="n" Property="Foreground" Value="{StaticResource Ink}"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <!-- a control the current step needs: numbered card with the manual's photo -->
+        <DataTemplate x:Key="TargetCardTemplate" DataType="{x:Type vm:TargetCard}">
+            <Border x:Name="card" Width="372" Margin="0,0,16,16" Background="{StaticResource Card}" BorderBrush="{StaticResource Line}"
+                    BorderThickness="1" CornerRadius="6" Padding="12">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="150"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                    <Border Width="150" Height="124" Background="White" BorderBrush="#E3E3E3" BorderThickness="1" CornerRadius="3" VerticalAlignment="Top">
+                        <Grid>
+                            <Image Source="{Binding Photo}" Stretch="Uniform" Margin="4" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            <TextBlock Text="No photo in the manual" FontSize="{StaticResource TCaption}" Foreground="{StaticResource Faint}" TextWrapping="Wrap"
+                                       TextAlignment="Center" VerticalAlignment="Center" Margin="10">
+                                <TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers><DataTrigger Binding="{Binding FigureKey}" Value="{x:Null}"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </Border>
+                    <StackPanel Grid.Column="1" Margin="14,0,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <Grid Width="32" Height="32" VerticalAlignment="Top">
+                                <Ellipse x:Name="badge" Fill="{StaticResource Yellow}" Stroke="{StaticResource Ink}" StrokeThickness="2"/>
+                                <TextBlock x:Name="ord" Text="{Binding Order}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-1,0,0"/>
+                                <Path x:Name="tick" Data="M2,8 L7,13 L18,2" Stroke="White" StrokeThickness="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                      StrokeLineJoin="Round" Width="15" Height="11" Stretch="Uniform" Visibility="Collapsed"/>
+                            </Grid>
+                            <TextBlock Grid.Column="1" Text="{Binding Label}" FontSize="{StaticResource TBody}" FontWeight="Bold" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                        </Grid>
+                        <TextBlock Text="{Binding Where}" FontSize="{StaticResource TLabel}" Foreground="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,8,0,0"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0" Visibility="{Binding Lit, Converter={StaticResource Shown}}">
+                            <Ellipse Width="10" Height="10" Fill="{StaticResource GreenBright}" Margin="0,0,6,0"/>
+                            <TextBlock Text="Light on" FontSize="{StaticResource TCaption}" Foreground="{StaticResource Green}" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding PageText}" FontSize="{StaticResource TCaption}" Foreground="{StaticResource Faint}" Margin="0,6,0,0"
+                                   Visibility="{Binding PageText, Converter={StaticResource NotEmpty}}"/>
+                        <TextBlock Text="{Binding Note}" FontSize="{StaticResource TCaption}" Foreground="{StaticResource Muted}" FontStyle="Italic" TextWrapping="Wrap"
+                                   Margin="0,4,0,0" Visibility="{Binding Note, Converter={StaticResource NotEmpty}}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Done}" Value="True">
+                    <Setter TargetName="card" Property="BorderBrush" Value="{StaticResource Green}"/>
+                    <Setter TargetName="card" Property="Background" Value="{StaticResource GreenSoft}"/>
+                    <Setter TargetName="badge" Property="Fill" Value="{StaticResource Green}"/>
+                    <Setter TargetName="ord" Property="Visibility" Value="Collapsed"/>
+                    <Setter TargetName="tick" Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:SectionRow}">
+            <StackPanel Margin="0,26,0,6">
+                <TextBlock Text="{Binding Title}" FontSize="{StaticResource TSub}" FontWeight="Bold" Foreground="{StaticResource Green}"/>
+                <Rectangle Height="2" Fill="#E3E3E3" Margin="0,6,0,0"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:StepRow}">
+            <Grid>
+                <!-- compact row for finished and upcoming steps -->
+                <Grid Margin="0,4" Visibility="{Binding IsCurrent, Converter={StaticResource Shown}, ConverterParameter=invert}">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="56"/><ColumnDefinition Width="*"/><ColumnDefinition Width="112"/></Grid.ColumnDefinitions>
+                    <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource Disc}" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="say" Grid.Column="1" Text="{Binding Say}" FontSize="{StaticResource TBody}" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,0,16,0"/>
+                    <Border Grid.Column="2" Height="64" Background="White" BorderBrush="#E3E3E3" BorderThickness="1" CornerRadius="3"
+                            Visibility="{Binding FigureKey, Converter={StaticResource NotEmpty}}">
+                        <Image Source="{Binding Thumb}" Stretch="Uniform" Margin="3" RenderOptions.BitmapScalingMode="HighQuality"/>
+                    </Border>
+                </Grid>
+                <!-- the current step, opened up (visibility from the step row; content from the panel's view model) -->
+                <Border Visibility="{Binding IsCurrent, Converter={StaticResource Shown}}" Margin="0,10" Padding="22,20"
+                        Background="{StaticResource YellowSoft}" BorderBrush="{StaticResource Ink}" BorderThickness="2" CornerRadius="6" Tag="current-step">
+                    <StackPanel DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="56"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <Grid Width="44" Height="44" VerticalAlignment="Top" Margin="0,2,0,0">
+                                <Ellipse Fill="{StaticResource Yellow}" Stroke="{StaticResource Ink}" StrokeThickness="2"/>
+                                <TextBlock Text="{Binding DataContext.Number, RelativeSource={RelativeSource AncestorType=ContentPresenter}}" FontSize="21" FontWeight="Bold"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-1,0,0"/>
+                            </Grid>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="{Binding Action}" FontSize="{StaticResource TTitle}" FontWeight="Bold" TextWrapping="Wrap" LineHeight="38"/>
+                                <TextBlock Text="{Binding Why}" FontSize="{StaticResource TBody}" Foreground="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,8,0,0"/>
+                                <TextBlock Text="{Binding SourceText}" FontSize="{StaticResource TCaption}" Foreground="{StaticResource Faint}" Margin="0,6,0,0"
+                                           Visibility="{Binding SourceText, Converter={StaticResource NotEmpty}}"/>
+                                <Border Background="{StaticResource Ink}" CornerRadius="3" Padding="10,3,10,4" Margin="0,10,0,0" HorizontalAlignment="Left"
+                                        Visibility="{Binding IsAssess, Converter={StaticResource Shown}}">
+                                    <TextBlock Text="Assessment: no hints, no Show me" Foreground="White" FontWeight="Bold" FontSize="{StaticResource TCaption}"/>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                        <!-- mistake: explained in place, stays until the step is done -->
+                        <Border Margin="56,16,0,0" Padding="14,10" Background="{StaticResource ErrorSoft}" BorderBrush="#F0B9B5" BorderThickness="1" CornerRadius="4"
+                                Visibility="{Binding Mistake, Converter={StaticResource NotEmpty}}">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <Border Background="{StaticResource Error}" CornerRadius="3" Padding="8,2" VerticalAlignment="Top" Margin="0,2,12,0">
+                                    <TextBlock Text="Not yet" Foreground="White" FontWeight="Bold" FontSize="{StaticResource TCaption}"/>
+                                </Border>
+                                <TextBlock Grid.Column="1" Text="{Binding Mistake}" FontSize="{StaticResource TBody}" Foreground="{StaticResource ErrorInk}" TextWrapping="Wrap"/>
+                            </Grid>
+                        </Border>
+                        <!-- hint, when due or asked for -->
+                        <Border Margin="56,12,0,0" Padding="14,10" Background="White" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="4"
+                                Visibility="{Binding HintVisible, Converter={StaticResource Shown}}">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Data="M10,2 C6,2 4,5 4,8 C4,11 6,12 7,14 L13,14 C14,12 16,11 16,8 C16,5 14,2 10,2 Z M7.5,17 L12.5,17" Stroke="{StaticResource Ink}" StrokeThickness="2"
+                                      Width="18" Height="20" Stretch="Uniform" Margin="0,2,12,0" VerticalAlignment="Top" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                <TextBlock Text="{Binding HintText}" FontSize="{StaticResource TBody}" TextWrapping="Wrap" MaxWidth="820"/>
+                            </StackPanel>
+                        </Border>
+                        <!-- things the simulator can't sense: the trainee marks each one Done -->
+                        <ItemsControl ItemsSource="{Binding ConfirmItems}" Margin="56,18,0,0" Focusable="False">
+                            <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type vm:ConfirmItem}">
+                                    <Button x:Name="b" Style="{StaticResource ActionButton}" Margin="0,0,12,12" CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.ConfirmCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Path Data="M2,8 L7,13 L18,2" Stroke="{StaticResource Green}" StrokeThickness="2.5" Width="16" Height="12" Stretch="Uniform"
+                                                  Margin="0,0,10,0" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                                            <TextBlock x:Name="t" Text="{Binding Text, StringFormat='Done: {0}'}"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Done}" Value="True">
+                                            <Setter TargetName="b" Property="Background" Value="{StaticResource GreenSoft}"/>
+                                            <Setter TargetName="b" Property="BorderBrush" Value="{StaticResource Green}"/>
+                                            <Setter TargetName="b" Property="Opacity" Value="1"/>
+                                            <Setter TargetName="t" Property="Text" Value="{Binding Text}"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <ItemsControl ItemsSource="{Binding Targets}" ItemTemplate="{StaticResource TargetCardTemplate}" Margin="56,6,0,0" Focusable="False">
+                            <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                        <StackPanel Orientation="Horizontal" Margin="56,2,0,0">
+                            <Button Style="{StaticResource PrimaryButton}" Command="{Binding ShowMeCommand}" Margin="0,0,12,0" ToolTip="Do this step on the virtual armrest so you can watch">
+                                <StackPanel Orientation="Horizontal"><Path Data="M5,3 L17,10 L5,17 Z" Fill="{StaticResource Ink}" Width="14" Height="16" Stretch="Uniform" Margin="0,0,10,0"/><TextBlock Text="Show me"/></StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource ActionButton}" Command="{Binding HintCommand}" Content="Hint" Margin="0,0,12,0"/>
+                            <Button Style="{StaticResource ActionButton}" Command="{Binding SkipCommand}" Content="Skip step"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding WatchingFor}" FontSize="{StaticResource TCaption}" Foreground="{StaticResource Faint}" Margin="56,14,0,0" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding State}" Value="done"><Setter TargetName="say" Property="Foreground" Value="{StaticResource Muted}"/></DataTrigger>
+                <DataTrigger Binding="{Binding State}" Value="skipped"><Setter TargetName="say" Property="Foreground" Value="{StaticResource Faint}"/></DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <Style x:Key="Chip" TargetType="Border">
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="Padding" Value="12,5"/>
+            <Setter Property="Margin" Value="0,0,10,0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="{StaticResource Ground}">
+        <Grid.RowDefinitions><RowDefinition Height="68"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+
+        <!-- title band, in the Connections app's manner -->
+        <Border Background="{StaticResource Card}" BorderBrush="#8C8C8C" BorderThickness="0,0,0,4">
+            <Grid>
+                <Grid.ColumnDefinitions><ColumnDefinition Width="10"/><ColumnDefinition Width="8"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                <Rectangle Fill="{StaticResource Green}"/>
+                <Rectangle Grid.Column="1" Fill="{StaticResource Yellow}"/>
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="26,0,0,0">
+                    <TextBlock Text="Lesson Studio" FontSize="{StaticResource TSub}" Foreground="#5A5A5A"/>
+                    <TextBlock Text="{Binding LessonTitle}" FontSize="{StaticResource TBody}" Foreground="{StaticResource Green}" Margin="22,4,0,0"
+                               TextTrimming="CharacterEllipsis" MaxWidth="900"/>
+                </StackPanel>
+                <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,24,0">
+                    <Button Style="{StaticResource ActionButton}" Content="All lessons" Padding="16,6" FontSize="{StaticResource TLabel}" Margin="0,0,18,0"
+                            Command="{Binding ChooseCommand}" Visibility="{Binding Mode, Converter={StaticResource Is}, ConverterParameter=running|finished}"/>
+                    <Border x:Name="chipArm" Style="{StaticResource Chip}">
+                        <StackPanel Orientation="Horizontal"><Ellipse x:Name="dotArm" Width="9" Height="9" Margin="0,0,7,0"/><TextBlock x:Name="txtArm" FontSize="{StaticResource TCaption}"/></StackPanel>
+                    </Border>
+                    <Border x:Name="chipOnline" Style="{StaticResource Chip}">
+                        <StackPanel Orientation="Horizontal"><Ellipse x:Name="dotOnline" Width="9" Height="9" Margin="0,0,7,0"/><TextBlock x:Name="txtOnline" FontSize="{StaticResource TCaption}"/></StackPanel>
+                    </Border>
+                    <Border x:Name="chipDisplay" Style="{StaticResource Chip}">
+                        <StackPanel Orientation="Horizontal"><Ellipse x:Name="dotDisplay" Width="9" Height="9" Margin="0,0,7,0"/><TextBlock x:Name="txtDisplay" FontSize="{StaticResource TCaption}"/></StackPanel>
+                    </Border>
+                    <TextBlock FontSize="{StaticResource TBody}" Foreground="{StaticResource Muted}" VerticalAlignment="Center" Margin="14,0,0,0"
+                               Visibility="{Binding Mode, Converter={StaticResource Is}, ConverterParameter=running}">
+                        <Run Text="{Binding StepCounter, Mode=OneWay}" FontWeight="Bold" Foreground="{StaticResource Ink}"/><Run Text="  "/><Run Text="{Binding StepTimer, Mode=OneWay}"/>
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- running and finished: the procedure page -->
+        <Grid Grid.Row="1" Margin="24,20,24,24" Visibility="{Binding Mode, Converter={StaticResource Is}, ConverterParameter=running|finished}">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="58*"/><ColumnDefinition Width="20"/><ColumnDefinition Width="42*"/></Grid.ColumnDefinitions>
+            <Border Style="{StaticResource CardBorder}" Padding="0">
+                <ScrollViewer x:Name="ProcedureScroll" VerticalScrollBarVisibility="Auto" Padding="30,22,30,30" Focusable="False">
+                    <StackPanel>
+                        <TextBlock Text="{Binding Objective}" FontSize="{StaticResource TBody}" TextWrapping="Wrap" MaxWidth="900" HorizontalAlignment="Left"/>
+                        <TextBlock FontSize="{StaticResource TLabel}" Foreground="{StaticResource Muted}" Margin="0,6,0,0">
+                            <Run Text="{Binding Machine, Mode=OneWay}"/>
+                        </TextBlock>
+                        <!-- finished -->
+                        <Border Margin="0,20,0,4" Padding="22,18" Background="{StaticResource GreenSoft}" BorderBrush="{StaticResource Green}" BorderThickness="2" CornerRadius="6"
+                                Visibility="{Binding Mode, Converter={StaticResource Is}, ConverterParameter=finished}">
+                            <StackPanel>
+                                <TextBlock Text="Lesson complete" FontSize="{StaticResource TTitle}" FontWeight="Bold" Foreground="{StaticResource Green}"/>
+                                <TextBlock Text="{Binding Summary}" FontSize="{StaticResource TBody}" Margin="0,6,0,14"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Style="{StaticResource PrimaryButton}" Content="Choose another lesson" Command="{Binding ChooseCommand}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                        <ItemsControl ItemsSource="{Binding Rows}" Focusable="False"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <!-- the armrest -->
+            <Border Grid.Column="2" Style="{StaticResource CardBorder}" Padding="24,20">
+                <Grid>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <TextBlock Text="On the armrest" FontSize="{StaticResource TSub}" FontWeight="Bold" Foreground="{StaticResource Green}"/>
+                    <c:HandleView x:Name="Handle" Grid.Row="1" Margin="0,12,0,0" Visibility="{Binding StageMode, Converter={StaticResource Is}, ConverterParameter=handle|none}"/>
+                    <Grid Grid.Row="1" Margin="0,12,0,0" Visibility="{Binding StageMode, Converter={StaticResource Is}, ConverterParameter=photo}">
+                        <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <Border Background="White" BorderBrush="#E3E3E3" BorderThickness="1" CornerRadius="4">
+                            <Image Source="{Binding StagePhoto}" Stretch="Uniform" Margin="12" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Border>
+                        <TextBlock Grid.Row="1" Text="{Binding StageCaption}" FontSize="{StaticResource TBody}" TextWrapping="Wrap" Margin="0,12,0,0"/>
+                    </Grid>
+                    <Border Grid.Row="2" Margin="0,14,0,0" Padding="14,10" Background="{StaticResource Soft}" CornerRadius="4"
+                            Visibility="{Binding LiveState, Converter={StaticResource NotEmpty}}">
+                        <TextBlock Text="{Binding LiveState}" FontSize="{StaticResource TBody}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                    </Border>
+                    <StackPanel Grid.Row="3" Margin="0,18,0,0">
+                        <Rectangle Height="1" Fill="{StaticResource Line}" Margin="0,0,0,14"/>
+                        <TextBlock Text="On the display monitor" FontSize="{StaticResource TBody}" FontWeight="Bold" Foreground="{StaticResource Green}"/>
+                        <ItemsControl ItemsSource="{Binding ScreenNotes}" Margin="0,6,0,0" Focusable="False">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type vm:ScreenNote}">
+                                    <TextBlock FontSize="{StaticResource TBody}" TextWrapping="Wrap" Margin="0,4,0,0">
+                                        <Run Text="{Binding Verb, Mode=OneWay}" FontWeight="Bold"/><Run Text=" "/><Run Text="{Binding Label, Mode=OneWay}"/><Run Text=" on the " Foreground="{StaticResource Muted}"/><Run Text="{Binding Where, Mode=OneWay}" Foreground="{StaticResource Muted}"/>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock Text="Nothing to do on the display in this step." FontSize="{StaticResource TBody}" Foreground="{StaticResource Muted}" Margin="0,4,0,0">
+                            <TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers><DataTrigger Binding="{Binding ScreenNotes.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+                    <TextBlock Grid.Row="4" Text="{Binding MachineNote}" FontSize="{StaticResource TCaption}" Foreground="{StaticResource Faint}" TextWrapping="Wrap" Margin="0,16,0,0"/>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- choose a lesson -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Visibility="{Binding Mode, Converter={StaticResource Is}, ConverterParameter=choose}" Focusable="False">
+            <!-- one fixed measure (up to 1080 wide, left-aligned), so switching machines doesn't resize the cards -->
+            <Grid Margin="60,40">
+                <Grid.ColumnDefinitions><ColumnDefinition Width="*" MaxWidth="1080"/></Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Text="Choose a lesson" FontSize="{StaticResource TAction}" FontWeight="Bold"/>
+                <TextBlock Text="Starting a lesson puts the simulator in its starting state through the virtual armrest. On a real CommandARM, the trainer sets it up." FontSize="{StaticResource TBody}"
+                           Foreground="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,8,0,24" MaxWidth="900" HorizontalAlignment="Left"/>
+                <!-- which machine: the same choice as the sprayer tiles in the Connections app -->
+                <UniformGrid Columns="2" MaxWidth="900" HorizontalAlignment="Left" Margin="0,0,0,28">
+                    <RadioButton Style="{StaticResource ChoiceTile}" GroupName="Machine" IsChecked="{Binding Is612R, Mode=TwoWay}" Margin="0,0,8,0"
+                                 AutomationProperties.Name="612R sprayer lessons">
+                        <StackPanel>
+                            <TextBlock FontSize="{StaticResource TSub}" FontWeight="Bold"><Run Text="612R"/><Run Text="  2025" FontWeight="Normal" Foreground="{StaticResource Muted}"/></TextBlock>
+                            <TextBlock Text="G5 CommandCenter · See &amp; Spray" FontSize="{StaticResource TLabel}" Foreground="{StaticResource Muted}" Margin="0,2,0,0"/>
+                            <TextBlock Text="{Binding Summary612R}" FontSize="{StaticResource TLabel}" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource ChoiceTile}" GroupName="Machine" IsChecked="{Binding IsR4045, Mode=TwoWay}" Margin="8,0,0,0"
+                                 AutomationProperties.Name="R4045 sprayer lessons">
+                        <StackPanel>
+                            <TextBlock FontSize="{StaticResource TSub}" FontWeight="Bold"><Run Text="R4045"/><Run Text="  2019" FontWeight="Normal" Foreground="{StaticResource Muted}"/></TextBlock>
+                            <TextBlock Text="Gen 4 CommandCenter" FontSize="{StaticResource TLabel}" Foreground="{StaticResource Muted}" Margin="0,2,0,0"/>
+                            <TextBlock Text="{Binding SummaryR4045}" FontSize="{StaticResource TLabel}" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </RadioButton>
+                </UniformGrid>
+                <Border Background="{StaticResource YellowSoft}" BorderBrush="#D8BB00" BorderThickness="1" CornerRadius="6" Padding="20,14" Margin="0,0,0,22"
+                        MaxWidth="900" HorizontalAlignment="Left" Visibility="{Binding ArmrestLinked, Converter={StaticResource Shown}, ConverterParameter=invert}">
+                    <StackPanel>
+                        <TextBlock Text="The armrest isn't linked to the Connections app" FontSize="{StaticResource TBody}" FontWeight="Bold"/>
+                        <TextBlock FontSize="{StaticResource TBody}" TextWrapping="Wrap" Margin="0,4,0,0"
+                                   Text="{Binding LinkHelp}"/>
+                    </StackPanel>
+                </Border>
+                <ItemsControl ItemsSource="{Binding Lessons}" Focusable="False">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type vm:LessonChoice}">
+                            <Border Background="{StaticResource Card}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="6" Padding="24,18" Margin="0,0,0,14">
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Title}" FontSize="{StaticResource TSub}" FontWeight="Bold" TextWrapping="Wrap"/>
+                                        <TextBlock FontSize="{StaticResource TLabel}" Foreground="{StaticResource Muted}" Margin="0,4,0,0">
+                                            <Run Text="{Binding Length, Mode=OneWay}"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <Button Grid.Column="1" Style="{StaticResource PrimaryButton}" Content="Set up and start" VerticalAlignment="Center" Margin="24,0,0,0"
+                                            Command="{Binding DataContext.StartCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding Id}"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+            </Grid>
+        </ScrollViewer>
+
+        <!-- connecting / offline -->
+        <Border Grid.Row="1" Style="{StaticResource CardBorder}" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="900" Padding="40,32"
+                Visibility="{Binding Mode, Converter={StaticResource Is}, ConverterParameter=offline|connecting}">
+            <StackPanel>
+                <TextBlock FontSize="{StaticResource TTitle}" FontWeight="Bold">
+                    <TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Text" Value="Connecting to the simulator..."/>
+                        <Style.Triggers><DataTrigger Binding="{Binding Mode}" Value="offline"><Setter Property="Text" Value="Simulator API not running"/></DataTrigger></Style.Triggers></Style></TextBlock.Style>
+                </TextBlock>
+                <TextBlock Text="{Binding Problem}" FontSize="{StaticResource TBody}" TextWrapping="Wrap" Margin="0,12,0,0" Foreground="{StaticResource Muted}"/>
+            </StackPanel>
+        </Border>
+
+        <!-- short status line after an action -->
+        <Border Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="24,0,0,40" Padding="16,10" Background="{StaticResource Ink}" CornerRadius="4"
+                Visibility="{Binding Toast, Converter={StaticResource NotEmpty}}">
+            <TextBlock Text="{Binding Toast}" Foreground="White" FontSize="{StaticResource TBody}"/>
+        </Border>
+    </Grid>
+</UserControl>

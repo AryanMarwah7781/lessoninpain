@@ -1,0 +1,1485 @@
+{
+  "schema": "lesson/0.1",
+  "id": "field-ready-r4045",
+  "title": "Field-ready: from the yard to spraying and back",
+  "machine": "R4045 Sprayer (2019) · Gen 4 display · CommandARM",
+  "build": "Apr 20 2026 (Connections app 3.2.0.7)",
+  "level": "Advanced",
+  "minutes": 40,
+  "objective": "Take the sprayer from parked and folded in the yard to spraying on the guidance line, handle the boom and sections through a pass and a headland turn, then shut down and fold for transport.",
+  "procedure_source": "Steps 'Turn ON Solution Pump', 'Set Engine Speed', 'Move multi-function lever forward' and 'Turn ON Master Switch' come from the app's own Begin Spraying procedure. Everything else is a draft: confirm with an operator before trainees use it.",
+  "setup": {
+    "armrest": [
+      "switch foot_switch 0",
+      "switch park_slot 1",
+      "set steering 0",
+      "set speed_dial 0",
+      "switch foot_switch 1",
+      "wait 0.3",
+      "press centre_boom_raise 600",
+      "wait 0.3",
+      "switch foot_switch 0",
+      "wait 0.5"
+    ],
+    "trainer": "Start with the lever in the park slot, the wheel straight, the boom folded (hold the foot switch and press Centre boom raise), the ladder down and the game camera on view 1.",
+    "expect": {
+      "game": {
+        "boomUnfolded": "0",
+        "ladderRaised": "0",
+        "cameraView": "1"
+      }
+    }
+  },
+  "chatbot": {
+    "about": "The trainee is on a John Deere R4045 sprayer simulator (Gen 4 display, CommandARM armrest) doing a full field-ready lesson. Answer about this machine's controls and the step they are on. Keep answers to 2-3 sentences and name the exact button.",
+    "send": [
+      "lesson title",
+      "section",
+      "step instruction",
+      "seconds on step",
+      "last 10 controls used",
+      "current game state",
+      "lights currently on"
+    ]
+  },
+  "sections": [
+    {
+      "title": "1. In the yard",
+      "steps": [
+        {
+          "id": "ladder-up",
+          "say": "Raise the platform ladder.",
+          "why": "The ladder must be up before the machine moves.",
+          "controls": [
+            "ladder"
+          ],
+          "done": {
+            "game": "ladderRaised",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The ladder key is on the panel beside the display.",
+              "highlight": [
+                "ladder"
+              ]
+            }
+          ],
+          "show_me": [
+            "press ladder 300"
+          ],
+          "ask": "Where is the ladder button on the R4045 and when should the ladder be raised?",
+          "confidence": "draft"
+        },
+        {
+          "id": "camera-boom-view",
+          "say": "Switch the game camera to view 2 so you can watch the boom.",
+          "why": "You'll need to see the boom while you unfold it.",
+          "controls": [
+            "camera_toggle"
+          ],
+          "done": {
+            "game": "cameraView",
+            "eq": "2"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Press the camera 1/2 key on the armrest keypad once.",
+              "highlight": [
+                "camera_toggle"
+              ]
+            }
+          ],
+          "show_me": [
+            "press camera_toggle 300"
+          ],
+          "ask": "How do I change the camera view in the simulator?",
+          "confidence": "draft"
+        }
+      ]
+    },
+    {
+      "title": "2. Unfold the boom",
+      "steps": [
+        {
+          "id": "hold-foot-switch",
+          "say": "Press and hold the foot switch.",
+          "why": "Holding it turns the centre boom buttons into fold and unfold.",
+          "controls": [
+            "foot_switch"
+          ],
+          "done": {
+            "any": [
+              {
+                "control": "foot_switch",
+                "eq": 1
+              },
+              {
+                "game": "boomUnfolded",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 15,
+              "say": "It's the pedal under your left foot.",
+              "highlight": [
+                "foot_switch"
+              ]
+            }
+          ],
+          "show_me": [
+            "switch foot_switch 1"
+          ],
+          "ask": "What does the foot switch do on the R4045 simulator?",
+          "confidence": "app"
+        },
+        {
+          "id": "unfold",
+          "say": "Keep holding the foot switch, then press and hold Centre boom lower until the boom is fully open.",
+          "why": "With the foot switch held, Centre boom lower unfolds instead of lowering.",
+          "controls": [
+            "foot_switch",
+            "centre_boom_lower"
+          ],
+          "done": {
+            "game": "boomUnfolded",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_CenterBoomLower",
+                "eq": "1"
+              },
+              "say": "The boom went down instead of unfolding. Hold the foot switch first, then press Centre boom lower."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Centre boom lower is on the multi-function handle, under your thumb.",
+              "highlight": [
+                "centre_boom_lower"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Keep your foot on the foot switch the whole time you press Centre boom lower.",
+              "highlight": [
+                "foot_switch",
+                "centre_boom_lower"
+              ]
+            }
+          ],
+          "show_me": [
+            "switch foot_switch 1",
+            "wait 0.3",
+            "press centre_boom_lower 1200"
+          ],
+          "wrong_demo": [
+            "switch foot_switch 0",
+            "wait 0.3",
+            "press centre_boom_lower 400",
+            "wait 0.5"
+          ],
+          "ask": "How do I unfold the boom on the R4045 simulator?",
+          "confidence": "app"
+        },
+        {
+          "id": "release-foot-switch",
+          "say": "Release the foot switch.",
+          "why": "Leave it held and the next boom presses will fold the boom again.",
+          "controls": [
+            "foot_switch"
+          ],
+          "done": {
+            "any": [
+              {
+                "control": "foot_switch",
+                "eq": 0
+              },
+              {
+                "sent": "PLT_MHC_CenterBoomLower",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 10,
+              "say": "Take your foot off the foot switch."
+            }
+          ],
+          "show_me": [
+            "switch foot_switch 0"
+          ],
+          "ask": "Why should I release the foot switch after unfolding?",
+          "confidence": "app"
+        }
+      ]
+    },
+    {
+      "title": "3. Get ready to spray",
+      "steps": [
+        {
+          "id": "rate-3",
+          "say": "Select target rate 3 (15.0 gal/ac) for this field.",
+          "why": "This field needs the higher rate. The display shows the three preset rates under Target Rates.",
+          "controls": [
+            "rate_3"
+          ],
+          "done": {
+            "any": [
+              {
+                "cloud": "PLT_AIC_Rate3ControlIndicator",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_AIC_Rate3Control",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The rate keys are on the armrest keypad. Rate 3 lights up when it's selected.",
+              "highlight": [
+                "rate_3"
+              ]
+            }
+          ],
+          "show_me": [
+            "press rate_3 300"
+          ],
+          "ask": "How do I choose a target rate on the R4045?",
+          "confidence": "draft"
+        },
+        {
+          "id": "solution-pump",
+          "say": "Turn ON the solution pump.",
+          "why": "Step 1 of Begin Spraying: nothing reaches the nozzles without the pump.",
+          "controls": [
+            "solution_pump"
+          ],
+          "done": {
+            "any": [
+              {
+                "cloud": "PLT_AIC_SolutionPumpIndicator",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_AIC_SolutionPump",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The solution pump key is on the armrest keypad; its light comes on when the pump runs.",
+              "highlight": [
+                "solution_pump"
+              ]
+            }
+          ],
+          "show_me": [
+            "press solution_pump 300"
+          ],
+          "ask": "Where is the solution pump switch?",
+          "confidence": "app"
+        },
+        {
+          "id": "engine-speed",
+          "say": "Set the engine speed to high idle.",
+          "why": "Step 2 of Begin Spraying: the pump and booms need engine speed.",
+          "controls": [
+            "engine_high_idle"
+          ],
+          "done": {
+            "any": [
+              {
+                "cloud": "PLT_AIC_EngineHighIdleSpeedIndicator",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_AIC_EngineHighIdle",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Use the engine speed key beside the display (the orange n/min key in the app's procedure).",
+              "highlight": [
+                "engine_high_idle"
+              ]
+            }
+          ],
+          "show_me": [
+            "press engine_high_idle 300"
+          ],
+          "ask": "How do I set the engine speed for spraying?",
+          "confidence": "draft"
+        },
+        {
+          "id": "speed-dial",
+          "say": "Turn the speed dial up 6 clicks to raise your target speed.",
+          "why": "The dial sets how fast the machine goes with the lever fully forward.",
+          "controls": [
+            "speed_dial"
+          ],
+          "done": {
+            "sent": "PLT_MHC_Encoder",
+            "gte": 4000
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The Speed Range Adjustment Dial is on the multi-function handle.",
+              "highlight": [
+                "speed_dial"
+              ]
+            }
+          ],
+          "show_me": [
+            "set speed_dial 6"
+          ],
+          "ask": "What does the speed range adjustment dial do?",
+          "confidence": "app"
+        },
+        {
+          "id": "out-of-park",
+          "say": "Take the multi-function lever out of the park slot.",
+          "why": "The lever can't drive the machine while it sits in the park slot.",
+          "controls": [
+            "park_slot"
+          ],
+          "done": {
+            "sent": "PLT_NeutralSlotStatus",
+            "eq": "0"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Slide the lever sideways out of the park slot before pushing it forward.",
+              "highlight": [
+                "park_slot"
+              ]
+            }
+          ],
+          "show_me": [
+            "switch park_slot 0"
+          ],
+          "ask": "How do I get the multi-function lever out of park?",
+          "confidence": "draft"
+        }
+      ]
+    },
+    {
+      "title": "4. Onto the line and spraying",
+      "steps": [
+        {
+          "id": "steer-onto-line",
+          "say": "Line up with the guidance line: turn the wheel a full turn to the left, then straighten it.",
+          "why": "Start the pass on the line so the sections and guidance match the field.",
+          "controls": [
+            "steering"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_SteeringWheelAngleDeg",
+                "gte": 10
+              },
+              {
+                "sent": "PLT_SteeringWheelAngleDeg",
+                "eq": "0"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 25,
+              "say": "Turn left until the road wheels show about 14 degrees on the Navigation box, then bring the wheel back to centre.",
+              "highlight": [
+                "steering"
+              ]
+            }
+          ],
+          "show_me": [
+            "set steering 360",
+            "wait 1.2",
+            "set steering 0",
+            "wait 1.2"
+          ],
+          "ask": "How do I line up with the guidance line?",
+          "confidence": "draft"
+        },
+        {
+          "id": "lever-forward",
+          "say": "Move the multi-function lever forward to start driving.",
+          "why": "Step 3 of Begin Spraying.",
+          "controls": [
+            "lever"
+          ],
+          "done": {
+            "any": [
+              {
+                "cloud": "VIO_DCU_VehicleGroundSpeed",
+                "gt": 50
+              },
+              {
+                "sent": "PLT_HydroHandlePosition",
+                "outside": [
+                  100,
+                  150
+                ]
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Push the lever away from you. The speed shows on the corner post.",
+              "highlight": [
+                "lever"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Is the lever still in the park slot? Take it out first.",
+              "highlight": [
+                "park_slot",
+                "lever"
+              ]
+            }
+          ],
+          "show_me": [
+            "set lever 175"
+          ],
+          "ask": "How do I drive forward with the multi-function lever?",
+          "confidence": "app"
+        },
+        {
+          "id": "boom-down",
+          "say": "Lower the boom to spraying height with Centre boom lower. Keep your foot off the foot switch.",
+          "why": "Spraying too high lets the spray drift.",
+          "controls": [
+            "centre_boom_lower"
+          ],
+          "done": {
+            "sent": "PLT_MHC_CenterBoomLower",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "game": "boomUnfolded",
+                "eq": "0"
+              },
+              "say": "The boom folded: the foot switch was held. Unfold it again (foot switch + Centre boom lower) and release the foot switch."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Centre boom lower, on the handle. Foot off the foot switch.",
+              "highlight": [
+                "centre_boom_lower"
+              ]
+            }
+          ],
+          "show_me": [
+            "press centre_boom_lower 600"
+          ],
+          "ask": "How do I set the boom height?",
+          "confidence": "draft"
+        },
+        {
+          "id": "master-on",
+          "say": "Turn ON the master switch.",
+          "why": "Step 4 of Begin Spraying: the master switch starts spraying.",
+          "controls": [
+            "master_spray"
+          ],
+          "done": {
+            "any": [
+              {
+                "game": "nozzleOnOffStatus",
+                "eq": "1",
+                "online": true
+              },
+              {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The yellow master switch on the multi-function handle.",
+              "highlight": [
+                "master_spray"
+              ]
+            }
+          ],
+          "show_me": [
+            "press master_spray 300"
+          ],
+          "ask": "How do I start spraying?",
+          "confidence": "app"
+        }
+      ]
+    },
+    {
+      "title": "5. Through the pass",
+      "steps": [
+        {
+          "id": "level-boom",
+          "say": "The field drops away on the right. Raise the left wing and lower the right wing to keep the boom level.",
+          "why": "Each wing has its own raise and lower buttons on the handle.",
+          "controls": [
+            "left_boom_raise",
+            "right_boom_lower"
+          ],
+          "done": {
+            "all": [
+              {
+                "sent": "PLT_MHC_LeftBoomRaise",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_MHC_RightBoomLower",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 25,
+              "say": "Left wing up, right wing down: both are on the handle beside the centre buttons.",
+              "highlight": [
+                "left_boom_raise",
+                "right_boom_lower"
+              ]
+            }
+          ],
+          "show_me": [
+            "press left_boom_raise 500",
+            "press right_boom_lower 500"
+          ],
+          "ask": "How do I tilt the boom wings?",
+          "confidence": "draft"
+        },
+        {
+          "id": "boomtrac",
+          "say": "Turn on BoomTrac so the boom height follows the canopy automatically.",
+          "why": "BoomTrac Pro keeps the height for you; the display shows its status.",
+          "controls": [
+            "boomtrac"
+          ],
+          "done": {
+            "sent": "PLT_MHC_BoomTrac",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The BoomTrac button is on the multi-function handle.",
+              "highlight": [
+                "boomtrac"
+              ]
+            }
+          ],
+          "show_me": [
+            "press boomtrac 300"
+          ],
+          "ask": "What is BoomTrac and how do I turn it on?",
+          "confidence": "draft"
+        },
+        {
+          "id": "sections-right",
+          "say": "You're overlapping the last pass on the right. Shut off boom sections from the right.",
+          "why": "Section control stops double-spraying.",
+          "controls": [
+            "section_right_enable"
+          ],
+          "done": {
+            "sent": "PLT_MHC_IBSRightEnable",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Use the right-hand boom section button on the handle.",
+              "highlight": [
+                "section_right_enable"
+              ]
+            }
+          ],
+          "show_me": [
+            "press section_right_enable 300"
+          ],
+          "ask": "How do I shut off boom sections?",
+          "confidence": "draft"
+        },
+        {
+          "id": "foam-marker",
+          "say": "Drop a foam mark on the left to mark your pass.",
+          "why": "The mark shows where to line up next time.",
+          "controls": [
+            "foam_marker_left"
+          ],
+          "done": {
+            "sent": "PLT_MHC_LeftHandFoamMarker",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Left foam marker button, on the handle.",
+              "highlight": [
+                "foam_marker_left"
+              ]
+            }
+          ],
+          "show_me": [
+            "press foam_marker_left 300"
+          ],
+          "ask": "How do I use the foam marker?",
+          "confidence": "draft"
+        }
+      ]
+    },
+    {
+      "title": "6. Headland turn",
+      "steps": [
+        {
+          "id": "hms",
+          "say": "At the headland, press HMS to start the headland sequence.",
+          "why": "HMS runs the end-of-row steps for you. Watch HMS on the display's bottom bar.",
+          "controls": [
+            "hms"
+          ],
+          "done": {
+            "sent": "PLT_MHC_HMS",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "HMS button, on the multi-function handle.",
+              "highlight": [
+                "hms"
+              ]
+            }
+          ],
+          "show_me": [
+            "press hms 300"
+          ],
+          "ask": "What does HMS do on the R4045?",
+          "confidence": "draft"
+        },
+        {
+          "id": "turn",
+          "say": "Turn: steer hard left (two turns of the wheel), then straighten up for the next pass.",
+          "why": "A full-lock turn brings you back alongside your last pass.",
+          "controls": [
+            "steering"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_SteeringWheelAngleDeg",
+                "gte": 25
+              },
+              {
+                "sent": "PLT_SteeringWheelAngleDeg",
+                "eq": "0"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 25,
+              "say": "Keep turning left until the Navigation box shows about 28 degrees, then return to centre.",
+              "highlight": [
+                "steering"
+              ]
+            }
+          ],
+          "show_me": [
+            "set steering 720",
+            "wait 2.0",
+            "set steering 0",
+            "wait 2.0"
+          ],
+          "ask": "How do I make a headland turn?",
+          "confidence": "draft"
+        },
+        {
+          "id": "field-2",
+          "say": "Push the speed dial to switch to your Field 2 speed for the next pass.",
+          "why": "Pressing the dial swaps between the Field 1 and Field 2 set speeds.",
+          "controls": [
+            "dial_push"
+          ],
+          "done": {
+            "sent": "PLT_MHC_EncoderButton",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Press down on the Speed Range Adjustment Dial.",
+              "highlight": [
+                "dial_push"
+              ]
+            }
+          ],
+          "show_me": [
+            "press dial_push 300"
+          ],
+          "ask": "How do I switch between Field 1 and Field 2 speeds?",
+          "confidence": "app"
+        },
+        {
+          "id": "sections-reset",
+          "say": "Turn all boom sections back on.",
+          "why": "The new pass has no overlap.",
+          "controls": [
+            "section_reset"
+          ],
+          "done": {
+            "sent": "PLT_MHC_IBSReset",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Use the boom section reset button on the handle.",
+              "highlight": [
+                "section_reset"
+              ]
+            }
+          ],
+          "show_me": [
+            "press section_reset 300"
+          ],
+          "ask": "How do I turn all boom sections back on?",
+          "confidence": "draft"
+        }
+      ]
+    },
+    {
+      "title": "7. Finish and fold for transport",
+      "steps": [
+        {
+          "id": "master-off",
+          "say": "Turn OFF the master switch.",
+          "why": "Always stop spraying before you stop the machine.",
+          "controls": [
+            "master_spray"
+          ],
+          "done": {
+            "any": [
+              {
+                "game": "nozzleOnOffStatus",
+                "eq": "0",
+                "online": true
+              },
+              {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 15,
+              "say": "Press the yellow master switch again.",
+              "highlight": [
+                "master_spray"
+              ]
+            }
+          ],
+          "show_me": [
+            "press master_spray 300"
+          ],
+          "ask": "How do I stop spraying?",
+          "confidence": "app"
+        },
+        {
+          "id": "lever-neutral",
+          "say": "Bring the lever back to neutral to stop.",
+          "why": "Neutral stops the machine.",
+          "controls": [
+            "lever"
+          ],
+          "done": {
+            "any": [
+              {
+                "cloud": "VIO_DCU_VehicleGroundSpeed",
+                "eq": "50"
+              },
+              {
+                "sent": "PLT_HydroHandlePosition",
+                "between": [
+                  120,
+                  130
+                ]
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Pull the lever back to the middle.",
+              "highlight": [
+                "lever"
+              ]
+            }
+          ],
+          "show_me": [
+            "set lever 125"
+          ],
+          "ask": "How do I stop the sprayer?",
+          "confidence": "draft"
+        },
+        {
+          "id": "park",
+          "say": "Put the lever into the park slot.",
+          "why": "Parked, the machine can't creep while you work on the boom.",
+          "controls": [
+            "park_slot"
+          ],
+          "done": {
+            "sent": "PLT_NeutralSlotStatus",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Slide the lever sideways into the park slot.",
+              "highlight": [
+                "park_slot"
+              ]
+            }
+          ],
+          "show_me": [
+            "switch park_slot 1"
+          ],
+          "ask": "How do I park the multi-function lever?",
+          "confidence": "draft"
+        },
+        {
+          "id": "pump-off",
+          "say": "Turn OFF the solution pump.",
+          "why": "Don't run the pump dry.",
+          "controls": [
+            "solution_pump"
+          ],
+          "done": {
+            "any": [
+              {
+                "cloud": "PLT_AIC_SolutionPumpIndicator",
+                "eq": "0"
+              },
+              {
+                "sent": "PLT_AIC_SolutionPump",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Press the solution pump key again; its light goes out.",
+              "highlight": [
+                "solution_pump"
+              ]
+            }
+          ],
+          "show_me": [
+            "press solution_pump 300"
+          ],
+          "ask": "How do I turn off the solution pump?",
+          "confidence": "app"
+        },
+        {
+          "id": "boom-up",
+          "say": "Raise the boom to the top with Centre boom raise.",
+          "why": "The boom must be up before it folds.",
+          "controls": [
+            "centre_boom_raise"
+          ],
+          "done": {
+            "sent": "PLT_MHC_CenterBoomRaise",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Centre boom raise, on the handle. Foot off the foot switch.",
+              "highlight": [
+                "centre_boom_raise"
+              ]
+            }
+          ],
+          "show_me": [
+            "press centre_boom_raise 600"
+          ],
+          "ask": "How do I raise the boom?",
+          "confidence": "draft"
+        },
+        {
+          "id": "fold",
+          "say": "Fold the boom for transport: hold the foot switch and press Centre boom raise.",
+          "why": "Never drive on the road with the boom open.",
+          "controls": [
+            "foot_switch",
+            "centre_boom_raise"
+          ],
+          "done": {
+            "game": "boomUnfolded",
+            "eq": "0"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_CenterBoomRaise",
+                "eq": "1"
+              },
+              "say": "The boom only went up. Hold the foot switch while you press Centre boom raise to fold it."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Foot switch held, then Centre boom raise.",
+              "highlight": [
+                "foot_switch",
+                "centre_boom_raise"
+              ]
+            }
+          ],
+          "show_me": [
+            "switch foot_switch 1",
+            "wait 0.3",
+            "press centre_boom_raise 1200",
+            "wait 0.3",
+            "switch foot_switch 0"
+          ],
+          "wrong_demo": [
+            "switch foot_switch 0",
+            "wait 0.3",
+            "press centre_boom_raise 400",
+            "wait 0.5"
+          ],
+          "ask": "How do I fold the boom for transport?",
+          "confidence": "app"
+        },
+        {
+          "id": "engine-low",
+          "say": "Set the engine back to low idle.",
+          "why": "Low idle before you leave the cab.",
+          "controls": [
+            "engine_low_idle"
+          ],
+          "done": {
+            "any": [
+              {
+                "cloud": "PLT_AIC_EngineLowIdleSpeedIndicator",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_AIC_EngineLowIdle",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The engine low idle key, beside the display.",
+              "highlight": [
+                "engine_low_idle"
+              ]
+            }
+          ],
+          "show_me": [
+            "press engine_low_idle 300"
+          ],
+          "ask": "How do I set the engine to low idle?",
+          "confidence": "draft"
+        },
+        {
+          "id": "camera-back",
+          "say": "Put the game camera back to view 1.",
+          "why": "Leave the simulator ready for the next trainee.",
+          "controls": [
+            "camera_toggle"
+          ],
+          "done": {
+            "game": "cameraView",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 15,
+              "say": "Press the camera 1/2 key once.",
+              "highlight": [
+                "camera_toggle"
+              ]
+            }
+          ],
+          "show_me": [
+            "press camera_toggle 300"
+          ],
+          "ask": "How do I reset the camera view?",
+          "confidence": "draft"
+        },
+        {
+          "id": "ladder-down",
+          "say": "Lower the ladder.",
+          "why": "Now you can climb down safely.",
+          "controls": [
+            "ladder"
+          ],
+          "done": {
+            "game": "ladderRaised",
+            "eq": "0"
+          },
+          "hints": [
+            {
+              "after_s": 15,
+              "say": "The same ladder key beside the display.",
+              "highlight": [
+                "ladder"
+              ]
+            }
+          ],
+          "show_me": [
+            "press ladder 300"
+          ],
+          "ask": "How do I lower the ladder?",
+          "confidence": "draft"
+        }
+      ]
+    },
+    {
+      "title": "8. Armrest drill (every remaining control; trim before trainees use it)",
+      "steps": [
+        {
+          "id": "drill-wings",
+          "say": "Lower the left wing, then raise the right wing.",
+          "why": "The mirror of the levelling you did in the pass.",
+          "controls": [
+            "left_boom_lower",
+            "right_boom_raise"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_MHC_LeftBoomLower",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_MHC_RightBoomRaise",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Left wing down first, then right wing up.",
+              "highlight": [
+                "left_boom_lower",
+                "right_boom_raise"
+              ]
+            }
+          ],
+          "show_me": [
+            "press left_boom_lower 400",
+            "press right_boom_raise 400"
+          ],
+          "ask": "Which buttons tilt each boom wing?",
+          "confidence": "draft"
+        },
+        {
+          "id": "drill-sections-left",
+          "say": "Shut off boom sections from the left, then turn all sections back on.",
+          "why": "Section control works from either side.",
+          "controls": [
+            "section_left_enable",
+            "section_reset"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_MHC_IBSLeftEnable",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_MHC_IBSReset",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Left section button, then the section reset button.",
+              "highlight": [
+                "section_left_enable",
+                "section_reset"
+              ]
+            }
+          ],
+          "show_me": [
+            "press section_left_enable 300",
+            "press section_reset 300"
+          ],
+          "ask": "How do left-hand boom sections work?",
+          "confidence": "draft"
+        },
+        {
+          "id": "drill-foam-right",
+          "say": "Drop a foam mark on the right.",
+          "why": "Use the side you'll line up on next.",
+          "controls": [
+            "foam_marker_right"
+          ],
+          "done": {
+            "sent": "PLT_MHC_RightHandFoamMarker",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 15,
+              "say": "Right foam marker button, on the handle.",
+              "highlight": [
+                "foam_marker_right"
+              ]
+            }
+          ],
+          "show_me": [
+            "press foam_marker_right 300"
+          ],
+          "ask": "How do I drop a foam mark on the right?",
+          "confidence": "draft"
+        },
+        {
+          "id": "drill-rates",
+          "say": "Select Rate 1, then go back to Rate 2.",
+          "why": "Each rate key lights up while it's the active rate.",
+          "controls": [
+            "rate_1",
+            "rate_2"
+          ],
+          "done": {
+            "any": [
+              {
+                "then": [
+                  {
+                    "cloud": "PLT_AIC_Rate1ControlIndicator",
+                    "eq": "1"
+                  },
+                  {
+                    "cloud": "PLT_AIC_Rate2ControlIndicator",
+                    "eq": "1"
+                  }
+                ]
+              },
+              {
+                "then": [
+                  {
+                    "sent": "PLT_AIC_Rate1Control",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_AIC_Rate2Control",
+                    "eq": "1"
+                  }
+                ]
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Rate keys are on the armrest keypad: Rate 1, then Rate 2.",
+              "highlight": [
+                "rate_1",
+                "rate_2"
+              ]
+            }
+          ],
+          "show_me": [
+            "press rate_1 300",
+            "press rate_2 300"
+          ],
+          "ask": "How do I switch between target rates?",
+          "confidence": "draft"
+        },
+        {
+          "id": "drill-resets",
+          "say": "Press Reset A, then Reset B.",
+          "why": "Purpose not confirmed yet (area or tank counters?). Confirm on the real armrest.",
+          "controls": [
+            "reset_a",
+            "reset_b"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_AIC_ResetA",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_AIC_ResetB",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Reset A and Reset B are on the armrest keypad.",
+              "highlight": [
+                "reset_a",
+                "reset_b"
+              ]
+            }
+          ],
+          "show_me": [
+            "press reset_a 300",
+            "press reset_b 300"
+          ],
+          "ask": "What do Reset A and Reset B do?",
+          "confidence": "draft"
+        },
+        {
+          "id": "drill-reconfig",
+          "say": "Press buttons A to F on the handle, in order.",
+          "why": "Their jobs are set on the display; this checks every one reaches the machine.",
+          "controls": [
+            "reconfig_a",
+            "reconfig_b",
+            "reconfig_c",
+            "reconfig_d",
+            "reconfig_e",
+            "reconfig_f"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_MHC_ReconfigurableButtonA",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_MHC_ReconfigurableButtonB",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_MHC_ReconfigurableButtonC",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_MHC_ReconfigurableButtonD",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_MHC_ReconfigurableButtonE",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_MHC_ReconfigurableButtonF",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 25,
+              "say": "A, B, C, D, E, F: the lettered buttons on the multi-function handle.",
+              "highlight": [
+                "reconfig_a",
+                "reconfig_b",
+                "reconfig_c",
+                "reconfig_d",
+                "reconfig_e",
+                "reconfig_f"
+              ]
+            }
+          ],
+          "show_me": [
+            "press reconfig_a 300",
+            "press reconfig_b 300",
+            "press reconfig_c 300",
+            "press reconfig_d 300",
+            "press reconfig_e 300",
+            "press reconfig_f 300"
+          ],
+          "ask": "How do I set what buttons A to F do?",
+          "confidence": "draft"
+        },
+        {
+          "id": "drill-park-brake",
+          "say": "Press the park brake key.",
+          "why": "Its light shows the park brake state.",
+          "controls": [
+            "park_brake"
+          ],
+          "done": {
+            "any": [
+              {
+                "cloud": "PLT_AIC_ParkBrakeIndicator",
+                "eq": "0"
+              },
+              {
+                "cloud": "PLT_AIC_ParkBrakeIndicator",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_AIC_ParkBrake",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 15,
+              "say": "Park brake key, beside the display.",
+              "highlight": [
+                "park_brake"
+              ]
+            }
+          ],
+          "show_me": [
+            "press park_brake 300"
+          ],
+          "ask": "Where is the park brake on the R4045?",
+          "confidence": "draft"
+        },
+        {
+          "id": "drill-cameras",
+          "say": "Look around: camera 3, then camera 4, then back to view 1.",
+          "why": "Views 3 and 4 show the machine from other angles in the game.",
+          "controls": [
+            "camera_3",
+            "camera_4",
+            "camera_toggle"
+          ],
+          "done": {
+            "then": [
+              {
+                "control": "camera_3",
+                "eq": "1"
+              },
+              {
+                "control": "camera_4",
+                "eq": "1"
+              },
+              {
+                "game": "cameraView",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Camera 3, camera 4, then the camera 1/2 key once.",
+              "highlight": [
+                "camera_3",
+                "camera_4",
+                "camera_toggle"
+              ]
+            }
+          ],
+          "show_me": [
+            "press camera_3 300",
+            "wait 0.4",
+            "press camera_4 300",
+            "wait 0.4",
+            "press camera_toggle 300",
+            "wait 0.4"
+          ],
+          "ask": "What camera views does the simulator have?",
+          "confidence": "draft"
+        },
+        {
+          "id": "drill-warning",
+          "say": "Flip the warning switch on, then off.",
+          "why": "Purpose not confirmed yet. Confirm on the real armrest.",
+          "controls": [
+            "warning_switch"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_MHC_Warning",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_MHC_Warning",
+                "eq": "0"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The warning switch is on the multi-function handle.",
+              "highlight": [
+                "warning_switch"
+              ]
+            }
+          ],
+          "show_me": [
+            "switch warning_switch 1",
+            "wait 0.5",
+            "switch warning_switch 0"
+          ],
+          "ask": "What is the warning switch on the handle?",
+          "confidence": "draft"
+        },
+        {
+          "id": "drill-switch-4",
+          "say": "Press switch 4.",
+          "why": "Purpose unknown. This only checks that it reaches the machine.",
+          "controls": [
+            "switch_4"
+          ],
+          "done": {
+            "sent": "PLT_SWITCH_4",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 15,
+              "say": "Switch 4 is on the multi-function handle.",
+              "highlight": [
+                "switch_4"
+              ]
+            }
+          ],
+          "show_me": [
+            "press switch_4 300"
+          ],
+          "ask": "What is switch 4 on the CommandARM handle?",
+          "confidence": "draft"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,755 @@
+{
+ "source": "John Deere 612R operator manual OMKK105338 (400R-616R), via the RAG vault on spark-bf0b",
+ "machine_note": "Pictures are from the 612R manual; the simulated machine is a 2019 R4045, so some layouts may differ.",
+ "handle": {
+  "figure": "NX707642",
+  "size": [
+   1000,
+   600
+  ],
+  "note": "Button boxes in pixels of the manual's lettered multi-function lever drawing (612R manual, p. 30-20). Front view left, side view right. Letters and functions from the manual's table on the same page. 'views' are the two drawings' areas (front, right side) for zooming.",
+  "buttons": {
+   "V": {
+    "box": [
+     186,
+     92,
+     262,
+     142
+    ],
+    "function": "Quick Stop"
+   },
+   "H": {
+    "box": [
+     178,
+     208,
+     234,
+     252
+    ],
+    "function": "Left index enable"
+   },
+   "G": {
+    "box": [
+     236,
+     208,
+     293,
+     252
+    ],
+    "function": "Right index enable"
+   },
+   "A": {
+    "box": [
+     306,
+     213,
+     350,
+     262
+    ],
+    "function": "Headland Management System (HMS)"
+   },
+   "B": {
+    "box": [
+     306,
+     264,
+     350,
+     312
+    ],
+    "function": "Configurable button"
+   },
+   "N": {
+    "box": [
+     112,
+     218,
+     170,
+     274
+    ],
+    "function": "IBS index enable"
+   },
+   "M": {
+    "box": [
+     96,
+     292,
+     140,
+     324
+    ],
+    "function": "Center frame raise"
+   },
+   "L": {
+    "box": [
+     72,
+     322,
+     108,
+     358
+    ],
+    "function": "Configurable button"
+   },
+   "J": {
+    "box": [
+     124,
+     322,
+     160,
+     358
+    ],
+    "function": "Configurable button"
+   },
+   "K": {
+    "box": [
+     96,
+     352,
+     140,
+     386
+    ],
+    "function": "Center frame lower"
+   },
+   "F": {
+    "box": [
+     181,
+     272,
+     232,
+     320
+    ],
+    "function": "Left tilt up"
+   },
+   "E": {
+    "box": [
+     181,
+     322,
+     232,
+     372
+    ],
+    "function": "Left tilt down"
+   },
+   "C": {
+    "box": [
+     242,
+     267,
+     292,
+     317
+    ],
+    "function": "Right tilt up"
+   },
+   "D": {
+    "box": [
+     242,
+     319,
+     292,
+     370
+    ],
+    "function": "Right tilt down"
+   },
+   "I": {
+    "box": [
+     308,
+     330,
+     355,
+     378
+    ],
+    "function": "Master spray on"
+   },
+   "O": {
+    "box": [
+     181,
+     380,
+     231,
+     428
+    ],
+    "function": "AutoTrac resume"
+   },
+   "Z": {
+    "box": [
+     242,
+     378,
+     292,
+     426
+    ],
+    "function": "BoomTrac resume"
+   },
+   "S": {
+    "box": [
+     784,
+     238,
+     828,
+     282
+    ],
+    "function": "Configurable button"
+   },
+   "R": {
+    "box": [
+     830,
+     238,
+     875,
+     282
+    ],
+    "function": "Configurable button"
+   },
+   "P": {
+    "box": [
+     890,
+     238,
+     937,
+     282
+    ],
+    "function": "Configurable button"
+   },
+   "U": {
+    "box": [
+     784,
+     296,
+     828,
+     340
+    ],
+    "function": "Configurable button"
+   },
+   "T": {
+    "box": [
+     830,
+     296,
+     875,
+     340
+    ],
+    "function": "Configurable button"
+   },
+   "Q": {
+    "box": [
+     890,
+     296,
+     937,
+     340
+    ],
+    "function": "Configurable button"
+   },
+   "XY": {
+    "box": [
+     756,
+     395,
+     800,
+     448
+    ],
+    "function": "Encoder: scroll = speed range (gear shift), push = configurable"
+   }
+  },
+  "views": {
+   "front": [
+    0,
+    50,
+    440,
+    500
+   ],
+   "side": [
+    560,
+    80,
+    1000,
+    480
+   ]
+  }
+ },
+ "controls": {
+  "master_spray": {
+   "handle": "I",
+   "figures": [
+    "N152644",
+    "NX711654"
+   ],
+   "certainty": "manual",
+   "where": "Multi-function lever, yellow button low on the right"
+  },
+  "hms": {
+   "handle": "A",
+   "figures": [
+    "N152638",
+    "NX711654"
+   ],
+   "certainty": "manual",
+   "where": "Multi-function lever, top right, marked HMS"
+  },
+  "left_boom_raise": {
+   "handle": "F",
+   "figures": [
+    "N152642",
+    "NX711654"
+   ],
+   "certainty": "likely",
+   "where": "Multi-function lever, left rocker in the middle, push the top"
+  },
+  "left_boom_lower": {
+   "handle": "E",
+   "figures": [
+    "N152642",
+    "NX711654"
+   ],
+   "certainty": "likely",
+   "where": "Multi-function lever, left rocker in the middle, push the bottom"
+  },
+  "right_boom_raise": {
+   "handle": "C",
+   "figures": [
+    "N152643",
+    "NX711654"
+   ],
+   "certainty": "likely",
+   "where": "Multi-function lever, right rocker in the middle, push the top"
+  },
+  "right_boom_lower": {
+   "handle": "D",
+   "figures": [
+    "N152643",
+    "NX711654"
+   ],
+   "certainty": "likely",
+   "where": "Multi-function lever, right rocker in the middle, push the bottom"
+  },
+  "section_left_enable": {
+   "handle": "H",
+   "figures": [
+    "N152636",
+    "NX711654"
+   ],
+   "certainty": "manual",
+   "where": "Multi-function lever, wide rocker near the top, left half"
+  },
+  "section_right_enable": {
+   "handle": "G",
+   "figures": [
+    "N152637",
+    "NX711654"
+   ],
+   "certainty": "manual",
+   "where": "Multi-function lever, wide rocker near the top, right half"
+  },
+  "section_reset": {
+   "handle": "N",
+   "figures": [
+    "N152635",
+    "NX711654"
+   ],
+   "certainty": "manual",
+   "where": "Multi-function lever, angled button top left (IBS Reset)"
+  },
+  "centre_boom_raise": {
+   "handle": "M",
+   "figures": [
+    "N152641",
+    "N153424"
+   ],
+   "certainty": "manual",
+   "where": "Multi-function lever, round pad on the left, push up"
+  },
+  "centre_boom_lower": {
+   "handle": "K",
+   "figures": [
+    "N152641",
+    "N153021"
+   ],
+   "certainty": "manual",
+   "where": "Multi-function lever, round pad on the left, push down"
+  },
+  "foam_marker_left": {
+   "handle": "L",
+   "figures": [],
+   "certainty": "inferred",
+   "where": "Round pad on the left, push left (the 612R handle has no foam marker)"
+  },
+  "foam_marker_right": {
+   "handle": "J",
+   "figures": [],
+   "certainty": "inferred",
+   "where": "Round pad on the left, push right (the 612R handle has no foam marker)"
+  },
+  "boomtrac": {
+   "handle": "Z",
+   "figures": [
+    "N152646",
+    "NX711654"
+   ],
+   "certainty": "manual",
+   "where": "Multi-function lever, bottom right of the middle group (BoomTrac Resume)"
+  },
+  "switch_4": {
+   "handle": "O",
+   "figures": [
+    "N152645",
+    "NX711654"
+   ],
+   "certainty": "manual",
+   "where": "Multi-function lever, bottom left of the middle group, marked AUTO (AutoTrac Resume)"
+  },
+  "warning_switch": {
+   "handle": "V",
+   "figures": [
+    "N152634",
+    "NX711654"
+   ],
+   "certainty": "manual",
+   "where": "Multi-function lever, the button on top (Quick Stop)"
+  },
+  "reconfig_a": {
+   "handle": "P",
+   "figures": [
+    "N152648",
+    "NX707641"
+   ],
+   "certainty": "manual",
+   "where": "Multi-function lever, right side, top right button (A)"
+  },
+  "reconfig_b": {
+   "handle": "Q",
+   "figures": [
+    "N152648",
+    "NX707641"
+   ],
+   "certainty": "manual",
+   "where": "Multi-function lever, right side, bottom right button (B)"
+  },
+  "reconfig_c": {
+   "handle": "R",
+   "figures": [
+    "N152648",
+    "NX707641"
+   ],
+   "certainty": "likely",
+   "where": "Multi-function lever, right side, top rocker (C), right half"
+  },
+  "reconfig_d": {
+   "handle": "S",
+   "figures": [
+    "N152648",
+    "NX707641"
+   ],
+   "certainty": "likely",
+   "where": "Multi-function lever, right side, top rocker (C), left half"
+  },
+  "reconfig_e": {
+   "handle": "T",
+   "figures": [
+    "N152648",
+    "NX707641"
+   ],
+   "certainty": "likely",
+   "where": "Multi-function lever, right side, bottom rocker (D), right half"
+  },
+  "reconfig_f": {
+   "handle": "U",
+   "figures": [
+    "N152648",
+    "NX707641"
+   ],
+   "certainty": "likely",
+   "where": "Multi-function lever, right side, bottom rocker (D), left half"
+  },
+  "speed_dial": {
+   "handle": "XY",
+   "figures": [
+    "N166440",
+    "NX707641"
+   ],
+   "certainty": "manual",
+   "where": "Thumb wheel under the multi-function lever (speed range)"
+  },
+  "dial_push": {
+   "handle": "XY",
+   "figures": [
+    "N166440",
+    "NX707641"
+   ],
+   "certainty": "likely",
+   "where": "Press the thumb wheel under the multi-function lever"
+  },
+  "engine_low_idle": {
+   "handle": null,
+   "figures": [
+    "N166477"
+   ],
+   "certainty": "manual",
+   "where": "Right-hand console, Low Idle switch (B in the photo)"
+  },
+  "engine_high_idle": {
+   "handle": null,
+   "figures": [
+    "N137031"
+   ],
+   "certainty": "manual",
+   "where": "Right-hand console, High Idle switch"
+  },
+  "park_brake": {
+   "handle": null,
+   "figures": [
+    "N137032"
+   ],
+   "certainty": "manual",
+   "where": "Right-hand console, Park Brake switch (P)"
+  },
+  "ladder": {
+   "handle": null,
+   "figures": [
+    "N154889"
+   ],
+   "certainty": "likely",
+   "where": "Ladder switch; the ladder is on the left side of the machine"
+  },
+  "solution_pump": {
+   "handle": null,
+   "figures": [
+    "N155117"
+   ],
+   "certainty": "manual",
+   "where": "Right-hand console keypad, Solution Pump switch (A)"
+  },
+  "rate_1": {
+   "handle": null,
+   "figures": [
+    "N155118"
+   ],
+   "certainty": "likely",
+   "where": "Right-hand console keypad, rate control switches (A)"
+  },
+  "rate_2": {
+   "handle": null,
+   "figures": [
+    "N155118"
+   ],
+   "certainty": "likely",
+   "where": "Right-hand console keypad, rate control switches (A)"
+  },
+  "rate_3": {
+   "handle": null,
+   "figures": [
+    "N155118"
+   ],
+   "certainty": "likely",
+   "where": "Right-hand console keypad, rate control switches (A)"
+  },
+  "camera_toggle": {
+   "handle": null,
+   "figures": [
+    "N152939C"
+   ],
+   "certainty": "likely",
+   "where": "Camera key; the display shows the camera view"
+  },
+  "lever": {
+   "handle": null,
+   "figures": [
+    "N166439",
+    "N152958"
+   ],
+   "certainty": "manual",
+   "where": "Multi-function lever: push forward to drive, pull back to slow"
+  },
+  "park_slot": {
+   "handle": null,
+   "figures": [
+    "N152958",
+    "N166439"
+   ],
+   "certainty": "manual",
+   "where": "Multi-function lever park position (the gate at the end of its travel)"
+  },
+  "steering": {
+   "handle": null,
+   "figures": [
+    "N151293"
+   ],
+   "certainty": "manual",
+   "where": "Steering wheel"
+  },
+  "foot_switch": {
+   "handle": null,
+   "figures": [
+    "N153424"
+   ],
+   "certainty": "manual",
+   "where": "Boom Fold/Unfold floor switch (A in the photo), hold it down with your foot"
+  }
+ },
+ "screen": {
+  "run.softkey.hms": "N120151",
+  "pdu.speed": "PC29666",
+  "pdu.rpm": "PC29665",
+  "pdu.gear": "PC29668"
+ },
+ "figures": {
+  "N152644": {
+   "page": 306,
+   "callouts": {},
+   "caption": "Spray System On/Off"
+  },
+  "NX711654": {
+   "page": 306,
+   "callouts": {},
+   "caption": "the multi-function lever button configuration. The figure has no callout legend."
+  },
+  "N152638": {
+   "page": 305,
+   "callouts": {},
+   "caption": "HMS"
+  },
+  "N152642": {
+   "page": 305,
+   "callouts": {},
+   "caption": "Left-Hand Boom Tilt"
+  },
+  "N152643": {
+   "page": 305,
+   "callouts": {},
+   "caption": "Right-Hand Boom Tilt"
+  },
+  "N152636": {
+   "page": 305,
+   "callouts": {},
+   "caption": "IBS Left"
+  },
+  "N152637": {
+   "page": 305,
+   "callouts": {},
+   "caption": "IBS Right"
+  },
+  "N152635": {
+   "page": 304,
+   "callouts": {},
+   "caption": "IBS Reset"
+  },
+  "N152641": {
+   "page": 71,
+   "callouts": {},
+   "caption": "Boom Raise/Lower"
+  },
+  "N153424": {
+   "page": 506,
+   "callouts": {
+    "A": "Boom Fold/Unfold Floor Switch",
+    "B": "Center Boom Raise Switch"
+   },
+   "caption": "A: Boom Fold/Unfold Floor Switch; B: Center Boom Raise Switch"
+  },
+  "N153021": {
+   "page": 359,
+   "callouts": {
+    "A": "Center Boom Raise Switch",
+    "B": "Center Boom Lower Switch",
+    "C": "Left-Hand Boom Tilt (fold) Switch",
+    "D": "Left-Hand Boom Tilt (unfold) Switch",
+    "E": "Right-Hand Boom Tilt (fold) Switch",
+    "F": "Right-Hand Boom Tilt (unfold) Switch"
+   },
+   "caption": "A: Center Boom Raise Switch; B: Center Boom Lower Switch; C: Left-Hand Boom Tilt (fold) Switch; D: Left-Hand Boom Tilt (unfold) Switch; E: Right-Hand Boom Tilt (fold) Switch; F: Right-Hand Boom Tilt (unfold) Switch"
+  },
+  "N152646": {
+   "page": 306,
+   "callouts": {},
+   "caption": "BoomTrac Resume"
+  },
+  "N152645": {
+   "page": 306,
+   "callouts": {},
+   "caption": "AutoTrac Resume"
+  },
+  "N152634": {
+   "page": 304,
+   "callouts": {},
+   "caption": "Quick Stop Switch"
+  },
+  "N152648": {
+   "page": 306,
+   "callouts": {},
+   "caption": "Programmable Buttons A, B, C, and D"
+  },
+  "NX707641": {
+   "page": 307,
+   "callouts": {},
+   "caption": "This figure shows the multi-function lever button configuration. Callout S1 points to the left button, R1 points to the center button, P1 points to the right button, U1 points to the lower left button, T1 points to the lower center button, Q1 points to the lower right button, and Y1 points to the trigger."
+  },
+  "N166440": {
+   "page": 351,
+   "callouts": {
+    "A": "Speed Range Adjustment Switch"
+   },
+   "caption": "A: Speed Range Adjustment Switch"
+  },
+  "N166477": {
+   "page": 362,
+   "callouts": {
+    "A": "Multi-Function Lever",
+    "B": "Low Idle Switch"
+   },
+   "caption": "A: Multi-Function Lever; B: Low Idle Switch"
+  },
+  "N137031": {
+   "page": 351,
+   "callouts": {},
+   "caption": "High Idle Switch"
+  },
+  "N137032": {
+   "page": 353,
+   "callouts": {},
+   "caption": "Park Brake Switch"
+  },
+  "N154889": {
+   "page": 604,
+   "callouts": {
+    "A": "Ladder",
+    "B": "Hook Strap"
+   },
+   "caption": "A: Ladder; B: Hook Strap"
+  },
+  "N155117": {
+   "page": 357,
+   "callouts": {
+    "A": "Solution Pump Switch"
+   },
+   "caption": "A: Solution Pump Switch"
+  },
+  "N155118": {
+   "page": 357,
+   "callouts": {
+    "A": "Rate Control Switch",
+    "B": "Manual Rate Switch"
+   },
+   "caption": "A: Rate Control Switch; B: Manual Rate Switch"
+  },
+  "N152939C": {
+   "page": 309,
+   "callouts": {},
+   "caption": "Video"
+  },
+  "N166439": {
+   "page": 352,
+   "callouts": {
+    "A": "Multi-Function Lever"
+   },
+   "caption": "A: Multi-Function Lever"
+  },
+  "N152958": {
+   "page": 304,
+   "callouts": {},
+   "caption": "Movements"
+  },
+  "N151293": {
+   "page": 288,
+   "callouts": {},
+   "caption": "Front Console"
+  },
+  "N120151": {
+   "page": 144,
+   "callouts": {},
+   "caption": "Headland Management System"
+  },
+  "PC29666": {
+   "page": 294,
+   "callouts": {},
+   "caption": "Vehicle Speed Indicator"
+  },
+  "PC29665": {
+   "page": 294,
+   "callouts": {},
+   "caption": "Engine Speed Indicator"
+  },
+  "PC29668": {
+   "page": 294,
+   "callouts": {},
+   "caption": "Gear Indicator"
+  },
+  "NX707642": {
+   "page": 307,
+   "callouts": {},
+   "caption": "Button | Switches | Functions"
+  }
+ }
+}

@@ -1,0 +1,1513 @@
+{
+  "schema": "lesson/0.2",
+  "id": "612r-field-spraying",
+  "title": "Start spraying right: rates, sections, HMS headlands and AutoTrac",
+  "machine": "612R Sprayer · CommandCenter display · CommandARM",
+  "build": "612R operator's manual OMKK105338; runs on the Apr 20 Display and CommandARM Simulator",
+  "manual": "OMKK105338 (400R-616R operator's manual)",
+  "level": "Advanced",
+  "minutes": 16,
+  "objective": "Start the first pass in the manual's order (boom to height, solution pump, rate, move off, AutoTrac, sections, master), index sections off for a waterway, change rate on the move, run a headland with HMS in the right order and resume AutoTrac, then do the next headland by hand with HMS off.",
+  "procedure_source": "612R operator's manual OMKK105338: Field Operation (p. 50-21 to 50-23), Operate Indexed Boom Sections (p. 50-23, 50-24), Operate Boom Return to Height (p. 50-24, 50-25), Multi-Function Lever (p. 30-17 to 30-19), Headland Management System application (p. 25-D-1 to 25-D-7), Target Rate/Rx (p. 25-I-5), Operate AutoTrac (p. 140-3, 140-4). Steps marked draft are adapted for the simulator (single HMS button, AutoTrac Resume mapped to switch 4, the scenario's rate and speed changes): confirm with an operator.",
+  "setup": {
+    "armrest": [
+      "switch foot_switch 0",
+      "switch park_slot 1",
+      "set steering 0",
+      "set speed_dial 0",
+      "switch foot_switch 1",
+      "wait 0.3",
+      "press centre_boom_lower 800",
+      "wait 0.3",
+      "switch foot_switch 0",
+      "wait 0.3",
+      "press centre_boom_raise 600",
+      "press engine_high_idle 300",
+      "set speed_dial 8",
+      "switch park_slot 0",
+      "set lever 125",
+      "wait 0.5"
+    ],
+    "trainer": "612R at the start of the first pass. Boom unfolded with the centre frame raised, engine at high idle, lever out of the park slot in neutral, park brake released, speed wheel 8 clicks up, wheel straight, solution pump OFF, master OFF. Display: Target Rate/Rx presets set from the product label (Rate 1 = this field's rate, Rate 3 = heavy-patch rate), guidance line set and Steer On, Return to Height set. HMS ON and Ready: Entering Headlands = Master Spray OFF and Boom Return to Height - Raise; Exiting Headlands = Boom Return to Height - Lower (Master Spray ON and AutoTrac Resume not ticked). Before section 4, turn HMS OFF on the display.",
+    "expect": {
+      "game": {
+        "boomUnfolded": "1"
+      }
+    }
+  },
+  "chatbot": {
+    "about": "The trainee is starting to spray with a John Deere 612R (CommandCenter display, CommandARM) on the simulator. The lesson follows the 612R operator's manual OMKK105338: the Field Operation order (boom to operating height, solution pump, rate switch 1/2/3, lever slowly forward, sections enabled, master), IBS buttons (IBS Right shuts sections off starting at the left-hand end, IBS Left starting at the right-hand end, IBS Reset restarts all shut-off sections), HMS (here: entering = Master Spray OFF + Boom Return to Height - Raise; exiting = Boom Return to Height - Lower) and AutoTrac Resume (AutoTrac switches off when the wheel is turned more than 30°; the operator steers at the end of the track). Application rates come from the product label and the display presets, not the manual. Answer in 2-3 sentences, only from the manual, and name the exact control.",
+    "send": [
+      "lesson title",
+      "section",
+      "step instruction",
+      "seconds on step",
+      "last 10 controls used",
+      "current game state",
+      "lights currently on"
+    ]
+  },
+  "extra_controls": {
+    "display_section_status": {
+      "label": "Section status (display)",
+      "where": "CommandCenter display: run page or Nozzle System application, Boom Sections tab, Section Status Preview (Ready, Applying, Fault, Indexed OFF, Disabled)",
+      "figure": "N119616",
+      "source": {
+        "pages": [
+          "25-G-5"
+        ],
+        "topic": "section-status--e3e207"
+      }
+    },
+    "display_hms_status": {
+      "label": "HMS status indicator",
+      "where": "CommandCenter display: Headland Management System main page (Menu, Machine Settings, Headland Management System) or its run page module. OFF gray, Ready green, Active blue",
+      "figure": "WZ1405506",
+      "source": {
+        "pages": [
+          "25-D-7"
+        ],
+        "topic": "status-indicator-headland-management-system--5f0ab5"
+      }
+    }
+  },
+  "sections": [
+    {
+      "title": "1. Start spraying in the manual's order",
+      "mode": "learn",
+      "steps": [
+        {
+          "id": "boom-height",
+          "say": "First pass. Lower the boom to spraying height with Centre boom lower.",
+          "why": "Field Operation step 1: the boom goes to operating height before the pump and the master.",
+          "controls": [
+            "centre_boom_lower"
+          ],
+          "done": {
+            "sent": "PLT_MHC_CenterBoomLower",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Not yet: the master comes last. Press it again to turn it off, then lower the boom."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Centre boom lower is the bottom of the centre-boom switch on the handle.",
+              "highlight": [
+                "centre_boom_lower"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Multi-function lever, round pad on the left: push the bottom (K, Centre boom lower) until the boom is at height.",
+              "highlight": [
+                "centre_boom_lower"
+              ]
+            }
+          ],
+          "show_me": [
+            "press centre_boom_lower 600"
+          ],
+          "ask": "How do I set the boom to spraying height on the 612R?",
+          "est_s": 35,
+          "figure": "N155116",
+          "source": {
+            "pages": [
+              "50-21"
+            ],
+            "topic": "field-operation--4b7bff"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "pump-on",
+          "say": "Press Solution Pump to engage the pump. Its light comes on.",
+          "why": "Field Operation step 4. If no flow is detected, the pump shuts itself off to protect its seals.",
+          "controls": [
+            "solution_pump"
+          ],
+          "done": {
+            "any": [
+              {
+                "cloud": "PLT_AIC_SolutionPumpIndicator",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_AIC_SolutionPump",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Not yet: the master comes last. Press it again to turn it off, then start the pump."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Solution Pump is on the armrest keypad.",
+              "highlight": [
+                "solution_pump"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Armrest keypad on the right-hand console: the Solution Pump switch (A in the manual's picture).",
+              "highlight": [
+                "solution_pump"
+              ]
+            }
+          ],
+          "show_me": [
+            "press solution_pump 300"
+          ],
+          "ask": "Why would the solution pump switch itself off?",
+          "est_s": 35,
+          "figure": "N155117",
+          "source": {
+            "pages": [
+              "50-21",
+              "50-22"
+            ],
+            "topic": "field-operation--4b7bff"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "rate-1",
+          "say": "Press Rate 1, this field's preset. Check it is highlighted on the display.",
+          "why": "Field Operation step 6: the rate switch picks a programmed target rate; the rate is then controlled automatically.",
+          "controls": [
+            "rate_1"
+          ],
+          "done": {
+            "any": [
+              {
+                "cloud": "PLT_AIC_Rate1ControlIndicator",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_AIC_Rate1Control",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_AIC_Rate2Control",
+                "eq": "1"
+              },
+              "say": "That's Rate 2. This field is set up for Rate 1."
+            },
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Not yet: the master comes last. Press it again to turn it off."
+            }
+          ],
+          "wrong_demo": [
+            "press rate_2 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The rate switches 1, 2 and 3 are on the armrest keypad.",
+              "highlight": [
+                "rate_1"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Armrest keypad on the right-hand console, rate control switches (A): press 1.",
+              "highlight": [
+                "rate_1"
+              ]
+            }
+          ],
+          "show_me": [
+            "press rate_1 300"
+          ],
+          "ask": "Where are the rate presets set?",
+          "est_s": 40,
+          "figure": "N155118",
+          "source": {
+            "pages": [
+              "50-22"
+            ],
+            "topic": "field-operation--4b7bff"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "move-off",
+          "say": "Push the multi-function lever slowly forward to start moving.",
+          "why": "Field Operation step 7. Spraying starts on the move, so get moving before the master.",
+          "controls": [
+            "lever"
+          ],
+          "done": {
+            "sent": "PLT_HydroHandlePosition",
+            "outside": [
+              100,
+              150
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Not yet: move off first, the master comes last. Press it again to turn it off."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Forward on the multi-function lever drives the machine.",
+              "highlight": [
+                "lever"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Multi-function lever: from the middle (neutral) position, push it slowly forward.",
+              "highlight": [
+                "lever"
+              ]
+            }
+          ],
+          "show_me": [
+            "set lever 175"
+          ],
+          "ask": "What does the lever do in its middle position?",
+          "est_s": 35,
+          "figure": "N166439",
+          "source": {
+            "pages": [
+              "50-22"
+            ],
+            "topic": "field-operation--4b7bff"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "autotrac-on",
+          "say": "You're on the guidance line with Steer On shown. Press AutoTrac Resume so AutoTrac steers.",
+          "why": "Resume activates AutoTrac if heading is within 80° of the track below 17.7 km/h (11 mph) and you're seated.",
+          "controls": [
+            "switch_4"
+          ],
+          "done": {
+            "sent": "PLT_SWITCH_4",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Not yet: check the sections before the master. Press it again to turn it off."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "AutoTrac Resume is on the multi-function lever.",
+              "highlight": [
+                "switch_4"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Multi-function lever, bottom left of the middle button group (O): AutoTrac Resume.",
+              "highlight": [
+                "switch_4"
+              ]
+            }
+          ],
+          "show_me": [
+            "press switch_4 300"
+          ],
+          "ask": "What must be true before AutoTrac will activate?",
+          "est_s": 50,
+          "figure": "N155449",
+          "source": {
+            "pages": [
+              "140-3"
+            ],
+            "topic": "operate-autotrac--5661e4"
+          },
+          "confidence": "draft"
+        },
+        {
+          "id": "sections-ready",
+          "say": "Check the display: every boom section you need shows Section Ready.",
+          "why": "Field Operation step 8: verify the sections are enabled. Ready means enabled but not applying yet.",
+          "controls": [
+            "display_section_status"
+          ],
+          "done": {
+            "confirm": "All sections show Ready"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Not yet: check the sections first. Press the master again to turn it off."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Section status shows on the run page and in the Nozzle System app.",
+              "highlight": [
+                "display_section_status"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Display: Nozzle System app, Boom Sections tab, Section Status Preview.",
+              "highlight": [
+                "display_section_status"
+              ]
+            }
+          ],
+          "ask": "What do the section status pictures mean?",
+          "est_s": 50,
+          "figure": "N119616",
+          "source": {
+            "pages": [
+              "50-22"
+            ],
+            "topic": "field-operation--4b7bff"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "master-on",
+          "say": "Now press the master switch to start spraying while you keep moving.",
+          "why": "Field Operation step 9. Spray start-up is not immediate: press it moving forward, just before solution is needed.",
+          "controls": [
+            "master_spray"
+          ],
+          "done": {
+            "sent": "PLT_MHC_MasterSprayOnOff",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "now_sent": "PLT_HydroHandlePosition",
+                "between": [
+                  120,
+                  130
+                ]
+              },
+              "say": "You've stopped. Start spraying while you're moving forward."
+            }
+          ],
+          "wrong_demo": [
+            "set lever 125",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The master is the Spray System On/Off button on the handle.",
+              "highlight": [
+                "master_spray"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Multi-function lever, button low on the right (I): Spray System On/Off. Its indicator lights when it's on.",
+              "highlight": [
+                "master_spray"
+              ]
+            }
+          ],
+          "show_me": [
+            "set lever 175",
+            "wait 0.3",
+            "press master_spray 300"
+          ],
+          "ask": "Why doesn't spray start the moment I press the master?",
+          "est_s": 35,
+          "figure": "N167055",
+          "source": {
+            "pages": [
+              "50-22",
+              "50-23"
+            ],
+            "topic": "field-operation--4b7bff"
+          },
+          "confidence": "manual"
+        }
+      ]
+    },
+    {
+      "title": "2. Sections and rate on the move",
+      "mode": "learn",
+      "steps": [
+        {
+          "id": "waterway",
+          "say": "An angled waterway is coming in from the left. Shut off the left-hand outer section.",
+          "why": "IBS Right shuts sections off starting at the left-hand end; IBS Left starts at the right-hand end.",
+          "controls": [
+            "section_left_enable",
+            "section_right_enable"
+          ],
+          "done": {
+            "sent": "PLT_MHC_IBSRightEnable",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_IBSLeftEnable",
+                "eq": "1"
+              },
+              "say": "That's IBS Left: it starts at the right-hand end of the boom. For the left side, press IBS Right."
+            },
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Don't stop the whole boom: shut off only the sections over the waterway."
+            }
+          ],
+          "wrong_demo": [
+            "press section_left_enable 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "In the manual's waterway example, IBS Right shuts off the left-hand outer section first.",
+              "highlight": [
+                "section_right_enable"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Multi-function lever, wide rocker near the top: the right half (G) is IBS Right. Press it once.",
+              "highlight": [
+                "section_right_enable"
+              ]
+            }
+          ],
+          "show_me": [
+            "press section_right_enable 300"
+          ],
+          "ask": "Why does IBS Right shut off the left side?",
+          "est_s": 55,
+          "figure": "N155496",
+          "source": {
+            "pages": [
+              "50-23",
+              "50-24"
+            ],
+            "topic": "operate-indexed-boom-sections-ibs--001bb6"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "sections-back",
+          "say": "Past the waterway. Turn the shut-off sections back on, all at once.",
+          "why": "IBS Reset restarts all shut-off sections that are enabled; IBS Left would bring them back one at a time.",
+          "controls": [
+            "section_reset"
+          ],
+          "done": {
+            "sent": "PLT_MHC_IBSReset",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "That switched the whole boom. Press the master again, then use IBS Reset."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "IBS Reset is on the handle, next to the index buttons.",
+              "highlight": [
+                "section_reset"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Multi-function lever, angled button top left (N): IBS Reset.",
+              "highlight": [
+                "section_reset"
+              ]
+            }
+          ],
+          "show_me": [
+            "press section_reset 300"
+          ],
+          "ask": "What's the difference between IBS Reset and IBS Left here?",
+          "est_s": 35,
+          "figure": "N153020",
+          "source": {
+            "pages": [
+              "50-23",
+              "50-24"
+            ],
+            "topic": "operate-indexed-boom-sections-ibs--001bb6"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "rate-heavy",
+          "say": "Heavy weed patch ahead. Press Rate 3, this job's heavy-patch preset, without stopping.",
+          "why": "Presets 1, 2 and 3 are set in Target Rate/Rx; the selected rate is then controlled automatically.",
+          "controls": [
+            "rate_3"
+          ],
+          "done": {
+            "any": [
+              {
+                "cloud": "PLT_AIC_Rate3ControlIndicator",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_AIC_Rate3Control",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "now_sent": "PLT_HydroHandlePosition",
+                "between": [
+                  120,
+                  130
+                ]
+              },
+              "say": "Keep moving: stopped with the master on, the pump holds minimum pressure and you over-apply."
+            }
+          ],
+          "wrong_demo": [
+            "set lever 125",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Same rate switches you used at the start.",
+              "highlight": [
+                "rate_3"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Armrest keypad on the right-hand console, rate control switches: press 3.",
+              "highlight": [
+                "rate_3"
+              ]
+            }
+          ],
+          "show_me": [
+            "set lever 175",
+            "press rate_3 300"
+          ],
+          "ask": "Can I change the target rate while I'm spraying?",
+          "est_s": 40,
+          "figure": "N155118",
+          "source": {
+            "pages": [
+              "25-I-5"
+            ],
+            "topic": "target-rate-rx--d50882"
+          },
+          "confidence": "draft"
+        },
+        {
+          "id": "rate-back",
+          "say": "Out of the patch. Press Rate 1 to go back to this field's rate.",
+          "why": "The selected rate is highlighted on the display: check Rate 1 is lit again.",
+          "controls": [
+            "rate_1"
+          ],
+          "done": {
+            "any": [
+              {
+                "cloud": "PLT_AIC_Rate1ControlIndicator",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_AIC_Rate1Control",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_AIC_Rate2Control",
+                "eq": "1"
+              },
+              "say": "That's Rate 2. This field's rate is Rate 1."
+            }
+          ],
+          "wrong_demo": [
+            "press rate_2 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Back to the preset you started the field with.",
+              "highlight": [
+                "rate_1"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Armrest keypad on the right-hand console, rate control switches: press 1.",
+              "highlight": [
+                "rate_1"
+              ]
+            }
+          ],
+          "show_me": [
+            "press rate_1 300"
+          ],
+          "ask": "How do I know which rate is active?",
+          "est_s": 30,
+          "figure": "N155118",
+          "source": {
+            "pages": [
+              "50-22"
+            ],
+            "topic": "field-operation--4b7bff"
+          },
+          "confidence": "draft"
+        }
+      ]
+    },
+    {
+      "title": "3. Headland with HMS, in the right order",
+      "mode": "learn",
+      "steps": [
+        {
+          "id": "hms-ready",
+          "say": "Headland coming. First check the HMS status on the run page shows Ready (green).",
+          "why": "Ready means HMS can be activated. With HMS OFF (gray), nothing changes when you press it.",
+          "controls": [
+            "display_hms_status"
+          ],
+          "done": {
+            "confirm": "HMS shows Ready (green)"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_HMS",
+                "eq": "1"
+              },
+              "say": "Too early: that ran the HMS entry in the crop. Press HMS only as you enter the headland."
+            }
+          ],
+          "wrong_demo": [
+            "press hms 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The HMS status shows on its run page module or the HMS main page.",
+              "highlight": [
+                "display_hms_status"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Display: Menu, Machine Settings, Headland Management System. Gray is OFF, green is Ready, blue is Active.",
+              "highlight": [
+                "display_hms_status"
+              ]
+            }
+          ],
+          "ask": "What is HMS set to do on this machine?",
+          "est_s": 50,
+          "figure": "WZ1405506",
+          "source": {
+            "pages": [
+              "25-D-7"
+            ],
+            "topic": "status-indicator-headland-management-system--5f0ab5"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "hms-entry",
+          "say": "At the headland: turn the speed wheel down 4 clicks and press HMS as you slow.",
+          "why": "Spray shutdown isn't immediate, so switch off while slowing. HMS turns Master Spray off and raises the boom.",
+          "controls": [
+            "speed_dial",
+            "hms"
+          ],
+          "done": {
+            "all": [
+              {
+                "sent": "PLT_MHC_Encoder",
+                "lte": 3000
+              },
+              {
+                "sent": "PLT_MHC_HMS",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_SteeringWheelAngleDeg",
+                    "gte": 10
+                  },
+                  {
+                    "sent": "PLT_MHC_HMS",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "Press HMS before you turn: it stops the spray and lifts the boom first."
+            },
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "HMS is set to turn Master Spray off here. Leave the master to HMS."
+            }
+          ],
+          "wrong_demo": [
+            "set steering 360",
+            "wait 1.2",
+            "set steering 0",
+            "wait 1.2"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Speed wheel under the handle, then the HMS button on the handle.",
+              "highlight": [
+                "speed_dial",
+                "hms"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Thumb wheel under the multi-function lever: 4 clicks down. HMS: top right of the handle (A).",
+              "highlight": [
+                "speed_dial",
+                "hms"
+              ]
+            }
+          ],
+          "show_me": [
+            "set speed_dial 4",
+            "press hms 300"
+          ],
+          "ask": "Why turn the spray off while I'm still slowing down?",
+          "est_s": 50,
+          "figure": "N152638",
+          "source": {
+            "pages": [
+              "25-D-2",
+              "25-D-3"
+            ],
+            "topic": "headland-management-system-main-page--dbc526"
+          },
+          "confidence": "draft"
+        },
+        {
+          "id": "turn",
+          "say": "Turn onto the next pass, then straighten the wheel.",
+          "why": "AutoTrac does not turn at the end of a track: you steer. Turning the wheel past 30° switches AutoTrac off.",
+          "controls": [
+            "steering"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_SteeringWheelAngleDeg",
+                "gte": 25
+              },
+              {
+                "sent": "PLT_SteeringWheelAngleDeg",
+                "eq": "0"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_SWITCH_4",
+                "eq": "1"
+              },
+              "say": "Not in the turn: resume AutoTrac once you're lined up on the next pass."
+            },
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Not in the turn: spray only once the boom is back down on the next pass."
+            }
+          ],
+          "wrong_demo": [
+            "press switch_4 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Steer hard onto the next pass, then centre the wheel.",
+              "highlight": [
+                "steering"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Steering wheel: turn it well over until you face the next pass, then back to straight.",
+              "highlight": [
+                "steering"
+              ]
+            }
+          ],
+          "show_me": [
+            "set steering 720",
+            "wait 2.0",
+            "set steering 0",
+            "wait 2.0"
+          ],
+          "ask": "Why does AutoTrac switch off in the turn?",
+          "est_s": 55,
+          "figure": "N151293",
+          "source": {
+            "pages": [
+              "140-3",
+              "140-4"
+            ],
+            "topic": "operate-autotrac--5661e4"
+          },
+          "confidence": "draft"
+        },
+        {
+          "id": "hms-exit",
+          "say": "Lined up on the new pass. Press HMS to run the exit and lower the boom.",
+          "why": "HMS exit is set to Return to Height - Lower. Get the boom back to height before you spray.",
+          "controls": [
+            "hms"
+          ],
+          "done": {
+            "sent": "PLT_MHC_HMS",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Boom first: press HMS to lower it, then start spraying."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Same HMS button you pressed at the headland.",
+              "highlight": [
+                "hms"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Multi-function lever, top right, marked HMS (A).",
+              "highlight": [
+                "hms"
+              ]
+            }
+          ],
+          "show_me": [
+            "press hms 300"
+          ],
+          "ask": "What does the HMS exit do on this machine?",
+          "est_s": 40,
+          "figure": "N152638",
+          "source": {
+            "pages": [
+              "25-D-5",
+              "25-D-6",
+              "25-D-7"
+            ],
+            "topic": "exiting-headlands-settings--234108"
+          },
+          "confidence": "draft"
+        },
+        {
+          "id": "autotrac-resume",
+          "say": "Press AutoTrac Resume so AutoTrac steers this pass.",
+          "why": "Turning the wheel switched AutoTrac off. Resume works with heading within 80° of the track below 17.7 km/h (11 mph).",
+          "controls": [
+            "switch_4"
+          ],
+          "done": {
+            "sent": "PLT_SWITCH_4",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_SteeringWheelAngleDeg",
+                "gte": 10
+              },
+              "say": "Keep the wheel steady: turning it more than 30° switches AutoTrac off again."
+            }
+          ],
+          "wrong_demo": [
+            "set steering 360",
+            "wait 1.2",
+            "set steering 0",
+            "wait 1.2"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "AutoTrac Resume is on the multi-function lever.",
+              "highlight": [
+                "switch_4"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Multi-function lever, bottom left of the middle button group (O): AutoTrac Resume.",
+              "highlight": [
+                "switch_4"
+              ]
+            }
+          ],
+          "show_me": [
+            "press switch_4 300"
+          ],
+          "ask": "Can HMS resume AutoTrac for me?",
+          "est_s": 35,
+          "figure": "N155449",
+          "source": {
+            "pages": [
+              "140-3",
+              "140-4"
+            ],
+            "topic": "operate-autotrac--5661e4"
+          },
+          "confidence": "draft"
+        },
+        {
+          "id": "spray-again",
+          "say": "Boom at height, AutoTrac steering: press the master switch to spray again.",
+          "why": "Field Operation step 11: when aligned with the next row, press the master to resume spraying.",
+          "controls": [
+            "master_spray"
+          ],
+          "done": {
+            "sent": "PLT_MHC_MasterSprayOnOff",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "now_sent": "PLT_HydroHandlePosition",
+                "between": [
+                  120,
+                  130
+                ]
+              },
+              "say": "You've stopped. Start spraying while you're moving forward."
+            }
+          ],
+          "wrong_demo": [
+            "set lever 125",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The master is the Spray System On/Off button on the handle.",
+              "highlight": [
+                "master_spray"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Multi-function lever, button low on the right (I): Spray System On/Off.",
+              "highlight": [
+                "master_spray"
+              ]
+            }
+          ],
+          "show_me": [
+            "set lever 175",
+            "wait 0.3",
+            "press master_spray 300"
+          ],
+          "ask": "When exactly should I press the master after a turn?",
+          "est_s": 30,
+          "figure": "N155121",
+          "source": {
+            "pages": [
+              "50-23"
+            ],
+            "topic": "field-operation--4b7bff"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "speed-up",
+          "say": "Back to field speed: turn the speed wheel up 4 clicks.",
+          "why": "Rotating the wheel changes target speed. Pressing it swaps between Field 1 and Field 2 instead.",
+          "controls": [
+            "speed_dial"
+          ],
+          "done": {
+            "sent": "PLT_MHC_Encoder",
+            "gte": 5000
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_EncoderButton",
+                "eq": "1"
+              },
+              "say": "You pressed the wheel: that swaps Field 1 and Field 2. Rotate it to change speed."
+            }
+          ],
+          "wrong_demo": [
+            "press dial_push 300",
+            "wait 0.4",
+            "press dial_push 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Same wheel you used to slow down, the other way.",
+              "highlight": [
+                "speed_dial"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Thumb wheel under the multi-function lever: 4 clicks up.",
+              "highlight": [
+                "speed_dial"
+              ]
+            }
+          ],
+          "show_me": [
+            "set speed_dial 8"
+          ],
+          "ask": "Does the rate change when I speed up?",
+          "est_s": 30,
+          "figure": "N152647",
+          "source": {
+            "pages": [
+              "30-19"
+            ],
+            "topic": "multi-function-lever--30db6a"
+          },
+          "confidence": "manual"
+        }
+      ]
+    },
+    {
+      "title": "4. Practice: the next headland with HMS off",
+      "mode": "practice",
+      "steps": [
+        {
+          "id": "p-entry",
+          "say": "Next headland. HMS shows OFF (gray), so do it by hand: slow down, master off, raise the boom.",
+          "why": "With HMS OFF nothing changes when you press it. Do its jobs yourself, before you turn.",
+          "controls": [
+            "speed_dial",
+            "master_spray",
+            "centre_boom_raise"
+          ],
+          "done": {
+            "all": [
+              {
+                "sent": "PLT_MHC_Encoder",
+                "lte": 3000
+              },
+              {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_MHC_CenterBoomRaise",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_HMS",
+                "eq": "1"
+              },
+              "say": "HMS is OFF: pressing it changes nothing. Do the jobs by hand."
+            },
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_SteeringWheelAngleDeg",
+                    "gte": 10
+                  },
+                  {
+                    "sent": "PLT_MHC_MasterSprayOnOff",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "Stop spraying before you turn."
+            },
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_SteeringWheelAngleDeg",
+                    "gte": 10
+                  },
+                  {
+                    "sent": "PLT_MHC_CenterBoomRaise",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "Raise the boom before you turn."
+            }
+          ],
+          "wrong_demo": [
+            "press hms 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 45,
+              "say": "Thumb wheel 4 clicks down, master (I) off, then Centre boom raise: round pad on the left of the handle, push the top (M).",
+              "highlight": [
+                "speed_dial",
+                "master_spray",
+                "centre_boom_raise"
+              ]
+            }
+          ],
+          "show_me": [
+            "set speed_dial 4",
+            "press master_spray 300",
+            "press centre_boom_raise 600"
+          ],
+          "ask": "What does HMS do for me that I now have to do by hand?",
+          "est_s": 70,
+          "figure": "N153021",
+          "source": {
+            "pages": [
+              "25-D-1",
+              "25-D-2"
+            ],
+            "topic": "headland-management-system-main-page--dbc526"
+          },
+          "confidence": "draft"
+        },
+        {
+          "id": "p-turn",
+          "say": "Turn onto the next pass and straighten up.",
+          "why": "You steer at the end of the track; AutoTrac is off once the wheel turns past 30°.",
+          "controls": [
+            "steering"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_SteeringWheelAngleDeg",
+                "gte": 25
+              },
+              {
+                "sent": "PLT_SteeringWheelAngleDeg",
+                "eq": "0"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_SWITCH_4",
+                "eq": "1"
+              },
+              "say": "Not in the turn: resume AutoTrac on the new pass."
+            },
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Not in the turn: spray once the boom is back down."
+            }
+          ],
+          "wrong_demo": [
+            "press switch_4 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 45,
+              "say": "Steering wheel well over onto the next pass, then back to straight.",
+              "highlight": [
+                "steering"
+              ]
+            }
+          ],
+          "show_me": [
+            "set steering 720",
+            "wait 2.0",
+            "set steering 0",
+            "wait 2.0"
+          ],
+          "ask": "Who steers at the end of the track?",
+          "est_s": 45,
+          "figure": "N151293",
+          "source": {
+            "pages": [
+              "140-4"
+            ],
+            "topic": "operate-autotrac--5661e4"
+          },
+          "confidence": "draft"
+        },
+        {
+          "id": "p-exit",
+          "say": "On the new pass: lower the boom, resume AutoTrac, then spray.",
+          "why": "Boom back at operating height before the master. With Return to Height, the boom stops at its set point.",
+          "controls": [
+            "centre_boom_lower",
+            "switch_4",
+            "master_spray"
+          ],
+          "done": {
+            "all": [
+              {
+                "then": [
+                  {
+                    "sent": "PLT_MHC_CenterBoomLower",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_MHC_MasterSprayOnOff",
+                    "eq": "1"
+                  }
+                ]
+              },
+              {
+                "sent": "PLT_SWITCH_4",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_MHC_MasterSprayOnOff",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_MHC_CenterBoomLower",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "Lower the boom before you spray."
+            }
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 45,
+              "say": "Hold Centre boom lower (K) until it stops, AutoTrac Resume (O), then the master (I).",
+              "highlight": [
+                "centre_boom_lower",
+                "switch_4",
+                "master_spray"
+              ]
+            }
+          ],
+          "show_me": [
+            "press centre_boom_lower 800",
+            "press switch_4 300",
+            "set lever 175",
+            "wait 0.3",
+            "press master_spray 300"
+          ],
+          "ask": "How does Return to Height stop the boom at the right height?",
+          "est_s": 70,
+          "figure": "N153021",
+          "source": {
+            "pages": [
+              "50-24",
+              "50-25"
+            ],
+            "topic": "operate-boom-return-to-height--e3eb93"
+          },
+          "confidence": "draft"
+        },
+        {
+          "id": "p-rate-speed",
+          "say": "Heavy patch at the start of this pass: select Rate 3, then turn the speed wheel up 4 clicks.",
+          "why": "The rate controller holds the target rate, within a tolerance, while you change speed.",
+          "controls": [
+            "rate_3",
+            "speed_dial"
+          ],
+          "done": {
+            "all": [
+              {
+                "any": [
+                  {
+                    "cloud": "PLT_AIC_Rate3ControlIndicator",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_AIC_Rate3Control",
+                    "eq": "1"
+                  }
+                ]
+              },
+              {
+                "sent": "PLT_MHC_Encoder",
+                "gte": 5000
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_EncoderButton",
+                "eq": "1"
+              },
+              "say": "Rotate the wheel: pressing it swaps Field 1 and Field 2."
+            }
+          ],
+          "wrong_demo": [
+            "press dial_push 300",
+            "wait 0.4",
+            "press dial_push 300",
+            "wait 0.4"
+          ],
+          "hints": [
+            {
+              "after_s": 45,
+              "say": "Rate 3 on the armrest keypad (right-hand console); thumb wheel under the handle, 4 clicks up.",
+              "highlight": [
+                "rate_3",
+                "speed_dial"
+              ]
+            }
+          ],
+          "show_me": [
+            "press rate_3 300",
+            "set speed_dial 8"
+          ],
+          "ask": "Why might the rate drift if I change speed quickly?",
+          "est_s": 45,
+          "figure": "N155118",
+          "source": {
+            "pages": [
+              "60-5"
+            ],
+            "topic": "solution-system--544787"
+          },
+          "confidence": "draft"
+        }
+      ]
+    }
+  ]
+}

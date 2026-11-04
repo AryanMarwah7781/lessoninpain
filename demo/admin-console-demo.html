@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin console walkthrough</title>
+<style>
+:root{--green:#367c2b;--green-l:#eef6ea;--blue:#2a78d6;--ink:#1d232b;--mute:#6b7280;--line:#e3e6ea;--bg:#f3f4f6;
+  --good:#0ca30c;--warn:#fab219;--crit:#d03b3b;--idle:#c3c2b7;--text2:#52514e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#0d0f12;overflow:hidden;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--ink)}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;background:var(--bg);transform-origin:0 0;overflow:hidden}
+@keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+@keyframes slidein{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+@keyframes flash{0%{background:#ffe58a}100%{background:transparent}}
+@keyframes rowflash{0%{background:#fff3c4}100%{background:transparent}}
+@keyframes rip{from{width:0;height:0;opacity:.9}to{width:56px;height:56px;opacity:0}}
+@keyframes blink{50%{opacity:0}}
+@keyframes livedot{50%{opacity:.3}}
+@keyframes load{from{width:0}to{width:100%}}
+@keyframes hlpulse{0%,100%{background:#fff7f7}50%{background:#ffe3e3}}
+
+.top{height:56px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 24px;gap:28px}
+.logo{font-weight:700;font-size:20px;display:flex;align-items:center;gap:10px}
+.logo i{width:26px;height:26px;border-radius:7px;background:var(--green);display:inline-block;position:relative}
+.logo i::after{content:"";position:absolute;left:7px;top:6px;width:9px;height:11px;border:3px solid #fff;border-radius:2px;border-right-color:transparent}
+.nav{display:flex;gap:6px}
+.nav span{padding:7px 14px;border-radius:7px;color:var(--mute);font-size:15px}
+.nav span.on{background:var(--green-l);color:var(--green);font-weight:600}
+.org{margin-left:auto;font-size:14px;color:var(--text2)}
+.tag{font-size:13px;color:var(--mute);border:1px solid var(--line);border-radius:20px;padding:4px 12px}
+
+.main{position:absolute;top:56px;left:0;right:0;bottom:64px;display:flex;gap:16px;padding:16px 20px}
+.side{width:190px;flex:none;display:flex;flex-direction:column;gap:3px;padding-top:2px}
+.side span{padding:9px 12px;border-radius:8px;color:var(--mute);font-size:15px}
+.side span.on{background:var(--green-l);color:var(--green);font-weight:600}
+.center{flex:1;display:flex;flex-direction:column;gap:12px;min-width:0}
+.right{width:450px;flex:none;position:relative;display:flex;flex-direction:column;gap:12px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.card h3{margin:0 0 10px;font-size:16px;display:flex;justify-content:space-between;align-items:baseline}
+.card h3 small{font-weight:400;color:var(--mute);font-size:13px}
+
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.tile .v{font-size:34px;font-weight:700;line-height:1.1;display:inline-block;padding:0 5px;margin-left:-5px;border-radius:6px}
+.tile .l{color:var(--text2);font-size:14px;margin-top:2px}
+.tile .v.bump{animation:flash 1s}
+
+.st{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;white-space:nowrap}
+.st::before{content:"";width:9px;height:9px;border-radius:50%}
+.st.good::before{background:var(--good)}.st.prog::before{background:var(--blue)}.st.crit::before{background:var(--crit)}.st.idle::before{background:var(--idle)}
+
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);font-weight:600;padding:6px 8px;border-bottom:1px solid var(--line)}
+td{padding:7px 8px;white-space:nowrap;border-bottom:1px solid #f1f2f4;font-size:14.5px;vertical-align:middle}
+tr.flash td{animation:rowflash 1.4s}
+tr.sel td{background:#f3f7ff}
+.bar{width:110px;height:8px;background:#eceef1;border-radius:4px;overflow:hidden;display:inline-block;vertical-align:middle;margin-right:8px}
+.bar i{display:block;height:100%;background:var(--text2);border-radius:4px;transition:width 1s}
+
+.legend{display:flex;gap:16px;font-size:13px;color:var(--text2);margin:0 0 8px}
+.legend span::before{content:"";display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.lg-ok::before{background:var(--good)}.lg-hint::before{background:var(--warn)}.lg-stuck::before{background:var(--crit)}
+.fn{display:grid;grid-template-columns:230px 1fr 90px;gap:12px;align-items:center;padding:4px 6px;margin:0 -6px;border-radius:6px}
+.fn .nm{font-size:14px}.fn .nm b{color:var(--mute);font-weight:600;margin-right:6px}
+.fbar{display:flex;gap:2px;height:16px}
+.fbar i{display:block;height:100%}
+.fbar i:first-child{border-radius:4px 0 0 4px}.fbar i:last-child{border-radius:0 4px 4px 0}.fbar i:only-child{border-radius:4px}
+.s-ok{background:var(--good)}.s-hint{background:var(--warn)}.s-stuck{background:var(--crit)}
+.fn .ct{font-size:13px;color:var(--text2);text-align:right}
+.fn.hl{animation:hlpulse 1.2s 3;background:#fff7f7}
+.ftip{position:absolute;z-index:40;background:#14181d;color:#fff;font-size:13.5px;border-radius:8px;padding:8px 11px;line-height:1.45;box-shadow:0 6px 20px rgba(0,0,0,.25);animation:pop .2s both}
+
+.att{display:flex;gap:11px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #f1f2f4;animation:slidein .4s both}
+.att:last-child{border-bottom:none}
+.att .ico{width:26px;height:26px;border-radius:50%;color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none}
+.att .txt{flex:1;font-size:14.5px;line-height:1.35}.att .txt small{display:block;color:var(--mute);font-size:13px;margin-top:2px}
+.att.done{opacity:.55;transition:opacity .6s}
+.btn{font:inherit;font-size:13.5px;border:1px solid #cfd4da;background:#fff;border-radius:8px;padding:6px 12px;color:var(--ink);font-weight:600;white-space:nowrap}
+.btn.pri{background:var(--green);border-color:var(--green);color:#fff}
+.pressed{filter:brightness(.88);transform:scale(.97)}
+
+.fld{margin-bottom:11px;position:relative}
+.lab{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);font-weight:600;margin-bottom:4px}
+.box{border:1px solid #cfd4da;border-radius:9px;padding:9px 12px;display:flex;justify-content:space-between;font-size:15px;background:#fff}
+.dd{position:absolute;left:0;right:0;top:100%;margin-top:4px;background:#fff;border:1px solid #cfd4da;border-radius:9px;box-shadow:0 10px 30px rgba(0,0,0,.12);display:none;z-index:5}
+.dd.open{display:block}
+.opt{padding:9px 12px;font-size:14.5px}.opt.hov{background:var(--green-l)}
+
+.drawer{position:absolute;inset:0;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:-8px 0 30px rgba(0,0,0,.08);transform:translateX(110%);opacity:0;transition:transform .5s cubic-bezier(.3,0,.2,1),opacity .4s;z-index:6;display:flex;flex-direction:column}
+.drawer.open{transform:none;opacity:1}
+.drawer h2{margin:0;font-size:22px;display:flex;justify-content:space-between;align-items:center}
+.drawer .sub{color:var(--mute);font-size:14px;margin:2px 0 12px}
+.steps{list-style:none;margin:0;padding:0}
+.steps li{display:grid;grid-template-columns:24px 1fr 56px;gap:8px;padding:6px 0;border-bottom:1px solid #f3f4f6;font-size:14.5px;align-items:start;transition:background .3s}
+.steps .m{font-weight:800;text-align:center}
+.steps li.done .m{color:var(--good)}
+.steps li.stuck{background:#fff4f4}.steps li.stuck .m{color:var(--crit)}
+.steps li.active{background:#f2f7ff}.steps li.active .m{color:var(--blue)}
+.steps li.pend{color:#9aa1a9}
+.steps small{display:block;color:var(--mute);font-size:12.5px}
+.steps .t{text-align:right;font-family:Consolas,monospace;font-size:13px;color:var(--text2)}
+.live{background:#f6f8fb;border-radius:9px;padding:10px 12px;margin-top:12px;font-size:13.5px}
+.live .lt{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);font-weight:600;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.live .lt::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--crit);animation:livedot 1s infinite}
+.live .vr{display:grid;grid-template-columns:1fr 54px;gap:8px;padding:3px 0;align-items:center}
+.live code{font-family:Consolas,monospace;font-size:12.5px;color:#174ea6}
+.live .vr small{display:block;color:var(--mute);font-size:12px}
+.live .nv{text-align:right;font-family:Consolas,monospace;font-weight:700;font-size:15px;border-radius:5px;padding:1px 4px}
+.nv.flash{animation:flash 1s}
+.tipbox{margin-top:12px;border:1px solid #cfd4da;border-radius:9px;padding:10px 12px;font-size:14.5px;min-height:62px;line-height:1.4;display:none}
+.tipbox.on{display:block;animation:pop .25s both}
+.caret::after{content:"";display:inline-block;width:2px;height:17px;background:var(--ink);margin-left:1px;vertical-align:-3px;animation:blink 1s steps(1) infinite}
+
+.toast{position:absolute;right:28px;bottom:84px;z-index:45;background:#14181d;color:#fff;border-radius:10px;padding:12px 16px;font-size:15px;display:flex;gap:10px;align-items:center;box-shadow:0 10px 30px rgba(0,0,0,.25);transition:opacity .35s,transform .35s;opacity:0;transform:translateY(10px)}
+.toast.on{opacity:1;transform:none}
+.toast .ti{width:22px;height:22px;border-radius:50%;background:var(--good);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px}
+
+.cap{position:absolute;left:0;right:0;bottom:0;height:64px;background:#14181d;color:#fff;display:flex;align-items:center;padding:0 28px;gap:16px;font-size:21px}
+.cap .n{background:var(--green);border-radius:20px;padding:3px 13px;font-weight:700;font-size:16px}
+#capT{transition:opacity .25s}
+
+.overlay{position:absolute;inset:0;background:rgba(15,20,25,.45);display:flex;align-items:center;justify-content:center;z-index:20;transition:opacity .45s}
+.overlay.hide{opacity:0;pointer-events:none}
+.ocard{width:640px;background:#fff;border-radius:16px;padding:26px 30px;box-shadow:0 24px 70px rgba(0,0,0,.3)}
+.ocard h2{margin:0 0 6px;font-size:24px}
+.ocard p{margin:0 0 16px;color:var(--text2);font-size:16px}
+.loadbar{height:6px;background:#eceef1;border-radius:3px;overflow:hidden}
+.loadbar i{display:block;height:100%;background:var(--green);animation:load 2.2s ease-out both}
+
+.title{position:absolute;inset:0;background:#14181d;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:30;transition:opacity .6s}
+.title.hide{opacity:0;pointer-events:none}
+.title .tl{font-size:64px;font-weight:700;display:flex;align-items:center;gap:18px}
+.title .tl i{width:54px;height:54px;border-radius:13px;background:var(--green);display:inline-block}
+.title .ts{font-size:28px;margin-top:14px;color:#d8dde3}
+.title .tm{font-size:18px;margin-top:26px;color:#8b949e;border:1px solid #39414b;border-radius:22px;padding:6px 18px}
+
+#cursor{position:absolute;left:960px;top:900px;z-index:50;width:30px;height:30px;margin:-3px 0 0 -4px;transition:left .9s cubic-bezier(.4,0,.2,1),top .9s cubic-bezier(.4,0,.2,1),opacity .4s;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
+#cursor.gone{opacity:0}
+.ripple{position:absolute;z-index:49;border:3px solid var(--green);border-radius:50%;transform:translate(-50%,-50%);animation:rip .55s forwards;pointer-events:none}
+#replay{position:absolute;right:24px;bottom:84px;z-index:60;font:inherit;font-size:16px;padding:10px 18px;border-radius:10px;border:none;background:var(--green);color:#fff;cursor:pointer;display:none}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="top">
+    <div class="logo"><i></i>Lesson Studio</div>
+    <div class="nav"><span>Studio</span><span>Marketplace</span><span class="on">Admin</span></div>
+    <div class="org">Northfield Equipment · dealer</div>
+    <div class="tag">Concept mockup · made-up data</div>
+  </div>
+
+  <div class="main">
+    <div class="side">
+      <span class="on">Overview</span><span>Trainees</span><span>Groups</span><span>Lessons</span><span>Assignments</span><span>Settings</span>
+    </div>
+
+    <div class="center">
+      <div class="tiles">
+        <div class="card tile"><div class="v" id="tActive">14</div><div class="l">Active trainees</div></div>
+        <div class="card tile"><div class="v" id="tAssigned">23</div><div class="l">Lessons assigned</div></div>
+        <div class="card tile"><div class="v" id="tPassed">6</div><div class="l"><span class="st good">Passed this week</span></div></div>
+        <div class="card tile"><div class="v" id="tStuck">1</div><div class="l"><span class="st crit">Stuck right now</span></div></div>
+      </div>
+
+      <div class="card">
+        <h3>Trainees <small>Filter: all groups ▾ · all lessons ▾</small></h3>
+        <table>
+          <thead><tr><th style="width:150px">Trainee</th><th style="width:190px">Group</th><th>Current lesson</th><th style="width:290px">Progress</th><th style="width:140px">Status</th><th style="width:120px">Last active</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+
+      <div class="card" id="chartCard" style="position:relative">
+        <h3>Where people get stuck · Learn to spray <small>14 trainees started · 11 passed</small></h3>
+        <div class="legend"><span class="lg-ok">Passed without a hint</span><span class="lg-hint">Needed the hint</span><span class="lg-stuck">Stuck</span></div>
+        <div id="fnRows"></div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="card">
+        <h3>Needs your attention <small id="attCount">2 items</small></h3>
+        <div id="att">
+          <div class="att" id="attSara"><span class="ico" style="background:var(--crit)">✕</span><div class="txt"><b>Sara L. is stuck</b> on Learn to spray, Step 2 "Unfold the boom"<small>4 min on this step · hint shown</small></div><button class="btn">View</button></div>
+          <div class="att" id="attStep5"><span class="ico" style="background:var(--warn);color:#0b0b0b">!</span><div class="txt"><b>Step 5 of Learn to spray</b> needs the most help<small>8 of 13 trainees needed the hint or got stuck</small></div><button class="btn" id="openStudio">Open in Studio</button></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Assign a lesson</h3>
+        <div class="fld"><div class="lab">Lesson</div><div class="box" id="aLesson"><span id="aLessonV" style="color:#9aa1a9">Choose a lesson</span><span>▾</span></div>
+          <div class="dd" id="ddLesson"><div class="opt">Learn to spray · R4045</div><div class="opt" id="optBoom">Boom fold &amp; unfold · R4045</div><div class="opt">Shut down safely · R4045</div></div></div>
+        <div class="fld"><div class="lab">To</div><div class="box" id="aTo"><span id="aToV" style="color:#9aa1a9">Choose a group or people</span><span>▾</span></div>
+          <div class="dd" id="ddTo"><div class="opt" id="optGroup">Group: Spring new hires (6)</div><div class="opt">Group: AGRI 210 Lab B (8)</div><div class="opt">Pick people…</div></div></div>
+        <div class="fld"><div class="lab">Due</div><div class="box" id="aDue"><span id="aDueV" style="color:#9aa1a9">No due date</span><span>▾</span></div></div>
+        <div class="fld"><div class="lab">To pass</div><div class="box"><span>Every step done · hints allowed</span><span>▾</span></div></div>
+        <button class="btn pri" id="assignBtn" style="font-size:15px;padding:9px 18px">Assign</button>
+      </div>
+
+      <div class="drawer" id="drawer">
+        <h2>Jonas K. <span class="btn" id="closeDrawer" style="padding:3px 10px">✕</span></h2>
+        <div class="sub">Spring new hires · Learn to spray · attempt 3</div>
+        <div style="margin-bottom:8px"><span class="st crit" id="dStatus">Stuck</span></div>
+        <ul class="steps" id="dSteps"></ul>
+        <div class="live">
+          <div class="lt">What the simulator sees right now</div>
+          <div class="vr"><div><code>PLT_NeutralSlotStatus</code><small>Lever in park slot · 1 = parked</small></div><div class="nv" id="lvSlot">1</div></div>
+          <div class="vr"><div><code>PLT_HydroHandlePosition</code><small>Multi-function lever · 125 = neutral</small></div><div class="nv" id="lvHydro">125</div></div>
+          <div class="vr"><div><code>VIO_DCU_VehicleGroundSpeed</code><small>Ground speed · 50 = stopped in this build</small></div><div class="nv" id="lvSpeed">50</div></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px"><button class="btn">Open replay</button><button class="btn" id="tipBtn">Send a tip</button><button class="btn">Reset attempt</button></div>
+        <div class="tipbox" id="tipBox"></div>
+        <div style="margin-top:10px;display:none" id="tipSendRow"><button class="btn pri" id="tipSend">Send to Jonas's screen</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cap"><span class="n" id="capN">1</span><span id="capT"></span></div>
+  <div class="toast" id="toast"><span class="ti">✓</span><span id="toastT"></span></div>
+
+  <div class="overlay hide" id="studioOv">
+    <div class="ocard">
+      <h2>Opening in the Studio</h2>
+      <p>Learn to spray · Step 5 "Lever out of park slot" selected, with this week's results attached for the AI.</p>
+      <div class="loadbar"><i></i></div>
+    </div>
+  </div>
+
+  <div class="title" id="title">
+    <div class="tl"><i></i>Admin console</div>
+    <div class="ts" id="titleSub">Assign lessons, follow progress, see where trainees get stuck</div>
+    <div class="tm" id="titleMeta">Concept walkthrough · R4045 sprayer</div>
+  </div>
+
+  <div id="cursor" class="gone"><svg viewBox="0 0 24 24" width="30" height="30"><path d="M3 2l6.5 19 2.8-7.6L20 11z" fill="#111" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+  <button id="replay" onclick="location.reload()">↻ Replay</button>
+</div>
+
+<script>
+const Q = new URLSearchParams(location.search);
+const SPEED = parseFloat(Q.get('speed') || '1');
+const REC = Q.has('rec');
+const sleep = ms => new Promise(r => setTimeout(r, ms / SPEED));
+const $ = id => document.getElementById(id);
+const stage = $('stage'), cur = $('cursor');
+
+let K = 1;
+function fit() {
+  K = Math.min(innerWidth / 1920, innerHeight / 1080);
+  stage.style.transform = `translate(${(innerWidth - 1920 * K) / 2}px,${(innerHeight - 1080 * K) / 2}px) scale(${K})`;
+}
+addEventListener('resize', fit); fit();
+
+// ---------- cursor, typing, captions, toast ----------
+function center(el) {
+  const r = el.getBoundingClientRect(), s = stage.getBoundingClientRect();
+  return { x: (r.left - s.left + r.width / 2) / K, y: (r.top - s.top + r.height / 2) / K };
+}
+async function moveTo(el, dx = 0, dy = 0) {
+  const c = center(el);
+  cur.style.left = (c.x + dx) + 'px'; cur.style.top = (c.y + dy) + 'px';
+  await sleep(950);
+}
+async function click(el, dx = 0, dy = 0) {
+  await moveTo(el, dx, dy);
+  const c = center(el);
+  const r = document.createElement('div');
+  r.className = 'ripple'; r.style.left = (c.x + dx) + 'px'; r.style.top = (c.y + dy) + 'px';
+  stage.appendChild(r); setTimeout(() => r.remove(), 700);
+  el.classList.add('pressed'); await sleep(200); el.classList.remove('pressed');
+  await sleep(180);
+}
+async function type(el, text, cps = 40) {
+  el.textContent = ''; el.classList.add('caret');
+  for (const ch of text) { el.textContent += ch; await sleep(1000 / cps); }
+  el.classList.remove('caret');
+}
+function cap(n, t) {
+  const ct = $('capT'); ct.style.opacity = 0;
+  setTimeout(() => { $('capN').textContent = n; ct.textContent = t; ct.style.opacity = 1; }, 250 / SPEED);
+}
+let toastT = null;
+function toast(t) {
+  $('toastT').textContent = t; $('toast').classList.add('on');
+  clearTimeout(toastT); toastT = setTimeout(() => $('toast').classList.remove('on'), 3200 / SPEED);
+}
+async function countTo(id, to) {
+  const el = $(id), from = +el.textContent, step = to > from ? 1 : -1;
+  for (let v = from; v !== to; v += step) { el.textContent = v + step; await sleep(70); }
+  el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
+}
+
+// ---------- trainees table ----------
+const ST = { good: 'Passed', prog: 'In progress', track: 'On track', crit: 'Stuck', idle: 'Not started' };
+const ROWS = [
+  ['jonas', 'Jonas K.', 'Spring new hires', 'Learn to spray', 33, 'Step 3 of 9', 'prog', 'now'],
+  ['aisha', 'Aisha M.', 'AGRI 210 Lab B', 'Learn to spray', 78, 'Step 7 of 9', 'prog', 'now'],
+  ['sara',  'Sara L.',  'Spring new hires', 'Learn to spray', 11, 'Step 2 of 9', 'crit', '4 min ago'],
+  ['maya',  'Maya R.',  'Spring new hires', '—', 100, '2 of 2 lessons', 'good', 'Today 09:12'],
+  ['priya', 'Priya S.', 'AGRI 210 Lab B', 'Shut down safely', 50, '1 of 2 lessons', 'track', 'Yesterday'],
+  ['luis',  'Luis G.',  'Spring new hires', '—', 100, '1 of 1 lesson', 'good', 'Mon'],
+  ['tom',   'Tom B.',   'AGRI 210 Lab B', 'Shut down safely', 0, '0 of 1 lesson', 'idle', '—'],
+  ['ben',   'Ben O.',   'Spring new hires', 'Learn to spray', 0, '0 of 1 lesson', 'idle', '—'],
+];
+const R = {};
+for (const [id, name, group, lesson, pct, txt, st, last] of ROWS) {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td><b>${name}</b></td><td>${group}</td><td class="les">${lesson}</td>
+    <td><span class="bar"><i style="width:${pct}%"></i></span><span class="pt">${txt}</span></td>
+    <td><span class="st ${st === 'track' ? 'prog' : st}">${ST[st]}</span></td><td class="la">${last}</td>`;
+  $('rows').appendChild(tr);
+  R[id] = tr;
+}
+function setRow(id, o) {
+  const tr = R[id];
+  if (o.pct !== undefined) tr.querySelector('.bar i').style.width = o.pct + '%';
+  if (o.txt) tr.querySelector('.pt').textContent = o.txt;
+  if (o.les) tr.querySelector('.les').textContent = o.les;
+  if (o.st) { const s = tr.querySelector('.st'); s.className = 'st ' + (o.st === 'track' ? 'prog' : o.st); s.textContent = ST[o.st]; }
+  if (o.last) tr.querySelector('.la').textContent = o.last;
+  tr.classList.remove('flash'); void tr.offsetWidth; tr.classList.add('flash');
+}
+
+// ---------- stuck chart ----------
+const FN = [
+  ['Release park brake', 14, 0, 0], ['Unfold the boom', 8, 5, 1], ['Engine to high idle', 12, 1, 0],
+  ['Solution pump on', 11, 2, 0], ['Lever out of park slot', 5, 6, 2], ['Lever forward', 10, 1, 0],
+  ['Raise target speed', 8, 3, 0], ['Master spray on', 10, 1, 0], ['Master spray off', 11, 0, 0],
+];
+FN.forEach(([nm, ok, hint, stuck], i) => {
+  const n = ok + hint + stuck, d = document.createElement('div');
+  d.className = 'fn'; d.id = 'fn' + (i + 1);
+  const seg = (v, c) => v ? `<i class="${c}" style="width:${v / n * 100}%"></i>` : '';
+  const ct = hint || stuck ? [ok, hint, stuck].filter((v, j) => j < 2 || v).join(' · ') : `${ok} of ${n}`;
+  d.innerHTML = `<span class="nm"><b>${i + 1}</b>${nm}</span><div class="fbar">${seg(ok, 's-ok')}${seg(hint, 's-hint')}${seg(stuck, 's-stuck')}</div><span class="ct">${ct}</span>`;
+  $('fnRows').appendChild(d);
+});
+
+// ---------- trainee drawer ----------
+const STEPS = ['Release park brake', 'Unfold the boom', 'Engine to high idle', 'Solution pump on', 'Lever out of park slot', 'Lever forward', 'Raise target speed', 'Master spray on', 'Master spray off'];
+const DS = [];
+STEPS.forEach((s, i) => {
+  const li = document.createElement('li');
+  li.innerHTML = `<span class="m"></span><span><span class="sn">${s}</span><small></small></span><span class="t"></span>`;
+  $('dSteps').appendChild(li); DS.push(li);
+});
+function dstep(i, state, t = '', note = '') {
+  const li = DS[i];
+  li.className = state;
+  li.querySelector('.m').textContent = { done: '✓', stuck: '✕', active: '●', pend: '○' }[state];
+  li.querySelector('.t').textContent = t;
+  li.querySelector('small').textContent = note;
+}
+function lv(id, v) { const e = $(id); e.textContent = v; e.classList.remove('flash'); void e.offsetWidth; e.classList.add('flash'); }
+let stuckTimer = null, stuckSec = 0;
+function fmt(s) { return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; }
+
+// ---------- the story ----------
+async function main() {
+  if (REC) await new Promise(r => { window.__start = r; });
+  await sleep(3600);
+  $('title').classList.add('hide');
+  await sleep(600);
+  cur.classList.remove('gone');
+
+  // 1. Overview
+  cap(1, "The Admin console shows everyone's progress at a glance.");
+  await moveTo($('tAssigned'), 0, 20);
+  await sleep(2600);
+
+  // 2. Assign
+  cap(2, 'Assign a lesson to a group or to people, with a due date and what counts as passing.');
+  await click($('aLesson'), -120); $('ddLesson').classList.add('open'); await sleep(450);
+  await moveTo($('optBoom'), -100); $('optBoom').classList.add('hov'); await sleep(250);
+  await click($('optBoom'), -100); $('ddLesson').classList.remove('open');
+  $('aLessonV').textContent = 'Boom fold & unfold · R4045'; $('aLessonV').style.color = '';
+  await click($('aTo'), -120); $('ddTo').classList.add('open'); await sleep(450);
+  await moveTo($('optGroup'), -100); $('optGroup').classList.add('hov'); await sleep(250);
+  await click($('optGroup'), -100); $('ddTo').classList.remove('open');
+  $('aToV').textContent = 'Group: Spring new hires (6)'; $('aToV').style.color = '';
+  await click($('aDue'), -120);
+  $('aDueV').textContent = 'Fri 30 Oct'; $('aDueV').style.color = '';
+  await sleep(500);
+  await click($('assignBtn'));
+  toast('Boom fold & unfold assigned to 6 trainees · due Fri 30 Oct');
+  countTo('tAssigned', 29);
+  setRow('maya', { pct: 67, txt: '2 of 3 lessons', st: 'track', les: 'Boom fold & unfold' });
+  await sleep(150); setRow('luis', { pct: 50, txt: '1 of 2 lessons', st: 'track', les: 'Boom fold & unfold' });
+  await sleep(150); setRow('ben', { txt: '0 of 2 lessons' });
+  await sleep(150); setRow('sara', {});
+  await sleep(2400);
+
+  // 3. Live progress
+  cap(3, 'Progress updates live as trainees work through their lessons.');
+  await moveTo(R.aisha, 140);
+  setRow('aisha', { pct: 89, txt: 'Step 8 of 9' }); await sleep(1300);
+  setRow('jonas', { pct: 44, txt: 'Step 4 of 9' }); await sleep(1300);
+  setRow('aisha', { pct: 100, txt: 'Passed · 11:42', st: 'good', last: 'just now' });
+  toast('Aisha M. passed Learn to spray · 11:42');
+  countTo('tPassed', 7);
+  await sleep(1400);
+  setRow('jonas', { pct: 56, txt: 'Step 5 of 9' }); await sleep(2200);
+
+  // 4. Stuck shows up
+  cap(4, 'When someone gets stuck, it shows up right away.');
+  setRow('jonas', { st: 'crit', last: 'now' });
+  const item = document.createElement('div');
+  item.className = 'att'; item.id = 'attJonas';
+  item.innerHTML = `<span class="ico" style="background:var(--crit)">✕</span><div class="txt"><b>Jonas K. is stuck</b> on Learn to spray, Step 5 "Lever out of park slot"<small>Attempt 3 · hint already shown</small></div><button class="btn" id="viewJonas">View</button>`;
+  $('att').prepend(item);
+  $('attCount').textContent = '3 items';
+  countTo('tStuck', 2);
+  await sleep(2200);
+
+  // 5. Open the trainee
+  cap(5, 'Open a trainee: every step, the time it took, hints used, and what the simulator sees right now.');
+  ['0:18', '1:52', '0:09', '0:41'].forEach((t, i) => dstep(i, 'done', t, ['', 'hint shown', '', 'wrong order caught once'][i]));
+  stuckSec = 520; dstep(4, 'stuck', fmt(stuckSec), 'hint shown · still stuck');
+  for (let i = 5; i < 9; i++) dstep(i, 'pend');
+  await click($('viewJonas'));
+  R.jonas.classList.add('sel');
+  $('drawer').classList.add('open');
+  stuckTimer = setInterval(() => { stuckSec++; DS[4].querySelector('.t').textContent = fmt(stuckSec); }, 1000 / SPEED);
+  await sleep(1200);
+  await moveTo($('lvSlot'), -150);
+  await sleep(3200);
+
+  // 6. Send a tip
+  cap(6, 'Send a tip straight to their screen, and watch them get unstuck.');
+  await click($('tipBtn'));
+  $('tipBox').classList.add('on');
+  await sleep(300);
+  await type($('tipBox'), 'Pull the lever back out of the P slot first, then push it forward.', 40);
+  $('tipSendRow').style.display = 'block';
+  await sleep(300);
+  await click($('tipSend'));
+  toast("Tip sent to Jonas's simulator screen");
+  $('tipBox').classList.remove('on'); $('tipSendRow').style.display = 'none';
+  await sleep(2000);
+  lv('lvSlot', 0);
+  clearInterval(stuckTimer);
+  dstep(4, 'done', fmt(stuckSec + 8), 'hint shown · tip sent');
+  dstep(5, 'active');
+  $('dStatus').className = 'st prog'; $('dStatus').textContent = 'In progress';
+  setRow('jonas', { pct: 67, txt: 'Step 6 of 9', st: 'prog' });
+  const a = $('attJonas');
+  a.querySelector('.ico').style.background = 'var(--good)'; a.querySelector('.ico').textContent = '✓';
+  a.querySelector('.txt').innerHTML = '<b>Jonas K. is moving again</b><small>Passed Step 5 after the tip</small>';
+  a.querySelector('.btn').remove(); a.classList.add('done');
+  countTo('tStuck', 1);
+  await sleep(1600);
+  lv('lvHydro', 182); await sleep(500); lv('lvSpeed', 57);
+  await sleep(900);
+  dstep(5, 'done', '0:12'); dstep(6, 'active');
+  setRow('jonas', { pct: 78, txt: 'Step 7 of 9' });
+  await sleep(2200);
+  a.style.display = 'none'; $('attCount').textContent = '2 items';
+  await click($('closeDrawer'));
+  $('drawer').classList.remove('open'); R.jonas.classList.remove('sel');
+  await sleep(600);
+
+  // 7. Where people get stuck
+  cap(7, 'See which steps trip people up across the whole group.');
+  const row5 = $('fn5');
+  await moveTo(row5.querySelector('.fbar'), 60);
+  row5.classList.add('hl');
+  const tip = document.createElement('div');
+  tip.className = 'ftip';
+  tip.innerHTML = '<b>Step 5 · Lever out of park slot</b><br>5 passed without a hint · 6 needed the hint · 2 got stuck';
+  const c = center(row5.querySelector('.fbar'));
+  tip.style.left = (c.x + 80) + 'px'; tip.style.top = (c.y - 70) + 'px';
+  stage.appendChild(tip);
+  await sleep(3400);
+  tip.remove();
+
+  // 8. Back to the Studio
+  cap(8, 'Jump into the Studio to fix the lesson where it matters.');
+  await click($('openStudio'));
+  $('studioOv').classList.remove('hide');
+  await sleep(3200);
+  $('studioOv').classList.add('hide');
+  cur.classList.add('gone');
+
+  $('titleSub').textContent = 'Next: the trainee screen';
+  $('titleMeta').textContent = 'Concept mockup · not a product';
+  $('title').classList.remove('hide');
+  await sleep(4000);
+  window.__demoDone = true;
+  if (!REC) $('replay').style.display = 'block';
+}
+main();
+</script>
+</body>
+</html>

@@ -1,0 +1,358 @@
+{
+  "schema": "lesson/0.1",
+  "id": "zones-rates",
+  "title": "Field zones: rates, speeds and sections on the go",
+  "machine": "R4045 Sprayer (2019) · Gen 4 display · CommandARM",
+  "build": "Apr 20 2026 (Connections app 3.2.0.7)",
+  "level": "Advanced",
+  "minutes": 15,
+  "objective": "Work through three field zones without stopping: change target rate and speed in the right order, close sections from the side the field narrows, then return to normal and mark the boundary.",
+  "procedure_source": "Scenario drafted from the app's Begin Spraying procedure and the controls the app reads. Every step is a draft: confirm the procedure with an operator before trainees use it.",
+  "setup": {
+    "armrest": [
+      "switch foot_switch 0",
+      "switch park_slot 1",
+      "set steering 0",
+      "set speed_dial 0",
+      "switch foot_switch 1",
+      "wait 0.3",
+      "press centre_boom_lower 800",
+      "wait 0.3",
+      "switch foot_switch 0",
+      "wait 0.3",
+      "set speed_dial 6",
+      "press solution_pump 300",
+      "press engine_high_idle 300",
+      "switch park_slot 0",
+      "set lever 175",
+      "press centre_boom_lower 400",
+      "press master_spray 300",
+      "wait 0.5"
+    ],
+    "trainer": "Boom unfolded and at spraying height, solution pump on, engine at high idle, lever out of park and forward, master on, speed dial 6 clicks up, wheel straight. Rate 2 active.",
+    "expect": {
+      "game": {
+        "boomUnfolded": "1"
+      }
+    }
+  },
+  "chatbot": {
+    "about": "The trainee is managing rates, speeds and sections across field zones on an R4045 sprayer simulator (Gen 4 display, CommandARM). Keep answers to 2-3 sentences and name the exact control.",
+    "send": [
+      "lesson title",
+      "section",
+      "step instruction",
+      "seconds on step",
+      "last 10 controls used",
+      "current game state",
+      "lights currently on"
+    ]
+  },
+  "sections": [
+    {
+      "title": "1. Zone A: light pressure",
+      "steps": [
+        {
+          "id": "zone-a-rate",
+          "say": "Zone A has light weed pressure: switch to Rate 1.",
+          "why": "Rate 1 is 10.0 gal/ac on the display's Target Rates.",
+          "controls": [
+            "rate_1"
+          ],
+          "done": {
+            "any": [
+              {
+                "cloud": "PLT_AIC_Rate1ControlIndicator",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_AIC_Rate1Control",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Rate 1, on the armrest keypad.",
+              "highlight": [
+                "rate_1"
+              ]
+            }
+          ],
+          "show_me": [
+            "press rate_1 300"
+          ],
+          "ask": "How do I change target rate?",
+          "confidence": "draft"
+        },
+        {
+          "id": "zone-a-speed",
+          "say": "Light zone: go faster. Push the speed dial for your Field 2 speed.",
+          "why": "Field 1 and Field 2 are your two preset speeds.",
+          "controls": [
+            "dial_push"
+          ],
+          "done": {
+            "sent": "PLT_MHC_EncoderButton",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Press down on the Speed Range Adjustment Dial.",
+              "highlight": [
+                "dial_push"
+              ]
+            }
+          ],
+          "show_me": [
+            "press dial_push 300"
+          ],
+          "ask": "How do I switch to Field 2 speed?",
+          "confidence": "draft"
+        }
+      ]
+    },
+    {
+      "title": "2. Zone B: heavy pressure",
+      "steps": [
+        {
+          "id": "zone-b",
+          "say": "Zone B is heavy: switch to Rate 3, then slow down 3 clicks on the dial.",
+          "why": "Rate first, so the controller is already aiming for the new rate as you slow.",
+          "controls": [
+            "rate_3",
+            "speed_dial"
+          ],
+          "done": {
+            "then": [
+              {
+                "any": [
+                  {
+                    "cloud": "PLT_AIC_Rate3ControlIndicator",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_AIC_Rate3Control",
+                    "eq": "1"
+                  }
+                ]
+              },
+              {
+                "sent": "PLT_MHC_Encoder",
+                "lte": 2500
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_MHC_Encoder",
+                    "lte": 2500
+                  },
+                  {
+                    "sent": "PLT_AIC_Rate3Control",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "Change the rate first, then the speed."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Rate 3 on the keypad, then the dial down 3 clicks.",
+              "highlight": [
+                "rate_3",
+                "speed_dial"
+              ]
+            }
+          ],
+          "show_me": [
+            "press rate_3 300",
+            "set speed_dial 3"
+          ],
+          "wrong_demo": [
+            "set speed_dial 3",
+            "wait 0.4",
+            "set speed_dial 6",
+            "wait 0.4"
+          ],
+          "ask": "Should I change rate or speed first?",
+          "confidence": "draft"
+        },
+        {
+          "id": "narrowing",
+          "say": "The field narrows from the left: shut off the left sections, then the right ones as it narrows further.",
+          "why": "Close sections from the side the edge comes in.",
+          "controls": [
+            "section_left_enable",
+            "section_right_enable"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_MHC_IBSLeftEnable",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_MHC_IBSRightEnable",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_MHC_IBSRightEnable",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_MHC_IBSLeftEnable",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "It narrows from the left: left sections first."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Left section button first, then right.",
+              "highlight": [
+                "section_left_enable",
+                "section_right_enable"
+              ]
+            }
+          ],
+          "show_me": [
+            "press section_left_enable 300",
+            "press section_right_enable 300"
+          ],
+          "wrong_demo": [
+            "press section_right_enable 300",
+            "wait 0.4"
+          ],
+          "ask": "Which sections do I close first?",
+          "confidence": "draft"
+        }
+      ]
+    },
+    {
+      "title": "3. Back to normal",
+      "steps": [
+        {
+          "id": "zone-c",
+          "say": "Normal zone again: reset the sections, select Rate 2 and push the dial back to Field 1.",
+          "why": "Three changes; any order.",
+          "controls": [
+            "section_reset",
+            "rate_2",
+            "dial_push"
+          ],
+          "done": {
+            "all": [
+              {
+                "sent": "PLT_MHC_IBSReset",
+                "eq": "1"
+              },
+              {
+                "any": [
+                  {
+                    "cloud": "PLT_AIC_Rate2ControlIndicator",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_AIC_Rate2Control",
+                    "eq": "1"
+                  }
+                ]
+              },
+              {
+                "sent": "PLT_MHC_EncoderButton",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 25,
+              "say": "Section reset, Rate 2, and press the dial.",
+              "highlight": [
+                "section_reset",
+                "rate_2",
+                "dial_push"
+              ]
+            }
+          ],
+          "show_me": [
+            "press section_reset 300",
+            "press rate_2 300",
+            "press dial_push 300"
+          ],
+          "ask": "How do I return to normal settings?",
+          "confidence": "draft"
+        },
+        {
+          "id": "mark-boundary",
+          "say": "Mark the zone boundary with the left foam marker.",
+          "why": "Next pass, you'll know where the zones change.",
+          "controls": [
+            "foam_marker_left"
+          ],
+          "done": {
+            "sent": "PLT_MHC_LeftHandFoamMarker",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Left foam marker, on the handle.",
+              "highlight": [
+                "foam_marker_left"
+              ]
+            }
+          ],
+          "show_me": [
+            "press foam_marker_left 300"
+          ],
+          "ask": "How do I mark a boundary?",
+          "confidence": "draft"
+        },
+        {
+          "id": "speed-normal",
+          "say": "Turn the speed dial back up to 6 clicks.",
+          "why": "Back to your normal field speed.",
+          "controls": [
+            "speed_dial"
+          ],
+          "done": {
+            "sent": "PLT_MHC_Encoder",
+            "gte": 4000
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Speed dial up.",
+              "highlight": [
+                "speed_dial"
+              ]
+            }
+          ],
+          "show_me": [
+            "set speed_dial 6"
+          ],
+          "ask": "How do I return to normal speed?",
+          "confidence": "draft"
+        }
+      ]
+    }
+  ]
+}

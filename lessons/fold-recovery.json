@@ -1,0 +1,329 @@
+{
+  "schema": "lesson/0.1",
+  "id": "fold-recovery",
+  "title": "Boom folded mid-pass: recover safely",
+  "machine": "R4045 Sprayer (2019) · Gen 4 display · CommandARM",
+  "build": "Apr 20 2026 (Connections app 3.2.0.7)",
+  "level": "Advanced",
+  "minutes": 15,
+  "objective": "The boom folded while spraying because a foot was resting on the foot switch. Stop safely, find the cause, unfold, and get back to spraying in the right order.",
+  "procedure_source": "Scenario drafted from the app's Begin Spraying procedure and the controls the app reads. Every step is a draft: confirm the procedure with an operator before trainees use it.",
+  "setup": {
+    "armrest": [
+      "switch foot_switch 0",
+      "switch park_slot 1",
+      "set steering 0",
+      "set speed_dial 0",
+      "switch foot_switch 1",
+      "wait 0.3",
+      "press centre_boom_lower 800",
+      "wait 0.3",
+      "switch foot_switch 0",
+      "wait 0.3",
+      "set speed_dial 6",
+      "press solution_pump 300",
+      "press engine_high_idle 300",
+      "switch park_slot 0",
+      "set lever 175",
+      "press centre_boom_lower 400",
+      "press master_spray 300",
+      "wait 0.5",
+      "switch foot_switch 1",
+      "wait 0.3",
+      "press centre_boom_raise 800",
+      "wait 0.5"
+    ],
+    "trainer": "Boom unfolded and at spraying height, solution pump on, engine at high idle, lever out of park and forward, master on, speed dial 6 clicks up, wheel straight. Then hold the foot switch and press Centre boom raise so the boom folds, and leave your foot on the switch.",
+    "expect": {
+      "game": {
+        "boomUnfolded": "0"
+      }
+    }
+  },
+  "chatbot": {
+    "about": "The trainee is recovering from an accidental boom fold on an R4045 sprayer simulator (Gen 4 display, CommandARM). On this machine, holding the foot switch turns Centre boom raise/lower into fold/unfold. Keep answers to 2-3 sentences and name the exact control.",
+    "send": [
+      "lesson title",
+      "section",
+      "step instruction",
+      "seconds on step",
+      "last 10 controls used",
+      "current game state",
+      "lights currently on"
+    ]
+  },
+  "sections": [
+    {
+      "title": "1. Stop safely",
+      "steps": [
+        {
+          "id": "stop-spraying",
+          "say": "The boom just folded while you were spraying. Stop spraying first.",
+          "why": "A folded boom sprays onto the machine and the ground beside it.",
+          "controls": [
+            "master_spray"
+          ],
+          "done": {
+            "sent": "PLT_MHC_MasterSprayOnOff",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 15,
+              "say": "The yellow master switch on the handle.",
+              "highlight": [
+                "master_spray"
+              ]
+            }
+          ],
+          "show_me": [
+            "press master_spray 300"
+          ],
+          "ask": "What do I do first if the boom folds while spraying?",
+          "confidence": "draft"
+        },
+        {
+          "id": "stop-machine",
+          "say": "Stop the machine: lever to neutral, then into the park slot.",
+          "why": "Never unfold while moving.",
+          "controls": [
+            "lever",
+            "park_slot"
+          ],
+          "done": {
+            "then": [
+              {
+                "any": [
+                  {
+                    "sent": "PLT_HydroHandlePosition",
+                    "between": [
+                      120,
+                      130
+                    ]
+                  },
+                  {
+                    "sent": "PLT_NeutralSlotStatus",
+                    "eq": "1"
+                  }
+                ]
+              },
+              {
+                "sent": "PLT_NeutralSlotStatus",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Lever back to the middle, then slide it into the park slot.",
+              "highlight": [
+                "lever",
+                "park_slot"
+              ]
+            }
+          ],
+          "show_me": [
+            "set lever 125",
+            "switch park_slot 1"
+          ],
+          "ask": "How do I stop and park?",
+          "confidence": "draft"
+        }
+      ]
+    },
+    {
+      "title": "2. Find the cause and recover",
+      "steps": [
+        {
+          "id": "find-cause",
+          "say": "Why did it fold? Your foot was resting on the foot switch. Take your foot off it.",
+          "why": "With the foot switch held, Centre boom raise folds the boom.",
+          "controls": [
+            "foot_switch"
+          ],
+          "done": {
+            "any": [
+              {
+                "control": "foot_switch",
+                "eq": "0"
+              },
+              {
+                "sent": "PLT_MHC_CenterBoomRaise",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_MHC_CenterBoomLower",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Check the pedal under your left foot.",
+              "highlight": [
+                "foot_switch"
+              ]
+            }
+          ],
+          "show_me": [
+            "switch foot_switch 0"
+          ],
+          "ask": "Why did the boom fold by itself?",
+          "confidence": "draft"
+        },
+        {
+          "id": "unfold",
+          "say": "Unfold the boom: hold the foot switch and press Centre boom lower until it's fully open.",
+          "why": "Here the foot switch is used on purpose.",
+          "controls": [
+            "foot_switch",
+            "centre_boom_lower"
+          ],
+          "done": {
+            "game": "boomUnfolded",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_CenterBoomLower",
+                "eq": "1"
+              },
+              "say": "That lowered the boom instead of unfolding: hold the foot switch while you press it."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Foot switch held, then Centre boom lower.",
+              "highlight": [
+                "foot_switch",
+                "centre_boom_lower"
+              ]
+            }
+          ],
+          "show_me": [
+            "switch foot_switch 1",
+            "wait 0.3",
+            "press centre_boom_lower 1200",
+            "wait 0.3",
+            "switch foot_switch 0"
+          ],
+          "wrong_demo": [
+            "switch foot_switch 0",
+            "press centre_boom_lower 400",
+            "wait 0.4"
+          ],
+          "ask": "How do I unfold the boom?",
+          "confidence": "draft"
+        },
+        {
+          "id": "boom-down",
+          "say": "Release the foot switch and lower the boom to spraying height.",
+          "why": "If nothing happens, your foot is still on the foot switch.",
+          "controls": [
+            "centre_boom_lower"
+          ],
+          "done": {
+            "sent": "PLT_MHC_CenterBoomLower",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "If the boom doesn't move, take your foot off the foot switch.",
+              "highlight": [
+                "foot_switch",
+                "centre_boom_lower"
+              ]
+            }
+          ],
+          "show_me": [
+            "switch foot_switch 0",
+            "press centre_boom_lower 600"
+          ],
+          "ask": "Why won't the boom lower?",
+          "confidence": "draft"
+        },
+        {
+          "id": "resume",
+          "say": "Back to work: out of park, lever forward, then the master switch.",
+          "why": "Moving before spraying avoids a puddle at the restart.",
+          "controls": [
+            "park_slot",
+            "lever",
+            "master_spray"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_NeutralSlotStatus",
+                "eq": "0"
+              },
+              {
+                "sent": "PLT_HydroHandlePosition",
+                "outside": [
+                  100,
+                  150
+                ]
+              },
+              {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_MHC_MasterSprayOnOff",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_HydroHandlePosition",
+                    "outside": [
+                      100,
+                      150
+                    ]
+                  }
+                ]
+              },
+              "say": "Get moving before you spray, or you'll puddle at the restart."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Out of the park slot, push the lever forward, then the master switch.",
+              "highlight": [
+                "park_slot",
+                "lever",
+                "master_spray"
+              ]
+            }
+          ],
+          "show_me": [
+            "switch park_slot 0",
+            "set lever 175",
+            "wait 0.3",
+            "press master_spray 300"
+          ],
+          "wrong_demo": [
+            "switch park_slot 0",
+            "press master_spray 300",
+            "wait 0.4",
+            "press master_spray 300",
+            "switch park_slot 1",
+            "wait 0.4"
+          ],
+          "ask": "How do I restart spraying mid-pass?",
+          "confidence": "draft"
+        }
+      ]
+    }
+  ]
+}

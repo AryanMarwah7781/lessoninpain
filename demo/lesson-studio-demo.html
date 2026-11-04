@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lesson Studio walkthrough</title>
+<style>
+:root{--green:#367c2b;--green-l:#eef6ea;--blue:#1f6feb;--red:#d1242f;--amber:#d99a00;--ink:#1d232b;--mute:#6b7280;--line:#e3e6ea;--bg:#f3f4f6}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#0d0f12;overflow:hidden;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--ink)}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;background:var(--bg);transform-origin:0 0;overflow:hidden}
+@keyframes pop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
+@keyframes blink{50%{opacity:0}}
+@keyframes dotb{0%,80%,100%{opacity:.25}40%{opacity:1}}
+@keyframes flash{0%{background:#ffe58a}100%{background:transparent}}
+@keyframes rip{from{width:0;height:0;opacity:.9}to{width:56px;height:56px;opacity:0}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(54,124,43,.5)}50%{box-shadow:0 0 0 9px rgba(54,124,43,0)}}
+@keyframes livedot{50%{opacity:.3}}
+@keyframes rowpulse{0%,100%{background:#fff}50%{background:#ffe9e9}}
+
+.top{height:56px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 24px;gap:28px}
+.logo{font-weight:700;font-size:20px;display:flex;align-items:center;gap:10px}
+.logo i{width:26px;height:26px;border-radius:7px;background:var(--green);display:inline-block;position:relative}
+.logo i::after{content:"";position:absolute;left:7px;top:6px;width:9px;height:11px;border:3px solid #fff;border-radius:2px;border-right-color:transparent}
+.nav{display:flex;gap:6px}
+.nav span{padding:7px 14px;border-radius:7px;color:var(--mute);font-size:15px}
+.nav span.on{background:var(--green-l);color:var(--green);font-weight:600}
+.tag{margin-left:auto;font-size:13px;color:var(--mute);border:1px solid var(--line);border-radius:20px;padding:4px 12px}
+
+.main{position:absolute;top:56px;left:0;right:0;bottom:64px;display:flex;gap:16px;padding:16px 20px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.panel h3{margin:0;padding:12px 16px;font-size:15px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.panel h3 small{font-weight:400;color:var(--mute);font-size:12.5px}
+.left{width:450px;flex:none;display:flex;flex-direction:column;gap:12px}
+.chat{flex:1;display:flex;flex-direction:column;min-height:0}
+.msgs{flex:1;overflow:hidden;padding:12px 14px;display:flex;flex-direction:column;gap:9px;justify-content:flex-end;min-height:0}
+.msg{max-width:90%;padding:8px 12px;border-radius:12px;font-size:14px;line-height:1.42;animation:pop .3s both;flex:none}
+.msg.me{align-self:flex-end;background:#e8f0ff;border-bottom-right-radius:4px}
+.msg.ai{align-self:flex-start;background:var(--green-l);border-bottom-left-radius:4px}
+.msg .who{display:block;font-size:11.5px;color:var(--mute);margin-bottom:2px;font-weight:600}
+.msg code{font-family:Consolas,monospace;font-size:12.5px;color:#174ea6;background:#fff;border-radius:4px;padding:0 3px}
+.day{align-self:center;font-size:12px;color:var(--mute);padding:3px 12px;border:1px solid var(--line);border-radius:20px;background:#fafafa;flex:none;animation:pop .3s both}
+.typing{display:inline-flex;gap:5px;padding:3px 0}
+.typing i{width:7px;height:7px;border-radius:50%;background:#6f9a66;animation:dotb 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+.attrow{display:none;padding:8px 12px 0;}
+.attrow.on{display:flex}
+.attchip{display:flex;align-items:center;gap:8px;border:1px solid #cfd4da;border-radius:9px;padding:5px 8px;font-size:12.5px;animation:pop .3s both}
+.inputrow{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line);align-items:center}
+.input{flex:1;min-height:40px;border:1px solid #cfd4da;border-radius:10px;padding:9px 12px;font-size:14px;line-height:1.4;background:#fff}
+.input.ph{color:#9aa1a9}
+.iconbtn{width:38px;height:38px;border-radius:9px;border:1px solid #cfd4da;display:flex;align-items:center;justify-content:center;flex:none;background:#fff}
+.iconbtn.send{background:var(--green);border-color:var(--green)}
+.pressed{filter:brightness(.88);transform:scale(.97)}
+.caret::after{content:"";display:inline-block;width:2px;height:17px;background:var(--ink);margin-left:1px;vertical-align:-3px;animation:blink 1s steps(1) infinite}
+
+.vars{height:505px;flex:none;display:flex;flex-direction:column}
+.vhead{display:grid;grid-template-columns:1fr 62px 74px;gap:8px;padding:6px 14px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);border-bottom:1px solid var(--line);font-weight:600}
+.vhead span:nth-child(2),.vhead span:nth-child(3){text-align:right}
+.vrow{display:grid;grid-template-columns:1fr 62px 74px;gap:8px;padding:3px 14px;line-height:1.25;border-bottom:1px solid #f0f1f3;align-items:center;transition:background .3s}
+.vrow.in{animation:pop .3s both}
+.vrow code{font-family:Consolas,monospace;font-size:12.5px;color:#174ea6;line-height:1.25}
+.vrow .mean{font-size:12.5px;color:var(--mute);line-height:1.25}
+.vrow .now{font-family:Consolas,monospace;font-size:15px;text-align:right;font-weight:700;border-radius:5px;padding:1px 4px}
+.vrow .st{font-size:12px;color:var(--mute);text-align:right}
+.vrow.hot{background:#e9f1ff}
+.vrow.new{background:#fff4d6}
+.now.flash{animation:flash 1s}
+
+.canvas{flex:1;position:relative;border-radius:12px;border:1px solid var(--line);background-color:#fbfbfc;background-image:radial-gradient(#d6dae0 1.2px,transparent 1.2px);background-size:22px 22px;overflow:hidden}
+#wires{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+#wires .w{fill:none;stroke:#9aa3ad;stroke-width:2.5}
+#wires .w.red{stroke:var(--red);stroke-dasharray:7 6}
+.ctool{position:absolute;top:14px;left:16px;right:16px;display:flex;align-items:center;gap:10px;z-index:3}
+.status{font-size:14px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:7px 15px;display:flex;gap:9px;align-items:center;transition:all .3s}
+.status .dot{width:9px;height:9px;border-radius:50%;background:#9aa1a9}
+.status.run{border-color:#9bbcf3;color:#174ea6}.status.run .dot{background:var(--blue);animation:livedot 1s infinite}
+.status.fail{border-color:#f0a8ad;color:var(--red);background:#fff6f6}.status.fail .dot{background:var(--red)}
+.status.pass{border-color:#a6cf9c;color:var(--green);background:#f1f8ef}.status.pass .dot{background:var(--green)}
+.sp{flex:1}
+.btn{font:inherit;font-size:14.5px;border:1px solid #cfd4da;background:#fff;border-radius:9px;padding:9px 16px;color:var(--ink);font-weight:600}
+.btn.primary{background:var(--green);border-color:var(--green);color:#fff}
+
+.node{position:absolute;width:190px;height:100px;background:#fff;border:1px solid #cdd2d8;border-top:5px solid var(--green);border-radius:10px;padding:7px 11px;font-size:13px;line-height:1.3;box-shadow:0 1px 3px rgba(0,0,0,.06);
+  transition:left .8s cubic-bezier(.5,0,.2,1),top .8s cubic-bezier(.5,0,.2,1),background .3s,border-color .3s,box-shadow .3s}
+.node.in{animation:pop .45s both}
+.node .k{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);font-weight:700}
+.node b{display:block;font-size:14.5px;margin:1px 0 2px}
+.node .d{color:#4b5563;font-size:12.5px}
+.node .hc{display:inline-block;font-size:11px;background:#fff4d6;border-radius:5px;padding:0 6px;margin-top:3px}
+.k-setup{border-top-color:#6b7280}.k-read{border-top-color:var(--amber)}.k-finish{border-top-color:var(--blue)}
+.k-wrong{border-top-color:var(--red);background:#fff6f6}
+.node.adding{outline:2px dashed var(--green);outline-offset:4px;animation:pop .45s both,pulse 1.2s .45s infinite}
+.node.active{border-color:var(--blue);box-shadow:0 0 0 5px rgba(31,111,235,.22)}
+.node.done{background:#f0f8ee;border-color:#a6cf9c}
+.node.done::after{content:"✓";position:absolute;right:10px;top:6px;color:var(--green);font-weight:800;font-size:19px}
+.node.stuck{background:#fff1f1;border-color:var(--red);box-shadow:0 0 0 5px rgba(209,36,47,.18)}
+.node.stuck::after{content:"stuck";position:absolute;right:8px;top:7px;color:#fff;background:var(--red);font-size:11px;font-weight:700;border-radius:8px;padding:1px 7px}
+.badge{position:absolute;top:-12px;right:-9px;font-size:11px;padding:2px 9px;border-radius:10px;color:#fff;font-weight:700;animation:pop .3s both}
+.badge.moved{background:var(--blue)}.badge.new{background:var(--green)}
+.hintpop{position:absolute;width:250px;background:#fffbea;border:1px solid #f0d77a;border-radius:9px;padding:7px 10px;font-size:13px;box-shadow:0 4px 14px rgba(0,0,0,.08);animation:pop .3s both;z-index:2}
+.hintpop b{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#9a6b00}
+
+.brief{width:360px;flex:none;display:flex;flex-direction:column}
+.bf{padding:11px 16px;border-bottom:1px solid #f0f1f3}
+.lab{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);font-weight:700;margin-bottom:4px}
+.val{font-size:14.5px;line-height:1.42}
+.val.big{font-size:18px;font-weight:700}
+.muted{color:#9aa1a9;font-style:italic}
+.quote{background:#f6f8fb;border-left:3px solid #9bb0d6;padding:8px 11px;border-radius:5px;font-style:italic;color:#334;font-size:14px;line-height:1.45}
+.cov{list-style:none;margin:0;padding:0}
+.cov li{display:flex;gap:10px;padding:6px 4px;font-size:14px;border-bottom:1px solid #f3f4f6;border-radius:6px}
+.cov li.hot{animation:rowpulse 1.1s 3}
+.cov .ic{width:20px;text-align:center;font-weight:800;flex:none}
+.cov small{display:block;color:var(--mute);font-size:12.5px;margin-top:1px}
+.ic.ok{color:var(--green)}.ic.warn{color:var(--red)}.ic.part{color:var(--amber)}.ic.prog{color:var(--blue)}.ic.pend{color:#b6bcc4}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips span{background:#f1f2f4;border-radius:12px;padding:3px 10px;font-size:13px}
+
+.cap{position:absolute;left:0;right:0;bottom:0;height:64px;background:#14181d;color:#fff;display:flex;align-items:center;padding:0 28px;gap:16px;font-size:21px}
+.cap .n{background:var(--green);border-radius:20px;padding:3px 13px;font-weight:700;font-size:16px}
+#capT{transition:opacity .25s}
+
+.overlay{position:absolute;inset:0;background:rgba(15,20,25,.45);display:flex;align-items:center;justify-content:center;z-index:20;transition:opacity .45s}
+.overlay.hide{opacity:0;pointer-events:none}
+.modal{width:760px;background:#fff;border-radius:16px;padding:26px 32px;box-shadow:0 24px 70px rgba(0,0,0,.3)}
+.modal h2{margin:0 0 4px;font-size:24px}
+.modal .sub{margin:0 0 18px;color:var(--mute);font-size:15px}
+.field{margin-bottom:15px;position:relative}
+.box{border:1px solid #cfd4da;border-radius:9px;padding:10px 13px;font-size:16px;min-height:46px;line-height:1.45;background:#fff}
+.box.area{min-height:118px}
+.box.sel{display:flex;justify-content:space-between;align-items:center}
+.dd{position:absolute;left:0;right:0;top:100%;margin-top:4px;background:#fff;border:1px solid #cfd4da;border-radius:9px;box-shadow:0 10px 30px rgba(0,0,0,.12);display:none;z-index:2}
+.dd.open{display:block}
+.opt{padding:10px 13px;font-size:15px}
+.opt.hov{background:var(--green-l)}
+.opt.off{color:#9aa1a9}
+.mfoot{display:flex;justify-content:flex-end;gap:10px;margin-top:6px}
+
+.mcard{width:1180px;background:#fff;border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.3);overflow:hidden}
+.mhead{padding:14px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;font-size:15px}
+.mhead .ok{color:var(--green);font-weight:700}
+.mbody{display:flex;gap:26px;padding:24px}
+.mini{position:relative;width:540px;height:400px;flex:none;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fbfbfc}
+.minfo h2{margin:0;font-size:28px}
+.minfo .mach{color:var(--mute);margin:4px 0 14px;font-size:15px}
+.minfo p{font-size:16px;line-height:1.5;margin:0 0 16px}
+
+.title{position:absolute;inset:0;background:#14181d;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:30;transition:opacity .6s}
+.title.hide{opacity:0;pointer-events:none}
+.title .tl{font-size:64px;font-weight:700;display:flex;align-items:center;gap:18px}
+.title .tl i{width:54px;height:54px;border-radius:13px;background:var(--green);display:inline-block}
+.title .ts{font-size:28px;margin-top:14px;color:#d8dde3}
+.title .tm{font-size:18px;margin-top:26px;color:#8b949e;border:1px solid #39414b;border-radius:22px;padding:6px 18px}
+
+.shot{margin-top:7px;width:230px;border-radius:8px;overflow:hidden;border:1px solid #9bb0d6}
+.shot .sbar{background:#cfd9ec;font-size:11px;padding:3px 8px;color:#334}
+.shot .scr{background:#1b1e22;color:#e8e8e8;padding:10px 12px;display:flex;gap:16px;align-items:flex-end;font-family:Consolas,monospace}
+.shot .spd{font-size:26px;color:#fff;line-height:1}.shot .spd small{font-size:12px;color:#aaa;margin-left:3px}
+.shot .rng{font-size:12px;color:#aaa}.shot .rng b{display:inline-block;margin-left:4px;font-size:16px;color:#1b1e22;background:#f2b705;border-radius:4px;padding:0 6px}
+
+#cursor.gone{opacity:0}
+#cursor{position:absolute;left:960px;top:900px;z-index:50;width:30px;height:30px;margin:-3px 0 0 -4px;transition:left .9s cubic-bezier(.4,0,.2,1),top .9s cubic-bezier(.4,0,.2,1),opacity .4s;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
+.ripple{position:absolute;z-index:49;border:3px solid var(--green);border-radius:50%;transform:translate(-50%,-50%);animation:rip .55s forwards;pointer-events:none}
+.keys{position:absolute;z-index:40;left:150px;top:830px;background:#14181d;color:#fff;border-radius:10px;padding:8px 14px;font-size:16px;transition:opacity .3s}
+.keys kbd{background:#2c333b;border:1px solid #48515b;border-bottom-width:3px;border-radius:6px;padding:2px 9px;font-family:inherit;font-size:15px}
+.hide{opacity:0}
+#replay{position:absolute;right:24px;bottom:84px;z-index:60;font:inherit;font-size:16px;padding:10px 18px;border-radius:10px;border:none;background:var(--green);color:#fff;cursor:pointer;display:none}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="top">
+    <div class="logo"><i></i>Lesson Studio</div>
+    <div class="nav"><span class="on">Studio</span><span>Marketplace</span><span>Admin</span></div>
+    <div class="tag">Concept mockup</div>
+  </div>
+
+  <div class="main">
+    <div class="left">
+      <div class="panel chat">
+        <h3>Chat with the AI <small>R4045 Sprayer</small></h3>
+        <div class="msgs" id="msgs"></div>
+        <div class="attrow" id="attrow"></div>
+        <div class="inputrow">
+          <div class="iconbtn" id="attach"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4b5563" stroke-width="2" stroke-linecap="round"><path d="M21 11.5l-8.5 8.5a5 5 0 01-7-7L14 4.5a3.3 3.3 0 014.7 4.7L10.2 17.7a1.7 1.7 0 01-2.4-2.4L15.5 7.6"/></svg></div>
+          <div class="input ph" id="input">Type, or paste a screenshot (Ctrl+V)…</div>
+          <div class="iconbtn send" id="send"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        </div>
+      </div>
+      <div class="panel vars">
+        <h3>What the simulator watches <small id="vcount">0 variables</small></h3>
+        <div class="vhead"><span>Variable · what it means</span><span>Now</span><span>Used in</span></div>
+        <div id="vlist"></div>
+      </div>
+    </div>
+
+    <div class="canvas" id="canvas">
+      <svg id="wires">
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#9aa3ad"/></marker>
+          <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#d1242f"/></marker>
+        </defs>
+        <g id="wg"></g>
+      </svg>
+      <div class="ctool">
+        <div class="status" id="status"><span class="dot"></span><span id="stText">Draft · not tested yet</span></div>
+        <div class="sp"></div>
+        <button class="btn" id="tryBtn">▶ Try it myself</button>
+        <button class="btn primary" id="pubBtn">Publish to Marketplace</button>
+      </div>
+    </div>
+
+    <div class="panel brief">
+      <h3>Lesson brief <small>Edit</small></h3>
+      <div class="bf"><div class="lab">Lesson name</div><div class="val big" id="bName">—</div></div>
+      <div class="bf"><div class="lab">Machine</div><div class="val" id="bMach">—</div></div>
+      <div class="bf"><div class="lab">About</div><div class="val" id="bAbout"><span class="muted">The AI drafts this from the objective</span></div></div>
+      <div class="bf"><div class="lab">Objective · in the author's own words</div><div class="quote" id="bObj">—</div></div>
+      <div class="bf"><div class="lab">Must be able to · covered by</div><ul class="cov" id="cov"></ul></div>
+      <div class="bf" style="border:none"><div class="lab">Marketplace details</div>
+        <div class="chips"><span>Beginner</span><span>~10 min</span><span id="cSteps">0 steps</span><span>Free</span></div></div>
+    </div>
+  </div>
+
+  <div class="cap"><span class="n" id="capN">1</span><span id="capT"></span></div>
+
+  <div class="overlay" id="newModal">
+    <div class="modal">
+      <h2>New lesson</h2>
+      <p class="sub">Say what the trainee should be able to do. The AI builds the steps.</p>
+      <div class="field"><div class="lab">Lesson name</div><div class="box" id="fName"></div></div>
+      <div class="field"><div class="lab">Machine</div>
+        <div class="box sel" id="fMach"><span class="muted" id="fMachV">Choose a machine</span><span>▾</span></div>
+        <div class="dd" id="dd"><div class="opt" id="optR">R4045 Sprayer (2019) · Gen 4 display · CommandARM</div><div class="opt off">More machines later</div></div>
+      </div>
+      <div class="field"><div class="lab">About <span style="text-transform:none;letter-spacing:0;font-weight:400">(optional, the AI can draft it)</span></div><div class="box muted">Leave blank</div></div>
+      <div class="field"><div class="lab">Objective: what should they be able to do?</div><div class="box area" id="fObj"></div></div>
+      <div class="mfoot"><button class="btn">Cancel</button><button class="btn primary" id="createBtn">Create lesson</button></div>
+    </div>
+  </div>
+
+  <div class="overlay hide" id="mpModal">
+    <div class="mcard">
+      <div class="mhead"><span class="ok">✓ Published</span><span style="color:var(--mute)">Marketplace · free to download and assign</span></div>
+      <div class="mbody">
+        <div class="mini" id="mini"></div>
+        <div class="minfo">
+          <h2>Learn to spray</h2>
+          <div class="mach">R4045 Sprayer (2019) · Gen 4 display · CommandARM</div>
+          <p id="mpAbout"></p>
+          <div class="chips" style="margin-bottom:22px"><span>Beginner</span><span>~10 min</span><span id="mpSteps"></span><span>Free</span><span>by: your dealership</span></div>
+          <div style="display:flex;gap:10px"><button class="btn">Download</button><button class="btn primary">Assign to trainees</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="title" id="title">
+    <div class="tl"><i></i>Lesson Studio</div>
+    <div class="ts" id="titleSub">Build simulator lessons by talking to an AI</div>
+    <div class="tm" id="titleMeta">Concept walkthrough · R4045 sprayer</div>
+  </div>
+
+  <div class="keys hide" id="keys"><kbd>Ctrl</kbd> + <kbd>V</kbd></div>
+  <div id="cursor" class="gone"><svg viewBox="0 0 24 24" width="30" height="30"><path d="M3 2l6.5 19 2.8-7.6L20 11z" fill="#111" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+  <button id="replay" onclick="location.reload()">↻ Replay</button>
+</div>
+
+<script>
+const Q = new URLSearchParams(location.search);
+const SPEED = parseFloat(Q.get('speed') || '1');
+const REC = Q.has('rec');
+const sleep = ms => new Promise(r => setTimeout(r, ms / SPEED));
+const $ = id => document.getElementById(id);
+const stage = $('stage'), canvas = $('canvas'), msgs = $('msgs'), input = $('input'), cur = $('cursor');
+
+let K = 1;
+function fit() {
+  K = Math.min(innerWidth / 1920, innerHeight / 1080);
+  stage.style.transform = `translate(${(innerWidth - 1920 * K) / 2}px,${(innerHeight - 1080 * K) / 2}px) scale(${K})`;
+}
+addEventListener('resize', fit); fit();
+
+// ---------- cursor, typing, captions ----------
+function center(el) {
+  const r = el.getBoundingClientRect(), s = stage.getBoundingClientRect();
+  return { x: (r.left - s.left + r.width / 2) / K, y: (r.top - s.top + r.height / 2) / K };
+}
+async function moveTo(el, dx = 0, dy = 0) {
+  const c = center(el);
+  cur.style.left = (c.x + dx) + 'px'; cur.style.top = (c.y + dy) + 'px';
+  await sleep(950);
+}
+async function click(el, dx = 0, dy = 0) {
+  await moveTo(el, dx, dy);
+  const c = center(el);
+  const r = document.createElement('div');
+  r.className = 'ripple'; r.style.left = (c.x + dx) + 'px'; r.style.top = (c.y + dy) + 'px';
+  stage.appendChild(r); setTimeout(() => r.remove(), 700);
+  el.classList.add('pressed'); await sleep(200); el.classList.remove('pressed');
+  await sleep(180);
+}
+async function type(el, text, cps = 40) {
+  el.classList.remove('ph', 'muted'); el.textContent = ''; el.classList.add('caret');
+  for (const ch of text) { el.textContent += ch; await sleep(1000 / cps); }
+  el.classList.remove('caret');
+}
+function cap(n, t) {
+  const ct = $('capT'); ct.style.opacity = 0;
+  setTimeout(() => { $('capN').textContent = n; ct.textContent = t; ct.style.opacity = 1; }, 250 / SPEED);
+}
+
+// ---------- chat ----------
+function addMsg(who, text, extra = '') {
+  const m = document.createElement('div');
+  m.className = 'msg ' + who;
+  const w = document.createElement('b'); w.className = 'who'; w.textContent = who === 'me' ? 'Author' : 'AI';
+  const body = document.createElement('div');
+  if (who === 'me') body.textContent = text; else body.innerHTML = text;
+  m.append(w, body);
+  if (extra) m.insertAdjacentHTML('beforeend', extra);
+  msgs.appendChild(m);
+  return m;
+}
+async function ai(html, think = 800) {
+  const t = document.createElement('div');
+  t.className = 'msg ai'; t.innerHTML = '<span class="typing"><i></i><i></i><i></i></span>';
+  msgs.appendChild(t); await sleep(think); t.remove();
+  addMsg('ai', html); await sleep(600);
+}
+async function me(text, extra = '') {
+  await click(input, -120);
+  await type(input, text, 42);
+  await sleep(250);
+  await click($('send'));
+  input.textContent = 'Type, or paste a screenshot (Ctrl+V)…'; input.classList.add('ph');
+  $('attrow').innerHTML = ''; $('attrow').classList.remove('on');
+  addMsg('me', text, extra);
+  await sleep(450);
+}
+function day(t) { const d = document.createElement('div'); d.className = 'day'; d.textContent = t; msgs.appendChild(d); }
+
+// ---------- blocks ----------
+const DEF = {
+  setup:  { kind: 'setup',  k: 'Setup',          title: 'R4045 start state',      d: 'Park brake on · boom folded · idling' },
+  read:   { kind: 'read',   k: 'Reading card',   title: 'Check nozzles for wear', d: 'Trainee reads and confirms' },
+  park:   { kind: 'step',   title: 'Release park brake',     d: 'Done when: park brake light off' },
+  unfold: { kind: 'step',   title: 'Unfold the boom',        d: 'Done when: boom unfolded', hint: 'hint after 30 s' },
+  idle:   { kind: 'step',   title: 'Engine to high idle',    d: 'Done when: high-idle light on' },
+  pump:   { kind: 'step',   title: 'Solution pump on',       d: 'Done when: pump light on' },
+  slot:   { kind: 'step',   title: 'Lever out of park slot', d: 'Done when: lever not parked', hint: 'hint after 20 s' },
+  lever:  { kind: 'step',   title: 'Lever forward',          d: 'Done when: ground speed above stopped' },
+  target: { kind: 'step',   title: 'Raise target speed',     d: 'Done when: speed dial turned up' },
+  mon:    { kind: 'step',   title: 'Master spray on',        d: 'Done when: spray icon on' },
+  moff:   { kind: 'step',   title: 'Master spray off',       d: 'Done when: spray icon off' },
+  fin:    { kind: 'finish', k: 'Finish',         title: 'Lesson passed',          d: 'All steps done' },
+  wrong:  { kind: 'wrong',  k: 'If wrong order', title: 'Master before pump',     d: '' },
+};
+const B = {};
+let order = [];
+let branch = null;
+const COLS = 4, X0 = 64, DX = 240, Y0 = 82, DY = 180;
+
+function pos(i) {
+  const row = Math.floor(i / COLS), c = i % COLS, col = row % 2 === 0 ? c : COLS - 1 - c;
+  return { x: X0 + col * DX, y: Y0 + row * DY };
+}
+function stepNo(id) {
+  let n = 0;
+  for (const o of order) { if (DEF[o].kind === 'step') n++; if (o === id) return n; }
+  return null;
+}
+function label(id) { return DEF[id].kind === 'step' ? 'Step ' + stepNo(id) : DEF[id].k; }
+function makeEl(id) {
+  const d = DEF[id];
+  const el = document.createElement('div');
+  el.className = 'node in k-' + d.kind;
+  el.innerHTML = `<div class="k"></div><b>${d.title}</b><div class="d">${d.d}</div>` + (d.hint ? `<span class="hc">${d.hint}</span>` : '');
+  canvas.appendChild(el);
+  setTimeout(() => el.classList.remove('in'), 600 / SPEED);
+  B[id] = { el };
+  return el;
+}
+function place(el, p) { el.style.left = p.x + 'px'; el.style.top = p.y + 'px'; }
+function layout() {
+  order.forEach((id, i) => place(B[id].el, pos(i)));
+  if (branch) { const p = pos(order.indexOf(branch.parent)); place(B[branch.id].el, { x: p.x, y: p.y + DY }); }
+  relabel();
+}
+function relabel() {
+  for (const id of Object.keys(B)) B[id].el.querySelector('.k').textContent = label(id);
+  if (B.wrong) B.wrong.el.querySelector('.d').textContent = `Says "turn the pump on first", back to ${label('pump')}`;
+  updateVarLabels(); updateCoverage();
+  $('cSteps').textContent = order.filter(o => DEF[o].kind === 'step').length + ' steps';
+}
+async function addBlock(id, index = order.length) {
+  const el = makeEl(id);
+  order.splice(index, 0, id);
+  el.style.transition = 'none'; place(el, pos(index)); void el.offsetWidth; el.style.transition = '';
+  el.classList.add('adding'); layout();
+  await sleep(1000); el.classList.remove('adding');
+}
+async function addBranch(id, parent) {
+  const el = makeEl(id);
+  branch = { id, parent };
+  const p = pos(order.indexOf(parent));
+  el.style.transition = 'none'; place(el, { x: p.x, y: p.y + DY }); void el.offsetWidth; el.style.transition = '';
+  el.classList.add('adding'); layout();
+  await sleep(1000); el.classList.remove('adding');
+}
+function badge(id, text, cls) {
+  const b = document.createElement('span'); b.className = 'badge ' + cls; b.textContent = text; B[id].el.appendChild(b);
+}
+function clearBadges() { document.querySelectorAll('#canvas .badge').forEach(b => b.remove()); }
+
+// wires follow the blocks every frame, so they bend while blocks move
+const wg = $('wg');
+function bx(el) { return { x: el.offsetLeft, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight }; }
+function edgePath(a, b) {
+  const A = bx(a), C = bx(b);
+  if (Math.abs(A.y - C.y) < 60) {
+    const y1 = A.y + A.h / 2, y2 = C.y + C.h / 2;
+    const [x1, x2] = A.x < C.x ? [A.x + A.w, C.x - 4] : [A.x, C.x + C.w + 4];
+    const mx = (x1 + x2) / 2;
+    return `M${x1} ${y1} C${mx} ${y1} ${mx} ${y2} ${x2} ${y2}`;
+  }
+  const x1 = A.x + A.w / 2, y1 = A.y + A.h, x2 = C.x + C.w / 2, y2 = C.y - 4, my = (y1 + y2) / 2;
+  return `M${x1} ${y1} C${x1} ${my} ${x2} ${my} ${x2} ${y2}`;
+}
+function draw() {
+  let s = '';
+  for (let i = 0; i < order.length - 1; i++)
+    s += `<path class="w" d="${edgePath(B[order[i]].el, B[order[i + 1]].el)}" marker-end="url(#ar)"/>`;
+  if (branch) s += `<path class="w red" d="${edgePath(B[branch.parent].el, B[branch.id].el)}" marker-end="url(#arr)"/>`;
+  wg.innerHTML = s;
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+
+// ---------- variables ----------
+const VD = {
+  PLT_AIC_ParkBrakeIndicator:           ['Park brake light · 1 = on', 1, 'park'],
+  boomUnfolded:                         ['Boom position · 1 = unfolded', 0, 'unfold'],
+  PLT_AIC_EngineHighIdleSpeedIndicator: ['High-idle light · 1 = high idle', 0, 'idle'],
+  PLT_AIC_SolutionPumpIndicator:        ['Solution pump light · 1 = running', 0, 'pump'],
+  PLT_NeutralSlotStatus:                ['Lever in park slot · 1 = parked', 1, 'slot'],
+  PLT_HydroHandlePosition:              ['Multi-function lever · 0–250, 125 = neutral', 125, 'lever'],
+  VIO_DCU_VehicleGroundSpeed:           ['Ground speed · 50 = stopped in this build', 50, 'lever'],
+  PLT_MHC_Encoder:                      ['Speed range dial · 1000–25000', 1000, 'target'],
+  VIO_SprayMasterIconIndicator:         ['Master spray icon · 1 = spraying', 0, 'mon'],
+  PLT_MHC_MasterSprayOnOff:             ['Master switch pressed · 1 = pressed', 0, 'wrong'],
+};
+const V = {};
+function addVar(name, cls = '') {
+  const [mean, init, blk] = VD[name];
+  const r = document.createElement('div');
+  r.className = 'vrow in ' + cls;
+  r.innerHTML = `<div><code>${name}</code><div class="mean">${mean}</div></div><div class="now">${init}</div><div class="st"></div>`;
+  $('vlist').appendChild(r);
+  setTimeout(() => r.classList.remove('in'), 500 / SPEED);
+  V[name] = { row: r, now: r.querySelector('.now'), st: r.querySelector('.st'), blk, init };
+  updateVarLabels();
+  $('vcount').textContent = Object.keys(V).length + ' variables';
+}
+function updateVarLabels() {
+  const idx = b => b === 'wrong' ? order.indexOf('mon') + 0.5 : order.indexOf(b);
+  const names = Object.keys(V).sort((a, b) => idx(V[a].blk) - idx(V[b].blk));
+  const list = $('vlist');
+  const same = names.every((n, i) => list.children[i] === V[n].row);
+  for (const n of names) {
+    V[n].st.textContent = V[n].blk === 'wrong' ? 'Catch' : label(V[n].blk);
+    if (!same) list.appendChild(V[n].row);
+  }
+}
+function setVar(n, v, flash = true) {
+  const c = V[n].now; c.textContent = v;
+  if (flash) { c.classList.remove('flash'); void c.offsetWidth; c.classList.add('flash'); }
+}
+function hot(names, on = true) { for (const n of names) V[n].row.classList.toggle('hot', on); }
+
+// ---------- coverage of the objective ----------
+const COV = [
+  { key: 'ready', t: 'Get it ready',             need: ['setup', 'park', 'idle', 'pump'] },
+  { key: 'boom',  t: 'Unfold the boom',          need: ['unfold'] },
+  { key: 'drive', t: 'Drive at spraying speed',  need: ['lever', 'target'], also: ['slot'] },
+  { key: 'onoff', t: 'Turn spraying on and off', need: ['mon', 'moff'], partial: true },
+  { key: 'wear',  t: 'Check nozzles for wear',   need: ['read'], card: true },
+];
+let covHot = null;
+function where(ids) {
+  const have = ids.filter(id => order.includes(id)).sort((a, b) => order.indexOf(a) - order.indexOf(b));
+  const steps = have.filter(id => DEF[id].kind === 'step').map(stepNo);
+  const parts = have.filter(id => DEF[id].kind !== 'step').map(label);
+  if (steps.length) parts.push((steps.length > 1 ? 'Steps ' : 'Step ') + steps.join(', '));
+  return { n: have.length, txt: parts.join(' · ') };
+}
+function updateCoverage() {
+  const ul = $('cov'); ul.innerHTML = '';
+  for (const c of COV) {
+    const need = where(c.need), all = where([...c.need, ...(c.also || [])]);
+    let ic, cls, sub;
+    if (c.card) [ic, cls, sub] = need.n ? ['◐', 'part', "Reading card only (the simulator can't check it)"] : ['○', 'pend', 'Not covered yet'];
+    else if (need.n === c.need.length) [ic, cls, sub] = ['✓', 'ok', all.txt];
+    else if (c.partial && need.n) [ic, cls, sub] = ['!', 'warn', `On = ${label('mon')}. <b>Off has no step yet</b>`];
+    else if (need.n) [ic, cls, sub] = ['…', 'prog', 'Being built: ' + all.txt];
+    else [ic, cls, sub] = ['○', 'pend', 'Not covered yet'];
+    const li = document.createElement('li');
+    if (covHot === c.key) li.className = 'hot';
+    li.innerHTML = `<span class="ic ${cls}">${ic}</span><div>${c.t}<small>${sub}</small></div>`;
+    ul.appendChild(li);
+  }
+}
+updateCoverage();
+
+// ---------- test runs ----------
+let clockT = null, clockStart = 0;
+function fmt() {
+  const sec = Math.floor((performance.now() - clockStart) * SPEED / 1000 * 6);
+  return `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
+}
+function status(kind, text) { $('status').className = 'status ' + kind; $('stText').textContent = text; }
+function startClock(prefix) {
+  clockStart = performance.now(); clearInterval(clockT);
+  clockT = setInterval(() => { $('stText').textContent = `${prefix} · ${fmt()}`; }, 100);
+}
+function stopClock() { clearInterval(clockT); }
+function resetRun() {
+  for (const id of Object.keys(B)) B[id].el.classList.remove('active', 'done', 'stuck');
+  for (const n of Object.keys(V)) setVar(n, V[n].init, false);
+  hot(Object.keys(V), false);
+}
+async function runStep(id, fn, wait = 1000) {
+  const el = B[id].el;
+  const vs = Object.keys(V).filter(n => V[n].blk === id);
+  el.classList.add('active'); hot(vs, true);
+  await sleep(wait * 0.55);
+  if (fn) await fn();
+  await sleep(wait * 0.45);
+  el.classList.remove('active'); el.classList.add('done'); hot(vs, false);
+}
+function hintPop(el, text) {
+  const h = document.createElement('div');
+  h.className = 'hintpop';
+  h.innerHTML = '<b>Hint shown to the trainee</b>' + text;
+  h.style.left = el.offsetLeft + 'px'; h.style.top = (el.offsetTop + el.offsetHeight + 12) + 'px';
+  canvas.appendChild(h); return h;
+}
+
+// ---------- marketplace ----------
+function showMarket() {
+  const mini = $('mini'); mini.innerHTML = '';
+  const c = canvas.cloneNode(true);
+  c.removeAttribute('id');
+  c.querySelector('.ctool').remove();
+  c.querySelectorAll('.hintpop,.badge').forEach(e => e.remove());
+  c.querySelectorAll('.node').forEach(n => n.classList.remove('in', 'active', 'done', 'stuck', 'adding'));
+  c.style.cssText = `position:absolute;left:-18px;top:-30px;width:${canvas.offsetWidth}px;height:${canvas.offsetHeight}px;transform:scale(.56);transform-origin:0 0;border:none;flex:none`;
+  mini.appendChild(c);
+  $('mpAbout').textContent = $('bAbout').textContent;
+  $('mpSteps').textContent = $('cSteps').textContent;
+  $('mpModal').classList.remove('hide');
+}
+
+// ---------- the story ----------
+const OBJECTIVE = 'Learn to spray on the R4045. They should be able to get the sprayer ready, drive at spraying speed, turn spraying on and off, unfold the boom, and check nozzles for wear.';
+const ABOUT = 'Takes a new operator from a parked R4045 to spraying: get the machine ready, unfold the boom, set engine and pump, drive at spraying speed, and switch spraying on and off.';
+const SHOT = `<div class="shot"><div class="sbar">📎 screenshot.png</div><div class="scr"><div class="spd">0.0<small>mph</small></div><div class="rng">Range<b>P</b></div><div class="rng">Lever<br><span style="color:#fff">all the way forward</span></div></div></div>`;
+
+async function main() {
+  if (REC) await new Promise(r => { window.__start = r; });
+
+  await sleep(3800);
+  $('title').classList.add('hide');
+  await sleep(600);
+  cur.classList.remove('gone');
+
+  // 1. New lesson
+  cap(1, 'Start a new lesson: a name, the machine, and the objective in your own words.');
+  await click($('fName'), -250); await type($('fName'), 'Learn to spray', 30);
+  await click($('fMach'), -200); $('dd').classList.add('open'); await sleep(500);
+  await moveTo($('optR'), -150); $('optR').classList.add('hov'); await sleep(300);
+  await click($('optR'), -150); $('dd').classList.remove('open');
+  $('fMachV').textContent = 'R4045 Sprayer (2019) · Gen 4 display · CommandARM'; $('fMachV').classList.remove('muted');
+  await click($('fObj'), -250, -30); await type($('fObj'), OBJECTIVE, 55);
+  await sleep(900);
+  await click($('createBtn'));
+  $('newModal').classList.add('hide');
+  $('bName').textContent = 'Learn to spray';
+  $('bMach').textContent = 'R4045 Sprayer (2019) · Gen 4 display · CommandARM';
+  $('bObj').textContent = '"' + OBJECTIVE + '"';
+  addMsg('me', OBJECTIVE);
+  await sleep(900);
+
+  // 2. AI builds live
+  cap(2, 'The AI builds the lesson live, block by block. Each check is a real simulator variable.');
+  await ai("Got it. I'll start from the machine's starting state, then add the steps in order.");
+  await addBlock('setup');
+  await ai("The simulator can't see nozzle wear, so that one becomes a <b>reading card</b> the trainee confirms.", 700);
+  await addBlock('read');
+  await addBlock('park'); addVar('PLT_AIC_ParkBrakeIndicator'); await sleep(400);
+  await addBlock('unfold'); addVar('boomUnfolded');
+  await ai('The boom step needs the floor switch, so it gets a <b>hint after 30 s</b>.', 600);
+  await addBlock('pump'); addVar('PLT_AIC_SolutionPumpIndicator'); await sleep(300);
+  await addBlock('idle'); addVar('PLT_AIC_EngineHighIdleSpeedIndicator');
+  await sleep(700);
+
+  // 3. Correction
+  cap(3, "Correct it any time. Tell the AI what's wrong and it fixes the blocks.");
+  await me("No, that's wrong. We teach engine to high idle before the pump.");
+  await ai('Got it, swapping them.', 600);
+  const a = order.indexOf('pump'), b = order.indexOf('idle');
+  [order[a], order[b]] = [order[b], order[a]];
+  layout(); badge('pump', 'moved', 'moved'); badge('idle', 'moved', 'moved');
+  await sleep(1300);
+  await ai('Done. <b>Engine to high idle</b> now comes before <b>Solution pump on</b>.', 500);
+  await me("Yes, that's right. Keep going.");
+  clearBadges();
+  await addBlock('lever'); addVar('PLT_HydroHandlePosition'); addVar('VIO_DCU_VehicleGroundSpeed'); await sleep(300);
+  await addBlock('target'); addVar('PLT_MHC_Encoder'); await sleep(300);
+  await addBlock('mon'); addVar('VIO_SprayMasterIconIndicator');
+  await ai("Adding a catch: if they press the master switch before the pump is on, they're told to turn the pump on first.", 800);
+  await addBranch('wrong', 'mon'); addVar('PLT_MHC_MasterSprayOnOff');
+  await addBlock('fin');
+  await sleep(600);
+
+  // 4. Brief flags a gap
+  cap(4, 'The brief keeps the original objective in view and flags anything not covered yet.');
+  covHot = 'onoff'; updateCoverage();
+  await moveTo($('cov'), 0, 40);
+  await sleep(1200);
+  await ai('One gap: your objective says spraying on <b>and off</b>, but there\'s no step for turning it off. Add one?', 900);
+  await me('Yes, add it.');
+  covHot = null;
+  await addBlock('moff', order.indexOf('fin')); badge('moff', 'new', 'new');
+  await ai('Added <b>Master spray off</b>. Every ability in your objective is covered now. I also drafted the <b>About</b> for the Marketplace.', 700);
+  await type($('bAbout'), ABOUT, 110);
+  clearBadges();
+  await sleep(1200);
+
+  // 5. Try it
+  cap(5, 'Try it yourself. The Now column shows exactly what the simulator sees, live.');
+  await click($('tryBtn'));
+  resetRun(); status('run', 'Test run · 0:00'); startClock('Test run');
+  await runStep('setup', null, 600);
+  await runStep('read', null, 900);
+  await runStep('park', () => setVar('PLT_AIC_ParkBrakeIndicator', 0));
+  await runStep('unfold', () => setVar('boomUnfolded', 1), 1200);
+  await runStep('idle', () => setVar('PLT_AIC_EngineHighIdleSpeedIndicator', 1));
+  await runStep('pump', () => setVar('PLT_AIC_SolutionPumpIndicator', 1));
+  const lev = B.lever.el;
+  lev.classList.add('active'); hot(['PLT_HydroHandlePosition', 'VIO_DCU_VehicleGroundSpeed'], true);
+  await sleep(2200);
+  const hp = hintPop(lev, 'Push the multi-function lever forward.');
+  await sleep(2600);
+  lev.classList.remove('active'); lev.classList.add('stuck');
+  stopClock(); status('fail', 'Test stopped · stuck on "Lever forward" · ' + fmt());
+  await sleep(2600);
+  hp.remove();
+
+  // 6. Come back later with a screenshot
+  cap(6, "Something's not working? Come back later, describe it, and paste a screenshot.");
+  day('Two days later');
+  await sleep(700);
+  await moveTo(input, -120);
+  $('keys').classList.remove('hide'); await sleep(900);
+  $('attrow').innerHTML = '<div class="attchip"><div style="width:44px;height:28px;border-radius:4px;background:#1b1e22"></div>screenshot.png<span style="color:#9aa1a9">✕</span></div>';
+  $('attrow').classList.add('on');
+  await sleep(500); $('keys').classList.add('hide');
+  await me('The lever step never passes. I pushed the lever all the way forward and nothing happened.', SHOT);
+
+  // 7. AI diagnoses
+  cap(7, 'The AI checks the screenshot and the test log, finds the cause, and adds the missing step.');
+  await ai('Your screenshot shows the range at <b>P</b>. In the test log, <code>PLT_NeutralSlotStatus</code> stayed at <b>1</b>: the lever never left the park slot. This simulator doesn\'t send lever movement while it\'s parked, so <code>PLT_HydroHandlePosition</code> stayed at 125 (neutral).', 1600);
+  await sleep(1800);
+  await addBlock('slot', order.indexOf('lever')); badge('slot', 'new', 'new');
+  addVar('PLT_NeutralSlotStatus', 'new'); setVar('PLT_NeutralSlotStatus', 1);
+  B.lever.el.classList.remove('stuck');
+  await ai('Added <b>Lever out of park slot</b> before the lever step, with a hint. Want to test again?', 700);
+  await me('Yes, run it again.');
+
+  // 8. Test passes
+  cap(8, 'Test again: every step passes.');
+  clearBadges(); V.PLT_NeutralSlotStatus.row.classList.remove('new');
+  await click($('tryBtn'));
+  resetRun(); status('run', 'Test run · 0:00'); startClock('Test run');
+  await runStep('setup', null, 450);
+  await runStep('read', null, 600);
+  await runStep('park', () => setVar('PLT_AIC_ParkBrakeIndicator', 0), 750);
+  await runStep('unfold', () => setVar('boomUnfolded', 1), 750);
+  await runStep('idle', () => setVar('PLT_AIC_EngineHighIdleSpeedIndicator', 1), 750);
+  await runStep('pump', () => setVar('PLT_AIC_SolutionPumpIndicator', 1), 750);
+  await runStep('slot', () => setVar('PLT_NeutralSlotStatus', 0), 900);
+  await runStep('lever', async () => { setVar('PLT_HydroHandlePosition', 190); await sleep(300); setVar('VIO_DCU_VehicleGroundSpeed', 62); }, 1100);
+  await runStep('target', () => setVar('PLT_MHC_Encoder', 8500), 800);
+  hot(['PLT_MHC_MasterSprayOnOff'], true);
+  await runStep('mon', async () => { setVar('PLT_MHC_MasterSprayOnOff', 1); await sleep(250); setVar('VIO_SprayMasterIconIndicator', 1); setVar('PLT_MHC_MasterSprayOnOff', 0); }, 1000);
+  await runStep('moff', async () => { setVar('PLT_MHC_MasterSprayOnOff', 1); await sleep(250); setVar('VIO_SprayMasterIconIndicator', 0); setVar('PLT_MHC_MasterSprayOnOff', 0); }, 1000);
+  hot(['PLT_MHC_MasterSprayOnOff'], false);
+  B.fin.el.classList.add('done');
+  stopClock(); status('pass', 'Test passed · ' + fmt());
+  await sleep(2600);
+
+  // 9. Publish
+  cap(9, 'Publish it to the Marketplace, free for others to find, download and assign.');
+  await click($('pubBtn'));
+  showMarket();
+  await sleep(6500);
+
+  cur.classList.add('gone');
+  $('titleSub').textContent = 'Next: the Admin console, to assign lessons and track progress';
+  $('titleMeta').textContent = 'Concept mockup · not a product';
+  $('title').classList.remove('hide');
+  await sleep(4000);
+  window.__demoDone = true;
+  if (!REC) $('replay').style.display = 'block';
+}
+main();
+</script>
+</body>
+</html>

@@ -1,0 +1,338 @@
+{
+  "schema": "lesson/0.1",
+  "id": "headland-hms",
+  "title": "Headland turn with HMS, done in the right order",
+  "machine": "R4045 Sprayer (2019) · Gen 4 display · CommandARM",
+  "build": "Apr 20 2026 (Connections app 3.2.0.7)",
+  "level": "Advanced",
+  "minutes": 15,
+  "objective": "Run a full headland turn: start HMS, stop spraying and raise the boom before turning, slow down, turn onto the next pass, lower the boom before spraying again, and close the HMS sequence.",
+  "procedure_source": "Scenario drafted from the app's Begin Spraying procedure and the controls the app reads. Every step is a draft: confirm the procedure with an operator before trainees use it.",
+  "setup": {
+    "armrest": [
+      "switch foot_switch 0",
+      "switch park_slot 1",
+      "set steering 0",
+      "set speed_dial 0",
+      "switch foot_switch 1",
+      "wait 0.3",
+      "press centre_boom_lower 800",
+      "wait 0.3",
+      "switch foot_switch 0",
+      "wait 0.3",
+      "set speed_dial 6",
+      "press solution_pump 300",
+      "press engine_high_idle 300",
+      "switch park_slot 0",
+      "set lever 175",
+      "press centre_boom_lower 400",
+      "press master_spray 300",
+      "set speed_dial 8",
+      "wait 0.5"
+    ],
+    "trainer": "Boom unfolded and at spraying height, solution pump on, engine at high idle, lever out of park and forward, master on, speed dial 8 clicks up, wheel straight.",
+    "expect": {
+      "game": {
+        "boomUnfolded": "1"
+      }
+    }
+  },
+  "chatbot": {
+    "about": "The trainee is practising a headland turn on an R4045 sprayer simulator (Gen 4 display, CommandARM) with HMS. Keep answers to 2-3 sentences and name the exact control.",
+    "send": [
+      "lesson title",
+      "section",
+      "step instruction",
+      "seconds on step",
+      "last 10 controls used",
+      "current game state",
+      "lights currently on"
+    ]
+  },
+  "sections": [
+    {
+      "title": "1. Approaching the headland",
+      "steps": [
+        {
+          "id": "hms-start",
+          "say": "Headland ahead. Press HMS to start the headland sequence.",
+          "why": "HMS runs your end-of-row steps; HMS shows on the display's bottom bar.",
+          "controls": [
+            "hms"
+          ],
+          "done": {
+            "sent": "PLT_MHC_HMS",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "HMS is on the multi-function handle.",
+              "highlight": [
+                "hms"
+              ]
+            }
+          ],
+          "show_me": [
+            "press hms 300"
+          ],
+          "ask": "What does HMS do?",
+          "confidence": "draft"
+        },
+        {
+          "id": "before-turn",
+          "say": "Before you turn: stop spraying and raise the boom.",
+          "why": "The wing tips swing wide in a turn and you'd spray outside the field.",
+          "controls": [
+            "master_spray",
+            "centre_boom_raise"
+          ],
+          "done": {
+            "all": [
+              {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_MHC_CenterBoomRaise",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_SteeringWheelAngleDeg",
+                    "gte": 10
+                  },
+                  {
+                    "sent": "PLT_MHC_CenterBoomRaise",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "Raise the boom before you turn: the wing tips swing wide."
+            },
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_SteeringWheelAngleDeg",
+                    "gte": 10
+                  },
+                  {
+                    "sent": "PLT_MHC_MasterSprayOnOff",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "Stop spraying before you turn."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Master switch off, then Centre boom raise.",
+              "highlight": [
+                "master_spray",
+                "centre_boom_raise"
+              ]
+            }
+          ],
+          "show_me": [
+            "press master_spray 300",
+            "press centre_boom_raise 600"
+          ],
+          "wrong_demo": [
+            "set steering 360",
+            "wait 1.2",
+            "set steering 0",
+            "wait 1.2"
+          ],
+          "ask": "What should I do before a headland turn?",
+          "confidence": "draft"
+        },
+        {
+          "id": "slow-down",
+          "say": "Slow down for the turn: turn the speed dial down 4 clicks.",
+          "why": "A full-lock turn at field speed throws the boom.",
+          "controls": [
+            "speed_dial"
+          ],
+          "done": {
+            "sent": "PLT_MHC_Encoder",
+            "lte": 3000
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The Speed Range Adjustment Dial is on the handle.",
+              "highlight": [
+                "speed_dial"
+              ]
+            }
+          ],
+          "show_me": [
+            "set speed_dial 4"
+          ],
+          "ask": "How do I slow down for a turn?",
+          "confidence": "draft"
+        }
+      ]
+    },
+    {
+      "title": "2. The turn",
+      "steps": [
+        {
+          "id": "turn",
+          "say": "Turn hard left onto the next pass, then straighten up.",
+          "why": "About two turns of the wheel brings you back alongside your last pass.",
+          "controls": [
+            "steering"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_SteeringWheelAngleDeg",
+                "gte": 25
+              },
+              {
+                "sent": "PLT_SteeringWheelAngleDeg",
+                "eq": "0"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 25,
+              "say": "Keep turning left until the Navigation box shows about 28 degrees, then centre the wheel.",
+              "highlight": [
+                "steering"
+              ]
+            }
+          ],
+          "show_me": [
+            "set steering 720",
+            "wait 2.0",
+            "set steering 0",
+            "wait 2.0"
+          ],
+          "ask": "How do I make the headland turn?",
+          "confidence": "draft"
+        },
+        {
+          "id": "lower-then-spray",
+          "say": "On the new line: lower the boom, then turn spraying back on.",
+          "why": "Spraying from turn height drifts.",
+          "controls": [
+            "centre_boom_lower",
+            "master_spray"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_MHC_CenterBoomLower",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_MHC_MasterSprayOnOff",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_MHC_CenterBoomLower",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "Lower the boom before you spray: spraying from height drifts."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Centre boom lower first, then the master switch.",
+              "highlight": [
+                "centre_boom_lower",
+                "master_spray"
+              ]
+            }
+          ],
+          "show_me": [
+            "press centre_boom_lower 600",
+            "press master_spray 300"
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.4"
+          ],
+          "ask": "What order do I start spraying after a turn?",
+          "confidence": "draft"
+        },
+        {
+          "id": "speed-up",
+          "say": "Back to field speed: turn the speed dial up 4 clicks.",
+          "why": "Your rate controller holds the rate as speed changes.",
+          "controls": [
+            "speed_dial"
+          ],
+          "done": {
+            "sent": "PLT_MHC_Encoder",
+            "gte": 5000
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Same dial, other way.",
+              "highlight": [
+                "speed_dial"
+              ]
+            }
+          ],
+          "show_me": [
+            "set speed_dial 8"
+          ],
+          "ask": "How do I get back to field speed?",
+          "confidence": "draft"
+        },
+        {
+          "id": "hms-end",
+          "say": "Press HMS to close the headland sequence.",
+          "why": "Leaving HMS armed can fire the sequence again at the wrong place.",
+          "controls": [
+            "hms"
+          ],
+          "done": {
+            "sent": "PLT_MHC_HMS",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "HMS, on the handle.",
+              "highlight": [
+                "hms"
+              ]
+            }
+          ],
+          "show_me": [
+            "press hms 300"
+          ],
+          "ask": "How do I finish an HMS sequence?",
+          "confidence": "draft"
+        }
+      ]
+    }
+  ]
+}

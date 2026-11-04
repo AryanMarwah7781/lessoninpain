@@ -1,0 +1,430 @@
+{
+  "schema": "lesson/0.1",
+  "id": "no-spray-fault",
+  "title": "No spray at the nozzles: find the fault",
+  "machine": "R4045 Sprayer (2019) · Gen 4 display · CommandARM",
+  "build": "Apr 20 2026 (Connections app 3.2.0.7)",
+  "level": "Advanced",
+  "minutes": 20,
+  "objective": "The last operator says the sprayer 'won't spray'. See the symptom, find what was skipped, get it spraying on the move in the right order, then handle a dragging wing and stop safely.",
+  "procedure_source": "Scenario drafted from the app's Begin Spraying procedure and the controls the app reads. Every step is a draft: confirm the procedure with an operator before trainees use it.",
+  "setup": {
+    "armrest": [
+      "switch foot_switch 0",
+      "switch park_slot 1",
+      "set steering 0",
+      "set speed_dial 0",
+      "switch foot_switch 1",
+      "wait 0.3",
+      "press centre_boom_lower 800",
+      "wait 0.3",
+      "switch foot_switch 0",
+      "wait 0.3",
+      "wait 0.5"
+    ],
+    "trainer": "Boom unfolded, solution pump OFF, engine at LOW idle, lever in the park slot, master off.",
+    "expect": {
+      "game": {
+        "boomUnfolded": "1"
+      }
+    }
+  },
+  "chatbot": {
+    "about": "The trainee is troubleshooting a 'won't spray' complaint on an R4045 sprayer simulator (Gen 4 display, CommandARM). Guide them to the cause (pump off, low idle, not moving) without just giving the answer away. Keep answers to 2-3 sentences and name the exact control.",
+    "send": [
+      "lesson title",
+      "section",
+      "step instruction",
+      "seconds on step",
+      "last 10 controls used",
+      "current game state",
+      "lights currently on"
+    ]
+  },
+  "sections": [
+    {
+      "title": "1. The complaint",
+      "steps": [
+        {
+          "id": "try-master",
+          "say": "The last operator says it won't spray. Press the master switch the way they did and watch the display.",
+          "why": "See the symptom first: the rate stays at 0.0 gal/min.",
+          "controls": [
+            "master_spray"
+          ],
+          "done": {
+            "sent": "PLT_MHC_MasterSprayOnOff",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The master switch is the yellow button on the multi-function handle.",
+              "highlight": [
+                "master_spray"
+              ]
+            }
+          ],
+          "show_me": [
+            "press master_spray 300"
+          ],
+          "ask": "Why would the sprayer show 0.0 gal/min with the master switch on?",
+          "confidence": "draft"
+        },
+        {
+          "id": "master-off-first",
+          "say": "Nothing flows. Turn the master switch back off before you change anything.",
+          "why": "Never troubleshoot with the master on: product can surge out when the fault clears.",
+          "controls": [
+            "master_spray"
+          ],
+          "done": {
+            "sent": "PLT_MHC_MasterSprayOnOff",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 15,
+              "say": "Press the yellow master switch again.",
+              "highlight": [
+                "master_spray"
+              ]
+            }
+          ],
+          "show_me": [
+            "press master_spray 300"
+          ],
+          "ask": "Should the master switch be off while troubleshooting?",
+          "confidence": "draft"
+        }
+      ]
+    },
+    {
+      "title": "2. Find the fault",
+      "steps": [
+        {
+          "id": "find-fault",
+          "say": "Find what's missing and fix it: get the sprayer spraying on the move.",
+          "why": "The app's Begin Spraying procedure has four steps. The last operator skipped some.",
+          "controls": [
+            "solution_pump",
+            "engine_high_idle",
+            "park_slot",
+            "lever",
+            "master_spray"
+          ],
+          "done": {
+            "then": [
+              {
+                "all": [
+                  {
+                    "any": [
+                      {
+                        "cloud": "PLT_AIC_SolutionPumpIndicator",
+                        "eq": "1"
+                      },
+                      {
+                        "sent": "PLT_AIC_SolutionPump",
+                        "eq": "1"
+                      }
+                    ]
+                  },
+                  {
+                    "any": [
+                      {
+                        "cloud": "PLT_AIC_EngineHighIdleSpeedIndicator",
+                        "eq": "1"
+                      },
+                      {
+                        "sent": "PLT_AIC_EngineHighIdle",
+                        "eq": "1"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "then": [
+                  {
+                    "sent": "PLT_NeutralSlotStatus",
+                    "eq": "0"
+                  },
+                  {
+                    "sent": "PLT_HydroHandlePosition",
+                    "outside": [
+                      100,
+                      150
+                    ]
+                  }
+                ]
+              },
+              {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_MHC_MasterSprayOnOff",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_AIC_SolutionPump",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "Master on but the pump isn't: nothing can reach the nozzles. Master off, pump on first."
+            },
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_HydroHandlePosition",
+                    "outside": [
+                      100,
+                      150
+                    ]
+                  },
+                  {
+                    "sent": "PLT_AIC_EngineHighIdle",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "You're driving at low idle: the pump and boom need engine speed. Set high idle first."
+            },
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_MHC_MasterSprayOnOff",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_HydroHandlePosition",
+                    "outside": [
+                      100,
+                      150
+                    ]
+                  }
+                ]
+              },
+              "say": "Master on while standing still puddles product. Get moving first, then spray."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Begin Spraying: pump, engine speed, lever forward, master. Which were skipped?"
+            },
+            {
+              "after_s": 45,
+              "say": "Check the solution pump light on the armrest keypad.",
+              "highlight": [
+                "solution_pump"
+              ]
+            },
+            {
+              "after_s": 75,
+              "say": "Pump on, high idle, lever out of park and forward, then the master switch.",
+              "highlight": [
+                "solution_pump",
+                "engine_high_idle",
+                "park_slot",
+                "lever",
+                "master_spray"
+              ]
+            }
+          ],
+          "show_me": [
+            "press solution_pump 300",
+            "press engine_high_idle 300",
+            "switch park_slot 0",
+            "set lever 175",
+            "wait 0.3",
+            "press master_spray 300"
+          ],
+          "wrong_demo": [
+            "press master_spray 300",
+            "wait 0.5"
+          ],
+          "ask": "What is the correct order to start spraying on the R4045?",
+          "confidence": "draft"
+        }
+      ]
+    },
+    {
+      "title": "3. On the move",
+      "steps": [
+        {
+          "id": "wing-dragging",
+          "say": "The right wing is dragging in the crop. Raise it on the move: don't stop and don't touch the master.",
+          "why": "Wing tilt works while driving; stopping leaves a skip.",
+          "controls": [
+            "right_boom_raise"
+          ],
+          "done": {
+            "sent": "PLT_MHC_RightBoomRaise",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "now_sent": "PLT_HydroHandlePosition",
+                "between": [
+                  120,
+                  130
+                ]
+              },
+              "say": "You stopped. Lift the wing on the move."
+            },
+            {
+              "if": {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              "say": "Keep spraying: the master switch stays on."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Right wing raise is on the multi-function handle.",
+              "highlight": [
+                "right_boom_raise"
+              ]
+            }
+          ],
+          "show_me": [
+            "set lever 175",
+            "press right_boom_raise 500"
+          ],
+          "wrong_demo": [
+            "set lever 125",
+            "wait 0.4"
+          ],
+          "ask": "How do I lift one wing while spraying?",
+          "confidence": "draft"
+        },
+        {
+          "id": "wing-level",
+          "say": "The crop evens out. Bring the right wing back down to level.",
+          "why": "A high wing sprays wide and drifts.",
+          "controls": [
+            "right_boom_lower"
+          ],
+          "done": {
+            "sent": "PLT_MHC_RightBoomLower",
+            "eq": "1"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Right wing lower, on the handle.",
+              "highlight": [
+                "right_boom_lower"
+              ]
+            }
+          ],
+          "show_me": [
+            "press right_boom_lower 500"
+          ],
+          "ask": "How do I level the boom wings?",
+          "confidence": "draft"
+        },
+        {
+          "id": "stop-safely",
+          "say": "End of the pass: stop spraying, then stop the machine, then park.",
+          "why": "Stopping before the master is off puddles product where you stop.",
+          "controls": [
+            "master_spray",
+            "lever",
+            "park_slot"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_MHC_MasterSprayOnOff",
+                "eq": "1"
+              },
+              {
+                "any": [
+                  {
+                    "sent": "PLT_HydroHandlePosition",
+                    "between": [
+                      120,
+                      130
+                    ]
+                  },
+                  {
+                    "sent": "PLT_NeutralSlotStatus",
+                    "eq": "1"
+                  }
+                ]
+              },
+              {
+                "sent": "PLT_NeutralSlotStatus",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "before": [
+                  {
+                    "sent": "PLT_HydroHandlePosition",
+                    "between": [
+                      120,
+                      130
+                    ]
+                  },
+                  {
+                    "sent": "PLT_MHC_MasterSprayOnOff",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "Stop spraying before you stop moving, or you'll puddle product."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Master switch first.",
+              "highlight": [
+                "master_spray"
+              ]
+            },
+            {
+              "after_s": 40,
+              "say": "Then the lever back to neutral, then into the park slot.",
+              "highlight": [
+                "lever",
+                "park_slot"
+              ]
+            }
+          ],
+          "show_me": [
+            "set lever 175",
+            "wait 0.3",
+            "press master_spray 300",
+            "set lever 125",
+            "switch park_slot 1"
+          ],
+          "wrong_demo": [
+            "set lever 125",
+            "wait 0.4"
+          ],
+          "ask": "What is the safe order to stop at the end of a pass?",
+          "confidence": "draft"
+        }
+      ]
+    }
+  ]
+}

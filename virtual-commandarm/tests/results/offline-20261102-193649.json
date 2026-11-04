@@ -1,0 +1,1384 @@
+{
+  "when": "20261102-193649",
+  "cases": 69,
+  "cases_passed": 69,
+  "controls_in_catalogue": 62,
+  "controls_tested": 62,
+  "controls_not_tested": [],
+  "controls_failing": [],
+  "log_lines_seen": 93,
+  "results": [
+    {
+      "name": "press master_spray",
+      "controls": [
+        "master_spray"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_MasterSprayOnOff sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_MasterSprayOnOff=1",
+        "PLT_MHC_MasterSprayOnOff=0"
+      ]
+    },
+    {
+      "name": "press left_boom_raise",
+      "controls": [
+        "left_boom_raise"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_LeftBoomRaise sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_LeftBoomRaise=1",
+        "PLT_MHC_LeftBoomRaise=0"
+      ]
+    },
+    {
+      "name": "press left_boom_lower",
+      "controls": [
+        "left_boom_lower"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_LeftBoomLower sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_LeftBoomLower=1",
+        "PLT_MHC_LeftBoomLower=0"
+      ]
+    },
+    {
+      "name": "press right_boom_raise",
+      "controls": [
+        "right_boom_raise"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_RightBoomRaise sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_RightBoomRaise=1",
+        "PLT_MHC_RightBoomRaise=0"
+      ]
+    },
+    {
+      "name": "press right_boom_lower",
+      "controls": [
+        "right_boom_lower"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_RightBoomLower sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_RightBoomLower=1",
+        "PLT_MHC_RightBoomLower=0"
+      ]
+    },
+    {
+      "name": "press section_right_enable",
+      "controls": [
+        "section_right_enable"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_IBSRightEnable sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_IBSRightEnable=1",
+        "PLT_MHC_IBSRightEnable=0"
+      ]
+    },
+    {
+      "name": "press section_left_enable",
+      "controls": [
+        "section_left_enable"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_IBSLeftEnable sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_IBSLeftEnable=1",
+        "PLT_MHC_IBSLeftEnable=0"
+      ]
+    },
+    {
+      "name": "press section_reset",
+      "controls": [
+        "section_reset"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_IBSReset sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_IBSReset=1",
+        "PLT_MHC_IBSReset=0"
+      ]
+    },
+    {
+      "name": "press hms",
+      "controls": [
+        "hms"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_HMS sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_HMS=1",
+        "PLT_MHC_HMS=0"
+      ]
+    },
+    {
+      "name": "press foam_marker_left",
+      "controls": [
+        "foam_marker_left"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_LeftHandFoamMarker sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_LeftHandFoamMarker=1",
+        "PLT_MHC_LeftHandFoamMarker=0"
+      ]
+    },
+    {
+      "name": "press foam_marker_right",
+      "controls": [
+        "foam_marker_right"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_RightHandFoamMarker sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_RightHandFoamMarker=1",
+        "PLT_MHC_RightHandFoamMarker=0"
+      ]
+    },
+    {
+      "name": "press reconfig_a",
+      "controls": [
+        "reconfig_a"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_ReconfigurableButtonA sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_ReconfigurableButtonA=1",
+        "PLT_MHC_ReconfigurableButtonA=0"
+      ]
+    },
+    {
+      "name": "press reconfig_b",
+      "controls": [
+        "reconfig_b"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_ReconfigurableButtonB sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_ReconfigurableButtonB=1",
+        "PLT_MHC_ReconfigurableButtonB=0"
+      ]
+    },
+    {
+      "name": "press reconfig_c",
+      "controls": [
+        "reconfig_c"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_ReconfigurableButtonC sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_ReconfigurableButtonC=1",
+        "PLT_MHC_ReconfigurableButtonC=0"
+      ]
+    },
+    {
+      "name": "press reconfig_d",
+      "controls": [
+        "reconfig_d"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_ReconfigurableButtonD sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_ReconfigurableButtonD=1",
+        "PLT_MHC_ReconfigurableButtonD=0"
+      ]
+    },
+    {
+      "name": "press reconfig_e",
+      "controls": [
+        "reconfig_e"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_ReconfigurableButtonE sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_ReconfigurableButtonE=1",
+        "PLT_MHC_ReconfigurableButtonE=0"
+      ]
+    },
+    {
+      "name": "press reconfig_f",
+      "controls": [
+        "reconfig_f"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_ReconfigurableButtonF sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_ReconfigurableButtonF=1",
+        "PLT_MHC_ReconfigurableButtonF=0"
+      ]
+    },
+    {
+      "name": "press boomtrac",
+      "controls": [
+        "boomtrac"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_BoomTrac sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_BoomTrac=1",
+        "PLT_MHC_BoomTrac=0"
+      ]
+    },
+    {
+      "name": "press dial_push",
+      "controls": [
+        "dial_push"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_EncoderButton sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_EncoderButton=1",
+        "PLT_MHC_EncoderButton=0"
+      ]
+    },
+    {
+      "name": "press switch_4",
+      "controls": [
+        "switch_4"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_SWITCH_4 sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_SWITCH_4=1",
+        "PLT_SWITCH_4=0"
+      ]
+    },
+    {
+      "name": "press solution_pump",
+      "controls": [
+        "solution_pump"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_AIC_SolutionPump sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_AIC_SolutionPump=1",
+        "PLT_AIC_SolutionPump=0"
+      ]
+    },
+    {
+      "name": "press rate_1",
+      "controls": [
+        "rate_1"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_AIC_Rate1Control sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_AIC_Rate1Control=1",
+        "PLT_AIC_Rate1Control=0"
+      ]
+    },
+    {
+      "name": "press rate_2",
+      "controls": [
+        "rate_2"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_AIC_Rate2Control sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_AIC_Rate2Control=1",
+        "PLT_AIC_Rate2Control=0"
+      ]
+    },
+    {
+      "name": "press rate_3",
+      "controls": [
+        "rate_3"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_AIC_Rate3Control sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_AIC_Rate3Control=1",
+        "PLT_AIC_Rate3Control=0"
+      ]
+    },
+    {
+      "name": "press reset_a",
+      "controls": [
+        "reset_a"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_AIC_ResetA sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_AIC_ResetA=1",
+        "PLT_AIC_ResetA=0"
+      ]
+    },
+    {
+      "name": "press reset_b",
+      "controls": [
+        "reset_b"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_AIC_ResetB sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_AIC_ResetB=1",
+        "PLT_AIC_ResetB=0"
+      ]
+    },
+    {
+      "name": "press scm_2a",
+      "controls": [
+        "scm_2a"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "press scm_4a",
+      "controls": [
+        "scm_4a"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "press scm_5a",
+      "controls": [
+        "scm_5a"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "press scm_7a",
+      "controls": [
+        "scm_7a"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "press scm_8a",
+      "controls": [
+        "scm_8a"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "press scm_1c",
+      "controls": [
+        "scm_1c"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "press scm_4c",
+      "controls": [
+        "scm_4c"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "press scm_5c",
+      "controls": [
+        "scm_5c"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "press scm_7c",
+      "controls": [
+        "scm_7c"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "press scm_eb",
+      "controls": [
+        "scm_eb"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "press scm_ep",
+      "controls": [
+        "scm_ep"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "press engine_low_idle",
+      "controls": [
+        "engine_low_idle"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_AIC_EngineLowIdle sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_AIC_EngineLowIdle=1",
+        "PLT_AIC_EngineLowIdle=0"
+      ]
+    },
+    {
+      "name": "press engine_high_idle",
+      "controls": [
+        "engine_high_idle"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_AIC_EngineHighIdle sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_AIC_EngineHighIdle=1",
+        "PLT_AIC_EngineHighIdle=0"
+      ]
+    },
+    {
+      "name": "press park_brake",
+      "controls": [
+        "park_brake"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_AIC_ParkBrake sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_AIC_ParkBrake=1",
+        "PLT_AIC_ParkBrake=0"
+      ]
+    },
+    {
+      "name": "press engine_speed_up",
+      "controls": [
+        "engine_speed_up"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "press engine_speed_down",
+      "controls": [
+        "engine_speed_down"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "press transport_lock",
+      "controls": [
+        "transport_lock"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "press tread_in",
+      "controls": [
+        "tread_in"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "press tread_out",
+      "controls": [
+        "tread_out"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "press ladder_down_key",
+      "controls": [
+        "ladder_down_key"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "press wheel_slip",
+      "controls": [
+        "wheel_slip"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "press dcm_b7",
+      "controls": [
+        "dcm_b7"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "press dcm_b9",
+      "controls": [
+        "dcm_b9"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "press dcm_b13",
+      "controls": [
+        "dcm_b13"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "centre boom raise (no foot switch)",
+      "controls": [
+        "centre_boom_raise"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_CenterBoomRaise sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_CenterBoomRaise=1",
+        "PLT_MHC_CenterBoomRaise=0"
+      ]
+    },
+    {
+      "name": "centre boom lower (no foot switch)",
+      "controls": [
+        "centre_boom_lower"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_CenterBoomLower sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_CenterBoomLower=1",
+        "PLT_MHC_CenterBoomLower=0"
+      ]
+    },
+    {
+      "name": "fold boom: foot switch + centre raise",
+      "controls": [
+        "foot_switch",
+        "centre_boom_raise"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "game boomUnfolded = 0",
+          "ok": true,
+          "got": [
+            "0",
+            "1"
+          ]
+        },
+        {
+          "check": "PLT_MHC_CenterBoomRaise not sent",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "unfold boom: foot switch + centre lower",
+      "controls": [
+        "foot_switch",
+        "centre_boom_lower"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "game boomUnfolded = 1",
+          "ok": true,
+          "got": [
+            "1"
+          ]
+        },
+        {
+          "check": "PLT_MHC_CenterBoomLower not sent",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "ladder toggle up",
+      "controls": [
+        "ladder"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "game ladderRaised = 1",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        },
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "ladder toggle down",
+      "controls": [
+        "ladder"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "game ladderRaised = 0",
+          "ok": true,
+          "got": [
+            "0"
+          ]
+        },
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "camera 1/2",
+      "controls": [
+        "camera_toggle"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "game cameraView = 2",
+          "ok": true,
+          "got": [
+            "2",
+            "3"
+          ]
+        },
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "camera 3",
+      "controls": [
+        "camera_3"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "game cameraView = 3",
+          "ok": true,
+          "got": [
+            "3"
+          ]
+        },
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "camera 4",
+      "controls": [
+        "camera_4"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "game cameraView = 4",
+          "ok": true,
+          "got": [
+            "4"
+          ]
+        },
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "camera back to 1",
+      "controls": [
+        "camera_toggle"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "game cameraView = 1",
+          "ok": true,
+          "got": [
+            "1"
+          ]
+        },
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "warning switch on/off",
+      "controls": [
+        "warning_switch"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_Warning sends 1 then 0",
+          "ok": true,
+          "got": [
+            "1",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_Warning=1",
+        "PLT_MHC_Warning=0"
+      ]
+    },
+    {
+      "name": "foot switch alone sends nothing",
+      "controls": [
+        "foot_switch"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "nothing sent to the cloud",
+          "ok": true,
+          "got": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "name": "speed dial up 4 steps, back to 0",
+      "controls": [
+        "speed_dial"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_MHC_Encoder sends 3000 then 1000",
+          "ok": true,
+          "got": [
+            "3000",
+            "1000"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_MHC_Encoder=3000",
+        "PLT_MHC_Encoder=1000"
+      ]
+    },
+    {
+      "name": "lever out of park slot",
+      "controls": [
+        "park_slot"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_NeutralSlotStatus sends 0",
+          "ok": true,
+          "got": [
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_NeutralSlotStatus=0"
+      ]
+    },
+    {
+      "name": "lever to 175, 75, neutral",
+      "controls": [
+        "lever"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_HydroHandlePosition sends 175 then 75 then 125",
+          "ok": true,
+          "got": [
+            "175",
+            "75",
+            "125"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_HydroHandlePosition=175",
+        "PLT_HydroHandlePosition=75",
+        "PLT_HydroHandlePosition=125"
+      ]
+    },
+    {
+      "name": "lever back into park slot",
+      "controls": [
+        "park_slot"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_NeutralSlotStatus sends 1",
+          "ok": true,
+          "got": [
+            "1"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_NeutralSlotStatus=1"
+      ]
+    },
+    {
+      "name": "steer left 450 deg",
+      "controls": [
+        "steering"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_SteeringWheelAngleDeg ends at 17.5",
+          "ok": true,
+          "got": [
+            "3.5",
+            "7",
+            "10.5",
+            "14",
+            "17.5"
+          ]
+        },
+        {
+          "check": "PLT_GPS_SteerLeft ends at 1",
+          "ok": true,
+          "got": [
+            "1"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_SteeringWheelAngleDeg=3.5",
+        "PLT_GPS_SteerLeft=1",
+        "PLT_SteeringWheelAngleDeg=7",
+        "PLT_SteeringWheelAngleDeg=10.5",
+        "PLT_SteeringWheelAngleDeg=14",
+        "PLT_SteeringWheelAngleDeg=17.5"
+      ]
+    },
+    {
+      "name": "steer right 450 deg",
+      "controls": [
+        "steering"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_SteeringWheelAngleDeg ends at -17.5",
+          "ok": true,
+          "got": [
+            "14",
+            "10.5",
+            "7",
+            "3.5",
+            "0",
+            "-3.5",
+            "-7",
+            "-10.5",
+            "-14",
+            "-17.5"
+          ]
+        },
+        {
+          "check": "PLT_GPS_SteerLeft ends at 0",
+          "ok": true,
+          "got": [
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_SteeringWheelAngleDeg=14",
+        "PLT_SteeringWheelAngleDeg=10.5",
+        "PLT_SteeringWheelAngleDeg=7",
+        "PLT_SteeringWheelAngleDeg=3.5",
+        "PLT_SteeringWheelAngleDeg=0",
+        "PLT_GPS_SteerLeft=0",
+        "PLT_SteeringWheelAngleDeg=-3.5",
+        "PLT_SteeringWheelAngleDeg=-7",
+        "PLT_SteeringWheelAngleDeg=-10.5",
+        "PLT_SteeringWheelAngleDeg=-14",
+        "PLT_SteeringWheelAngleDeg=-17.5"
+      ]
+    },
+    {
+      "name": "steer back to centre",
+      "controls": [
+        "steering"
+      ],
+      "ok": true,
+      "checks": [
+        {
+          "check": "PLT_SteeringWheelAngleDeg ends at 0",
+          "ok": true,
+          "got": [
+            "-14",
+            "-10.5",
+            "-7",
+            "-3.5",
+            "0"
+          ]
+        }
+      ],
+      "signals": [
+        "PLT_SteeringWheelAngleDeg=-14",
+        "PLT_SteeringWheelAngleDeg=-10.5",
+        "PLT_SteeringWheelAngleDeg=-7",
+        "PLT_SteeringWheelAngleDeg=-3.5",
+        "PLT_SteeringWheelAngleDeg=0"
+      ]
+    }
+  ]
+}

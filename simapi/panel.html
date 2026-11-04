@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lesson Test Panel</title>
+<style>
+  /* Test tool for walking a lesson beside the display simulator. Not the trainee design. */
+  :root {
+    --bg: #f2f4ef; --panel: #ffffff; --ink: #1c231e; --muted: #5f6b62; --line: #d6ddd2;
+    --accent: #2f6b3a; --accent-ink: #ffffff; --hint: #8a5a00; --hint-bg: #fff4dc; --bad: #a53a22; --bad-bg: #fdebe6;
+    --done: #2f6b3a; --skip: #8b938d; --now: #c88a12;
+    --mono: "Cascadia Mono", Consolas, ui-monospace, monospace;
+    --sans: "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #121613; --panel: #1a201b; --ink: #e2e8df; --muted: #9aa69c; --line: #2c362e;
+      --accent: #6db27a; --accent-ink: #0d1a10; --hint: #f0c060; --hint-bg: #2e2612; --bad: #f08a70; --bad-bg: #36201a;
+      --done: #6db27a; --skip: #6f7a72; --now: #e6a33a; color-scheme: dark; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 var(--sans); }
+  header { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid var(--line); background: var(--panel); }
+  header h1 { font-size: 16px; margin: 0; }
+  .pills { display: flex; gap: 6px; flex-wrap: wrap; }
+  .pill { font-family: var(--mono); font-size: 12px; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); }
+  .pill.on { border-color: var(--done); color: var(--done); }
+  main { display: grid; grid-template-columns: minmax(220px, 300px) minmax(0, 1fr) minmax(240px, 340px); gap: 12px; padding: 12px 16px; }
+  @media (max-width: 1000px) { main { grid-template-columns: minmax(0, 1fr); } }
+  section.card { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; min-width: 0; }
+  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 8px; }
+  ol.plan { list-style: none; margin: 0; padding: 0; max-height: 75vh; overflow: auto; }
+  .sec { font-weight: 600; font-size: 12px; color: var(--muted); margin: 10px 0 4px; }
+  .st { display: grid; grid-template-columns: 18px 1fr; gap: 6px; padding: 3px 0; font-size: 13px; }
+  .st .m { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--line); margin-top: 3px; }
+  .st.done .m { background: var(--done); border-color: var(--done); }
+  .st.skipped .m { background: var(--skip); border-color: var(--skip); }
+  .st.now { font-weight: 600; }
+  .st.now .m { border-color: var(--now); background: var(--now); }
+  .st .draft { color: var(--muted); font-size: 11px; }
+  .now-step .count { font-family: var(--mono); color: var(--muted); font-size: 12px; }
+  .now-step .say { font-size: 24px; line-height: 1.25; margin: 6px 0; text-wrap: balance; }
+  .now-step .why { color: var(--muted); margin: 0 0 10px; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  button { font: inherit; padding: 7px 14px; border-radius: 5px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
+  button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  button:focus-visible, select:focus-visible { outline: 2px solid var(--now); outline-offset: 2px; }
+  select { font: inherit; padding: 6px; border-radius: 5px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); max-width: 100%; }
+  .hint { background: var(--hint-bg); color: var(--hint); border-radius: 5px; padding: 10px 12px; margin-top: 10px; }
+  .bad { background: var(--bad-bg); color: var(--bad); border-radius: 5px; padding: 10px 12px; margin-top: 10px; font-weight: 600; }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .chip { font-family: var(--mono); font-size: 12px; padding: 2px 8px; border-radius: 4px; background: var(--bg); border: 1px solid var(--line); }
+  .meta { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 12px; overflow-wrap: anywhere; }
+  pre { font: 12px/1.4 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 5px; padding: 8px; overflow: auto; max-height: 34vh; margin: 8px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+  ul.events { list-style: none; margin: 0; padding: 0; font: 12px/1.5 var(--mono); max-height: 30vh; overflow: auto; }
+  ul.events li { border-bottom: 1px dashed var(--line); padding: 2px 0; overflow-wrap: anywhere; }
+  .empty { color: var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1 id="title">Lesson Test Panel</h1>
+  <div class="pills"><span class="pill" id="pOnline">offline</span><span class="pill" id="pArm">armrest ?</span><span class="pill" id="pApi">API</span></div>
+</header>
+<main>
+  <section class="card">
+    <h2>Lesson</h2>
+    <div class="row"><select id="pick" aria-label="Lesson"></select><button class="primary" id="start">Start</button></div>
+    <p class="meta" id="setup"></p>
+    <ol class="plan" id="plan"><li class="empty">Pick a lesson and press Start.</li></ol>
+  </section>
+
+  <section class="card now-step">
+    <h2>Now</h2>
+    <div class="count" id="count">No lesson running</div>
+    <div class="say" id="say">Start a lesson to see the first step here.</div>
+    <p class="why" id="why"></p>
+    <div class="row"><button id="showme">Show me</button><button id="skip">Skip step</button><span class="meta" id="secs"></span></div>
+    <div id="hint" class="hint" hidden></div>
+    <div id="bad" class="bad" hidden></div>
+    <div class="chips" id="controls"></div>
+    <div class="meta" id="check"></div>
+  </section>
+
+  <section class="card">
+    <h2>Ask the assistant</h2>
+    <p class="meta">What your RAG chatbot would receive with the trainee's question right now.</p>
+    <div class="row"><button id="refreshCtx">Refresh</button><button id="copyCtx">Copy</button></div>
+    <pre id="ctx">{}</pre>
+    <h2 style="margin-top:14px">Live events</h2>
+    <ul class="events" id="events"><li class="empty">Waiting for events…</li></ul>
+  </section>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const api = (p, body) => fetch(p, body === undefined ? {} : { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
+  .then(r => r.json());
+
+async function loadLessons() {
+  const ls = await api("/api/lessons");
+  $("pick").replaceChildren(...ls.map(l => { const o = document.createElement("option"); o.value = l.id; o.textContent = `${l.title} (${l.steps} steps)`; return o; }));
+}
+
+async function refreshPlan() {
+  const p = await api("/api/lesson/plan");
+  if (!p.running) return;
+  $("title").textContent = p.title;
+  $("setup").textContent = p.trainer_setup ? "Before you start: " + p.trainer_setup : "";
+  const items = [];
+  let i = 0;
+  for (const s of p.sections) {
+    const h = document.createElement("li"); h.className = "sec"; h.textContent = s.title; items.push(h);
+    for (const st of s.steps) {
+      const li = document.createElement("li");
+      li.className = "st" + (st.status ? " " + st.status : "") + (i === p.index ? " now" : "");
+      const m = document.createElement("span"); m.className = "m";
+      const t = document.createElement("span"); t.textContent = st.say;
+      if (st.confidence === "draft") { const d = document.createElement("span"); d.className = "draft"; d.textContent = "  draft"; t.appendChild(d); }
+      li.append(m, t); items.push(li); i++;
+    }
+  }
+  $("plan").replaceChildren(...items);
+  const now = $("plan").querySelector(".now"); if (now) now.scrollIntoView({ block: "nearest" });
+}
+
+let lastStep = null;
+async function tick() {
+  try {
+    const [h, l] = await Promise.all([api("/api/health"), api("/api/lesson")]);
+    $("pOnline").textContent = h.online ? "online" : "offline"; $("pOnline").classList.toggle("on", h.online);
+    $("pArm").textContent = h.armrest ? "virtual armrest" : "no virtual armrest"; $("pArm").classList.toggle("on", h.armrest);
+    $("pApi").classList.add("on");
+    if (!l.running) return;
+    const v = l.view;
+    if (v.finished) { $("say").textContent = "Lesson complete."; $("count").textContent = ""; $("why").textContent = ""; $("hint").hidden = true; $("bad").hidden = true; return; }
+    $("count").textContent = `Step ${v.index + 1} of ${v.of} · ${v.section}`;
+    $("say").textContent = v.say; $("why").textContent = v.why || "";
+    $("secs").textContent = `${Math.round(v.seconds_on_step)} s on this step`;
+    $("hint").hidden = !v.hint; if (v.hint) $("hint").textContent = "Hint: " + v.hint.say;
+    $("bad").hidden = !(v.mistakes && v.mistakes.length); if (v.mistakes && v.mistakes.length) $("bad").textContent = v.mistakes[0];
+    $("controls").replaceChildren(...(v.controls || []).map(c => { const s = document.createElement("span"); s.className = "chip"; s.textContent = c; return s; }));
+    $("check").textContent = "Checked by: " + v.check + (v.done_status === "unknown" ? " (needs the cloud: sign in and launch the Machine Simulator)" : "");
+    if (v.step !== lastStep) { lastStep = v.step; refreshPlan(); refreshCtx(); }
+  } catch (e) { $("pApi").classList.remove("on"); }
+}
+
+async function refreshCtx() { $("ctx").textContent = JSON.stringify(await api("/api/chatbot-context"), null, 2); }
+
+function stream() {
+  const es = new EventSource("/api/stream");
+  es.onmessage = m => {
+    const e = JSON.parse(m.data);
+    if (e.kind === "lesson") return;
+    const li = document.createElement("li");
+    li.textContent = `${new Date(e.t * 1000).toLocaleTimeString()}  ${e.kind}  ${e.name} = ${e.value}`;
+    const ul = $("events"); if (ul.firstElementChild && ul.firstElementChild.classList.contains("empty")) ul.replaceChildren();
+    ul.prepend(li); while (ul.children.length > 80) ul.lastChild.remove();
+  };
+}
+
+$("start").onclick = async () => { await api("/api/lesson/start", { id: $("pick").value }); lastStep = null; tick(); };
+$("showme").onclick = () => api("/api/lesson/showme", {}).catch(() => {});
+$("skip").onclick = () => api("/api/lesson/skip", {}).then(tick);
+$("refreshCtx").onclick = refreshCtx;
+$("copyCtx").onclick = () => navigator.clipboard.writeText($("ctx").textContent).catch(() => {});
+loadLessons(); refreshPlan(); if (!location.search.includes("nostream")) stream(); setInterval(tick, 500); tick();
+</script>
+</body>
+</html>

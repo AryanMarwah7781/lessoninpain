@@ -1,0 +1,1272 @@
+{
+  "schema": "lesson/0.2",
+  "id": "612r-boom-handling",
+  "title": "Unfold, level and protect the boom",
+  "machine": "612R Sprayer · CommandCenter display · CommandARM",
+  "build": "612R operator's manual OMKK105338; runs on the Apr 20 Display and CommandARM Simulator",
+  "manual": "OMKK105338 (400R-616R operator's manual)",
+  "level": "Advanced",
+  "minutes": 16,
+  "objective": "Unfold the 612R boom safely (overhead lines, people, Transport Lock), recover an unfold that stops part way, set the height and level the wings, switch BoomTrac on and make it Active, handle a post, a fence line and a boom breakaway, then fold onto the cradles for transport.",
+  "procedure_source": "OMKK105338: Boom Unfold/Fold for 27.4, 30.5, 36.6 and 40.2 m booms (p. 80-1 to 80-5), Boom Fold/Unfold Procedures (30-34, 30-35), Full Boom Breakaway (80-6), Transport Lock Switch (30-14), Multi-Function Lever (30-17 to 30-19), Boom System Application and BoomTrac (25-A-1 to 25-A-6), BoomTrac Performance and Optimization (155-2 to 155-10), Boom Operation troubleshooting (160-26, 160-27), Transport Machine (50-26), Operate Safely (05-10). In the simulator the boom fold/unfold floor switch is the foot switch, and the game file's boomUnfolded shows the fold state. Steps marked draft adapt the manual.",
+  "extra_controls": {
+    "display_boom_system": {
+      "label": "Boom System page (display)",
+      "where": "CommandCenter display: Menu > Machine Settings > Boom System, or the Boom System button on the navigation bar",
+      "figure": "WZ1408018",
+      "source": {
+        "pages": [
+          "25-A-1"
+        ],
+        "topic": "access-boom-system--d9603c"
+      }
+    },
+    "boomtrac_on_off": {
+      "label": "BoomTrac ON/OFF and status indicator",
+      "where": "Boom System page, BoomTrac tab",
+      "figure": "WZ1407986",
+      "source": {
+        "pages": [
+          "25-A-2",
+          "25-A-3"
+        ],
+        "topic": "boomtrac--783c2a"
+      }
+    },
+    "sensor_target": {
+      "label": "Sensor Target box (Ground, Ground with Canopy Assist, Canopy)",
+      "where": "Boom System page, BoomTrac tab",
+      "figure": "NX1458210",
+      "source": {
+        "pages": [
+          "155-2"
+        ],
+        "topic": "boomtrac-settings-sensor-target-mode--909fda"
+      }
+    },
+    "height_mode": {
+      "label": "Height Mode toggle (Locked / Unlocked)",
+      "where": "Boom System page",
+      "figure": "NX1458247",
+      "source": {
+        "pages": [
+          "155-5"
+        ],
+        "topic": "boomtrac-settings-height-mode--2e3a37"
+      }
+    },
+    "target_height": {
+      "label": "Target Height input boxes (left, centre, right)",
+      "where": "Boom System page, BoomTrac tab",
+      "figure": "WZ1408019",
+      "source": {
+        "pages": [
+          "25-A-6"
+        ],
+        "topic": "target-height--c66795"
+      }
+    }
+  },
+  "setup": {
+    "armrest": [
+      "switch foot_switch 0",
+      "switch park_slot 1",
+      "set steering 0",
+      "set speed_dial 0",
+      "switch foot_switch 1",
+      "wait 0.3",
+      "press centre_boom_raise 800",
+      "wait 0.3",
+      "switch foot_switch 0",
+      "wait 0.5"
+    ],
+    "trainer": "Boom folded on its cradles, lever in the park slot, wheel straight, engine running. Tell the trainee the Transport Lock is still on from the road trip, the field has less than 30% crop canopy, and there are no overhead lines at this entrance.",
+    "expect": {
+      "game": {
+        "boomUnfolded": "0"
+      }
+    }
+  },
+  "chatbot": {
+    "about": "The trainee is unfolding, levelling and folding the boom of a John Deere 612R sprayer on the Display and CommandARM Simulator. Holding the boom fold/unfold floor switch (the simulator's foot switch) turns the centre boom switch into fold (top) and unfold (bottom); without it the switch raises and lowers the centre frame. The boom only folds or unfolds below 8 km/h (5 mph) with the Transport Lock off. Keep everyone out of the fold area and never fold or unfold near overhead wires; the manual prints no clearance distance. BoomTrac status: grey OFF (switch ON on the BoomTrac tab), amber Not Ready (see BoomTrac | Diagnostics), green Ready (press BoomTrac Resume), green Active. Sensor Target: Ground below 30% canopy, Ground with Canopy Assist 30-60%, Canopy 60% or more. An outer section that stops part way: fold and retry; if it keeps happening, the fold/unfold sensors may need the Auto Boom Fold/Unfold calibration or a dealer. The full boom breakaway swings back 28 degrees and returns once the object is cleared; stand behind the boom if it must be helped. The manual does not say whether the manual tilt switches take BoomTrac out of Active: if the status shows Ready, press BoomTrac Resume. Answer only from the 612R operator's manual OMKK105338; keep answers to 2-3 sentences and name the exact control.",
+    "send": [
+      "lesson title",
+      "section",
+      "step instruction",
+      "seconds on step",
+      "last 10 controls used",
+      "current game state",
+      "lights currently on"
+    ]
+  },
+  "sections": [
+    {
+      "title": "1. Before the boom moves",
+      "mode": "learn",
+      "steps": [
+        {
+          "id": "look-around",
+          "say": "At the field entrance, look up and around: no overhead wires near the boom, nobody in its fold area.",
+          "why": "Never fold or unfold near overhead wires; booms move quickly and can kill.",
+          "controls": [],
+          "done": {
+            "confirm": "No wires, nobody near, room to unfold"
+          },
+          "wrong": [
+            {
+              "if": {
+                "game": "boomUnfolded",
+                "eq": "1"
+              },
+              "say": "The boom moved before your checks were done. Look up and around first, every time."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Look for power lines above and beside the unfold area, and people within the boom's reach."
+            },
+            {
+              "after_s": 45,
+              "say": "Also check there is room for the full boom width before it unfolds."
+            }
+          ],
+          "ask": "How close to power lines can I unfold?",
+          "est_s": 45,
+          "figure": "N44191",
+          "source": {
+            "pages": [
+              "05-10"
+            ],
+            "topic": "operate-safely--cb2671"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "transport-lock-off",
+          "say": "The Transport Lock is still on from the road. Press Transport Lock so its indicator goes off.",
+          "why": "With the Transport Lock on, the boom can't fold, unfold, raise, lower or tilt.",
+          "controls": [
+            "transport_lock"
+          ],
+          "done": {
+            "any": [
+              {
+                "control": "transport_lock",
+                "eq": "1"
+              },
+              {
+                "confirm": "Transport Lock indicator off"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The Transport Lock switch is lit while it is on.",
+              "highlight": [
+                "transport_lock"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Right-hand console, in the engine and ground drive switches with High Idle and Park Brake.",
+              "highlight": [
+                "transport_lock"
+              ]
+            }
+          ],
+          "show_me": [
+            "press transport_lock 300"
+          ],
+          "ask": "Why won't the boom unfold?",
+          "est_s": 30,
+          "figure": "N120615",
+          "source": {
+            "pages": [
+              "30-14"
+            ],
+            "topic": "transport-lock-switch--1c890e"
+          },
+          "confidence": "manual"
+        }
+      ]
+    },
+    {
+      "title": "2. Unfold, recover and set the height",
+      "mode": "learn",
+      "steps": [
+        {
+          "id": "unfold",
+          "say": "Hold the boom fold/unfold floor switch and hold Centre boom lower until both sides are fully unfolded.",
+          "why": "With the floor switch held, the centre boom switch folds and unfolds instead of moving the frame.",
+          "controls": [
+            "foot_switch",
+            "centre_boom_lower"
+          ],
+          "done": {
+            "game": "boomUnfolded",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_CenterBoomLower",
+                "eq": "1"
+              },
+              "say": "That only lowered the centre frame: the floor switch wasn't held. Foot on the floor switch, then Centre boom lower."
+            },
+            {
+              "if": {
+                "sent": "PLT_MHC_CenterBoomRaise",
+                "eq": "1"
+              },
+              "say": "Unfold uses the bottom (lower) of the centre boom switch, with the floor switch held."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Floor switch held down first, then the bottom of the centre boom switch.",
+              "highlight": [
+                "foot_switch",
+                "centre_boom_lower"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Floor switch: the Boom Fold/Unfold Floor Switch on the cab floor, held with your foot. Centre boom switch: round pad on the left of the handle.",
+              "highlight": [
+                "foot_switch",
+                "centre_boom_lower"
+              ]
+            }
+          ],
+          "show_me": [
+            "switch foot_switch 1",
+            "wait 0.3",
+            "press centre_boom_lower 1200",
+            "wait 0.3",
+            "switch foot_switch 0"
+          ],
+          "wrong_demo": [
+            "switch foot_switch 0",
+            "press centre_boom_lower 400",
+            "wait 0.4"
+          ],
+          "ask": "How do I unfold the boom on the 612R?",
+          "est_s": 70,
+          "figure": "N153423",
+          "source": {
+            "pages": [
+              "80-1",
+              "80-2"
+            ],
+            "topic": "boom-unfold-fold-27-4-30-5-36-6-and-40-2-m-90-100-120-and-13--31675a"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "retry-unfold",
+          "say": "The right outer section stopped part way out. Fold the boom fully, then unfold it again.",
+          "why": "The manual's fix when an outer section stops part way: fold the boom and retry the unfold.",
+          "controls": [
+            "foot_switch",
+            "centre_boom_raise",
+            "centre_boom_lower"
+          ],
+          "done": {
+            "then": [
+              {
+                "game": "boomUnfolded",
+                "eq": "0"
+              },
+              {
+                "game": "boomUnfolded",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_CenterBoomRaise",
+                "eq": "1"
+              },
+              "say": "That only raised the centre frame: the floor switch wasn't held. Foot on the floor switch, then Centre boom raise."
+            },
+            {
+              "if": {
+                "sent": "PLT_MHC_CenterBoomLower",
+                "eq": "1"
+              },
+              "say": "That only lowered the centre frame: the floor switch wasn't held. Foot on the floor switch, then Centre boom lower."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Floor switch + top of the centre switch folds; floor switch + bottom unfolds.",
+              "highlight": [
+                "foot_switch",
+                "centre_boom_raise",
+                "centre_boom_lower"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Floor switch: the Boom Fold/Unfold Floor Switch on the cab floor, held with your foot. Centre boom switch: round pad on the left of the handle.",
+              "highlight": [
+                "foot_switch",
+                "centre_boom_raise",
+                "centre_boom_lower"
+              ]
+            }
+          ],
+          "show_me": [
+            "switch foot_switch 1",
+            "wait 0.3",
+            "press centre_boom_raise 1200",
+            "wait 0.3",
+            "switch foot_switch 0",
+            "wait 0.5",
+            "switch foot_switch 1",
+            "wait 0.3",
+            "press centre_boom_lower 1200",
+            "wait 0.3",
+            "switch foot_switch 0"
+          ],
+          "wrong_demo": [
+            "switch foot_switch 0",
+            "press centre_boom_raise 400",
+            "wait 0.4"
+          ],
+          "ask": "What do I do if a boom section stops part way while unfolding?",
+          "est_s": 100,
+          "figure": "N153424",
+          "source": {
+            "pages": [
+              "160-26",
+              "160-27"
+            ],
+            "topic": "boom-operation--dd7f82"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "lower-to-height",
+          "say": "Foot off the floor switch. Press Centre boom lower until the tips are at spraying height.",
+          "why": "Flat fan tips usually sit 457—559 mm (18—22 in) above the target; too high drifts.",
+          "controls": [
+            "centre_boom_lower"
+          ],
+          "done": {
+            "sent": "PLT_MHC_CenterBoomLower",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "game": "boomUnfolded",
+                "eq": "0"
+              },
+              "say": "The boom folded: your foot was still on the floor switch. Unfold it again, then lower with your foot off."
+            },
+            {
+              "if": {
+                "sent": "PLT_MHC_CenterBoomRaise",
+                "eq": "1"
+              },
+              "say": "That raised the boom. Lower is the bottom of the centre boom switch."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Nothing moving? Your foot is still on the floor switch.",
+              "highlight": [
+                "foot_switch",
+                "centre_boom_lower"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Centre boom lower: bottom of the round pad on the left of the handle.",
+              "highlight": [
+                "centre_boom_lower"
+              ]
+            }
+          ],
+          "show_me": [
+            "switch foot_switch 0",
+            "press centre_boom_lower 600"
+          ],
+          "ask": "What height should the boom be at?",
+          "est_s": 35,
+          "figure": "N153423",
+          "source": {
+            "pages": [
+              "80-2"
+            ],
+            "topic": "boom-unfold-fold-27-4-30-5-36-6-and-40-2-m-90-100-120-and-13--31675a"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "level-wings",
+          "say": "Lower the left wing, then the right wing, to the desired height.",
+          "why": "Each wing has its own boom switch; a wing left high sprays wide and drifts.",
+          "controls": [
+            "left_boom_lower",
+            "right_boom_lower"
+          ],
+          "done": {
+            "all": [
+              {
+                "sent": "PLT_MHC_LeftBoomLower",
+                "eq": "1"
+              },
+              {
+                "sent": "PLT_MHC_RightBoomLower",
+                "eq": "1"
+              }
+            ]
+          },
+          "wrong": [
+            {
+              "if": {
+                "any": [
+                  {
+                    "sent": "PLT_MHC_LeftBoomRaise",
+                    "eq": "1"
+                  },
+                  {
+                    "sent": "PLT_MHC_RightBoomRaise",
+                    "eq": "1"
+                  }
+                ]
+              },
+              "say": "That raised a wing. Lower is the bottom of the wing switch."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Bottom of the left boom switch, then bottom of the right boom switch.",
+              "highlight": [
+                "left_boom_lower",
+                "right_boom_lower"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Wing switches are the two rockers in the middle of the handle: left rocker = left wing, right rocker = right wing. Push the bottoms.",
+              "highlight": [
+                "left_boom_lower",
+                "right_boom_lower"
+              ]
+            }
+          ],
+          "show_me": [
+            "press left_boom_lower 500",
+            "press right_boom_lower 500"
+          ],
+          "wrong_demo": [
+            "press left_boom_raise 400",
+            "wait 0.4"
+          ],
+          "ask": "How do I level the boom wings?",
+          "est_s": 40,
+          "figure": "N153423",
+          "source": {
+            "pages": [
+              "80-2"
+            ],
+            "topic": "boom-unfold-fold-27-4-30-5-36-6-and-40-2-m-90-100-120-and-13--31675a"
+          },
+          "confidence": "manual"
+        }
+      ]
+    },
+    {
+      "title": "3. Let BoomTrac hold the height",
+      "mode": "learn",
+      "steps": [
+        {
+          "id": "resume-try",
+          "say": "Press BoomTrac Resume on the handle to let BoomTrac hold the boom height.",
+          "why": "BoomTrac controls the centre frame and tilts to follow the ground or crop.",
+          "controls": [
+            "boomtrac"
+          ],
+          "done": {
+            "sent": "PLT_MHC_BoomTrac",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_SWITCH_4",
+                "eq": "1"
+              },
+              "say": "That is button O (AUTO), not BoomTrac Resume. BoomTrac Resume is Z, to its right."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "BoomTrac Resume is on the multi-function lever.",
+              "highlight": [
+                "boomtrac"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Button Z: bottom right of the middle button group, below the right wing rocker.",
+              "highlight": [
+                "boomtrac"
+              ]
+            }
+          ],
+          "show_me": [
+            "press boomtrac 300"
+          ],
+          "wrong_demo": [
+            "press switch_4 300",
+            "wait 0.4"
+          ],
+          "ask": "How do I turn BoomTrac on?",
+          "est_s": 25,
+          "figure": "NX711654",
+          "source": {
+            "pages": [
+              "30-19"
+            ],
+            "topic": "multi-function-lever--30db6a"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "boomtrac-on",
+          "say": "Diagnostics opened and the status is grey: BoomTrac is OFF. Switch BoomTrac ON on the BoomTrac tab.",
+          "why": "Grey means disabled; Diagnostics marks each unmet prerequisite with an exclamation mark.",
+          "controls": [
+            "display_boom_system",
+            "boomtrac_on_off"
+          ],
+          "done": {
+            "confirm": "BoomTrac switched ON"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Look for the exclamation mark next to 'BoomTrac Enabled'.",
+              "highlight": [
+                "boomtrac_on_off"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Menu > Machine Settings > Boom System (or its navigation bar button), then the BoomTrac tab, BoomTrac ON/OFF.",
+              "highlight": [
+                "display_boom_system",
+                "boomtrac_on_off"
+              ]
+            }
+          ],
+          "ask": "What do the BoomTrac status colours mean?",
+          "est_s": 70,
+          "figure": "WZ1407986",
+          "source": {
+            "pages": [
+              "25-A-3",
+              "25-A-4"
+            ],
+            "topic": "boomtrac-diagnostics--7791ce"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "sensor-target",
+          "say": "This crop covers less than 30% of the ground. Set Sensor Target to Ground.",
+          "why": "Ground reads the soil surface: the most accurate choice when canopy is minimal.",
+          "controls": [
+            "sensor_target"
+          ],
+          "done": {
+            "confirm": "Sensor Target: Ground"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "30–60% canopy or heavy stubble would be Ground with Canopy Assist; 60% or more, Canopy.",
+              "highlight": [
+                "sensor_target"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Sensor Target box (A) on the BoomTrac tab of the Boom System page.",
+              "highlight": [
+                "sensor_target"
+              ]
+            }
+          ],
+          "ask": "Which sensor target should I use?",
+          "est_s": 45,
+          "figure": "NX1458211",
+          "source": {
+            "pages": [
+              "155-2"
+            ],
+            "topic": "boomtrac-settings-sensor-target-mode--909fda"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "height-target",
+          "say": "Keep Height Mode Locked and enter the centre Target Height for your spray tips.",
+          "why": "Locked keeps the whole boom at one height: best for coverage and drift control.",
+          "controls": [
+            "height_mode",
+            "target_height"
+          ],
+          "done": {
+            "confirm": "Locked, target height set"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "In Locked mode only the centre target height can be changed.",
+              "highlight": [
+                "target_height"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Height Mode toggle (A) on the Boom System page; Target Height input boxes on the BoomTrac tab.",
+              "highlight": [
+                "height_mode",
+                "target_height"
+              ]
+            }
+          ],
+          "ask": "Locked or Unlocked height mode?",
+          "est_s": 60,
+          "figure": "NX1458247",
+          "source": {
+            "pages": [
+              "155-5",
+              "155-6"
+            ],
+            "topic": "boomtrac-settings-height-mode--2e3a37"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "resume-active",
+          "say": "Status now green, Ready. Press BoomTrac Resume again: the status should read Active.",
+          "why": "Ready means press Resume to activate; Active means BoomTrac is holding the height.",
+          "controls": [
+            "boomtrac"
+          ],
+          "done": {
+            "sent": "PLT_MHC_BoomTrac",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_SWITCH_4",
+                "eq": "1"
+              },
+              "say": "That is button O (AUTO), not BoomTrac Resume. BoomTrac Resume is Z, to its right."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Same BoomTrac Resume button on the handle.",
+              "highlight": [
+                "boomtrac"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Button Z: bottom right of the middle button group, below the right wing rocker.",
+              "highlight": [
+                "boomtrac"
+              ]
+            }
+          ],
+          "show_me": [
+            "press boomtrac 300"
+          ],
+          "wrong_demo": [
+            "press switch_4 300",
+            "wait 0.4"
+          ],
+          "ask": "What is the difference between Ready and Active?",
+          "est_s": 25,
+          "figure": "NX711654",
+          "source": {
+            "pages": [
+              "25-A-3"
+            ],
+            "topic": "boomtrac-status--44baae"
+          },
+          "confidence": "manual"
+        }
+      ]
+    },
+    {
+      "title": "4. In the field: a post, a fence and a breakaway",
+      "mode": "learn",
+      "steps": [
+        {
+          "id": "drive",
+          "say": "Drive on: lever out of PARK and forward.",
+          "why": "Judge BoomTrac on the move; a parked boom bouncing a little is normal.",
+          "controls": [
+            "park_slot",
+            "lever"
+          ],
+          "done": {
+            "then": [
+              {
+                "sent": "PLT_NeutralSlotStatus",
+                "eq": "0"
+              },
+              {
+                "sent": "PLT_HydroHandlePosition",
+                "outside": [
+                  100,
+                  150
+                ]
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Out of the park slot, then push the lever forward.",
+              "highlight": [
+                "park_slot",
+                "lever"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Multi-function lever on the right-hand console: out of the PARK gate, then forward.",
+              "highlight": [
+                "park_slot",
+                "lever"
+              ]
+            }
+          ],
+          "show_me": [
+            "switch park_slot 0",
+            "set lever 165"
+          ],
+          "ask": "Why does the boom bounce when I'm parked with BoomTrac on?",
+          "est_s": 30,
+          "figure": "N152958",
+          "source": {
+            "pages": [
+              "155-8"
+            ],
+            "topic": "boomtrac-troubleshooting--cb1860"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "post-raise",
+          "say": "A post stands in the right wing's path. Raise the right wing now.",
+          "why": "The top of the right boom switch raises the right-hand boom sections clear.",
+          "controls": [
+            "right_boom_raise"
+          ],
+          "done": {
+            "sent": "PLT_MHC_RightBoomRaise",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_LeftBoomRaise",
+                "eq": "1"
+              },
+              "say": "That raised the left wing. The post is on the right."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Top of the right boom switch.",
+              "highlight": [
+                "right_boom_raise"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Wing switches are the two rockers in the middle of the handle: left rocker = left wing, right rocker = right wing. Push the top of the right one.",
+              "highlight": [
+                "right_boom_raise"
+              ]
+            }
+          ],
+          "show_me": [
+            "press right_boom_raise 500"
+          ],
+          "wrong_demo": [
+            "press left_boom_raise 400",
+            "wait 0.4"
+          ],
+          "ask": "How do I lift one wing over an obstacle?",
+          "est_s": 25,
+          "figure": "N152643",
+          "source": {
+            "pages": [
+              "30-18"
+            ],
+            "topic": "multi-function-lever--30db6a"
+          },
+          "confidence": "draft"
+        },
+        {
+          "id": "post-lower",
+          "say": "Past the post: lower the right wing back to working height.",
+          "why": "A boom set excessively above the target increases the risk of spray drift.",
+          "controls": [
+            "right_boom_lower"
+          ],
+          "done": {
+            "sent": "PLT_MHC_RightBoomLower",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_LeftBoomLower",
+                "eq": "1"
+              },
+              "say": "That lowered the left wing. Bring the right wing down."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Bottom of the same right boom switch.",
+              "highlight": [
+                "right_boom_lower"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Wing switches are the two rockers in the middle of the handle: left rocker = left wing, right rocker = right wing. Push the bottom of the right one.",
+              "highlight": [
+                "right_boom_lower"
+              ]
+            }
+          ],
+          "show_me": [
+            "press right_boom_lower 500"
+          ],
+          "wrong_demo": [
+            "press left_boom_lower 400",
+            "wait 0.4"
+          ],
+          "ask": "Will BoomTrac take the wing back over by itself?",
+          "est_s": 30,
+          "figure": "N152643",
+          "source": {
+            "pages": [
+              "25-A-6"
+            ],
+            "topic": "height-mode--b6109a"
+          },
+          "confidence": "draft"
+        },
+        {
+          "id": "fence-unlocked",
+          "say": "A fence now runs along the right edge. Set Height Mode to Unlocked and the right wing target higher.",
+          "why": "At field edges, a wing kept higher than the centre stays clear of fences and posts.",
+          "controls": [
+            "height_mode",
+            "target_height"
+          ],
+          "done": {
+            "confirm": "Unlocked, right wing higher"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Unlocked lets each section have its own target height.",
+              "highlight": [
+                "height_mode"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Height Mode toggle on the Boom System page, then the right Target Height box on the BoomTrac tab.",
+              "highlight": [
+                "height_mode",
+                "target_height"
+              ]
+            }
+          ],
+          "ask": "When should I use Unlocked height mode?",
+          "est_s": 60,
+          "figure": "NX1458243",
+          "source": {
+            "pages": [
+              "155-6"
+            ],
+            "topic": "boomtrac-settings-height-mode--2e3a37"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "breakaway-stop",
+          "say": "The left boom end clipped a post and swung back. Stop: lever back to neutral.",
+          "why": "Always come to a complete stop before you reverse direction.",
+          "controls": [
+            "lever"
+          ],
+          "done": {
+            "any": [
+              {
+                "sent": "PLT_HydroHandlePosition",
+                "between": [
+                  120,
+                  130
+                ]
+              },
+              {
+                "sent": "PLT_NeutralSlotStatus",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "Bring the lever back to the middle.",
+              "highlight": [
+                "lever"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "Multi-function lever on the right-hand console: the middle position is neutral.",
+              "highlight": [
+                "lever"
+              ]
+            }
+          ],
+          "show_me": [
+            "set lever 125"
+          ],
+          "ask": "What happens when the boom breaks away?",
+          "est_s": 25,
+          "figure": "N136441",
+          "source": {
+            "pages": [
+              "05-10"
+            ],
+            "topic": "operate-safely--cb2671"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "breakaway-clear",
+          "say": "Back away from the post until the boom swings back into place. Nobody stands in front of it.",
+          "why": "The breakaway is under hydraulic pressure; if it must be helped over an object, stand behind it.",
+          "controls": [
+            "lever"
+          ],
+          "done": {
+            "confirm": "Boom back in position"
+          },
+          "hints": [
+            {
+              "after_s": 20,
+              "say": "The boom returns to its position by itself once the object is cleared.",
+              "highlight": [
+                "lever"
+              ]
+            },
+            {
+              "after_s": 45,
+              "say": "To back up: lever to neutral, then to the right and rear; reverse speed follows how far you move it.",
+              "highlight": [
+                "lever"
+              ]
+            }
+          ],
+          "ask": "Can I push the boom back by hand?",
+          "est_s": 45,
+          "figure": "N136441",
+          "source": {
+            "pages": [
+              "80-6"
+            ],
+            "topic": "full-boom-breakaway--f070b7"
+          },
+          "confidence": "manual"
+        }
+      ]
+    },
+    {
+      "title": "5. Practice: fold for transport",
+      "mode": "practice",
+      "steps": [
+        {
+          "id": "p-park",
+          "say": "Done in this field. Stop and put the lever in PARK before you fold.",
+          "why": "The boom only folds below 8 km/h (5 mph) with the Transport Lock off.",
+          "controls": [
+            "lever",
+            "park_slot"
+          ],
+          "done": {
+            "then": [
+              {
+                "any": [
+                  {
+                    "sent": "PLT_HydroHandlePosition",
+                    "between": [
+                      120,
+                      130
+                    ]
+                  },
+                  {
+                    "sent": "PLT_NeutralSlotStatus",
+                    "eq": "1"
+                  }
+                ]
+              },
+              {
+                "sent": "PLT_NeutralSlotStatus",
+                "eq": "1"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 40,
+              "say": "Lever to the middle, then into the park slot.",
+              "highlight": [
+                "lever",
+                "park_slot"
+              ]
+            }
+          ],
+          "show_me": [
+            "set lever 125",
+            "switch park_slot 1"
+          ],
+          "ask": "Can I fold the boom while driving?",
+          "est_s": 25,
+          "figure": "N166477",
+          "source": {
+            "pages": [
+              "30-35"
+            ],
+            "topic": "boom-fold-unfold-procedures--6a73ff"
+          },
+          "confidence": "draft"
+        },
+        {
+          "id": "p-look",
+          "say": "Look up and around again: no overhead wires, nobody near the boom.",
+          "why": "The same checks apply to folding as to unfolding.",
+          "controls": [],
+          "done": {
+            "confirm": "Clear to fold"
+          },
+          "wrong": [
+            {
+              "if": {
+                "game": "boomUnfolded",
+                "eq": "0"
+              },
+              "say": "The boom folded before you checked. Look up and around first, every time."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 40,
+              "say": "Wires above, people within the boom's reach."
+            }
+          ],
+          "ask": "Do I need to check for wires before folding too?",
+          "est_s": 30,
+          "figure": "N107858",
+          "source": {
+            "pages": [
+              "05-10"
+            ],
+            "topic": "operate-safely--cb2671"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "p-fold",
+          "say": "Fold for transport: floor switch and Centre boom raise until the boom is folded in and down in the cradles.",
+          "why": "Release both switches only once the boom is lowered into the cradles.",
+          "controls": [
+            "foot_switch",
+            "centre_boom_raise"
+          ],
+          "done": {
+            "game": "boomUnfolded",
+            "eq": "0"
+          },
+          "wrong": [
+            {
+              "if": {
+                "sent": "PLT_MHC_CenterBoomRaise",
+                "eq": "1"
+              },
+              "say": "That only raised the centre frame: the floor switch wasn't held. Foot on the floor switch, then Centre boom raise."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 40,
+              "say": "Floor switch held, then the top of the centre boom switch.",
+              "highlight": [
+                "foot_switch",
+                "centre_boom_raise"
+              ]
+            },
+            {
+              "after_s": 80,
+              "say": "Floor switch: the Boom Fold/Unfold Floor Switch on the cab floor, held with your foot. Centre boom switch: round pad on the left of the handle.",
+              "highlight": [
+                "foot_switch",
+                "centre_boom_raise"
+              ]
+            }
+          ],
+          "show_me": [
+            "switch foot_switch 1",
+            "wait 0.3",
+            "press centre_boom_raise 1200",
+            "wait 0.3",
+            "switch foot_switch 0"
+          ],
+          "wrong_demo": [
+            "switch foot_switch 0",
+            "press centre_boom_raise 400",
+            "wait 0.4"
+          ],
+          "ask": "How do I fold the boom for transport?",
+          "est_s": 70,
+          "figure": "N153424",
+          "source": {
+            "pages": [
+              "80-2"
+            ],
+            "topic": "boom-unfold-fold-27-4-30-5-36-6-and-40-2-m-90-100-120-and-13--31675a"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "p-cradle",
+          "say": "It stopped above the cradles at its Return to Height point. Foot off, press Centre boom lower again.",
+          "why": "Transporting with the boom not lowered onto its cradles can damage the machine.",
+          "controls": [
+            "centre_boom_lower"
+          ],
+          "done": {
+            "sent": "PLT_MHC_CenterBoomLower",
+            "eq": "1"
+          },
+          "wrong": [
+            {
+              "if": {
+                "game": "boomUnfolded",
+                "eq": "1"
+              },
+              "say": "That unfolded the boom: your foot was on the floor switch. Fold it again, then lower with your foot off."
+            }
+          ],
+          "hints": [
+            {
+              "after_s": 40,
+              "say": "Lower again, foot off the floor switch.",
+              "highlight": [
+                "centre_boom_lower"
+              ]
+            },
+            {
+              "after_s": 80,
+              "say": "Bottom of the round centre boom pad on the left of the handle.",
+              "highlight": [
+                "centre_boom_lower"
+              ]
+            }
+          ],
+          "show_me": [
+            "switch foot_switch 0",
+            "press centre_boom_lower 600"
+          ],
+          "ask": "Why did the boom stop above the cradles?",
+          "est_s": 35,
+          "figure": "N153021",
+          "source": {
+            "pages": [
+              "50-26"
+            ],
+            "topic": "transport-machine--4216ec"
+          },
+          "confidence": "manual"
+        },
+        {
+          "id": "p-transport-lock",
+          "say": "Press Transport Lock: its indicator lights and the boom can't move on the road.",
+          "why": "Transport Lock blocks boom movements and spray on/off for road travel.",
+          "controls": [
+            "transport_lock"
+          ],
+          "done": {
+            "any": [
+              {
+                "control": "transport_lock",
+                "eq": "1"
+              },
+              {
+                "confirm": "Transport Lock indicator on"
+              }
+            ]
+          },
+          "hints": [
+            {
+              "after_s": 40,
+              "say": "Same Transport Lock switch you released at the field entrance.",
+              "highlight": [
+                "transport_lock"
+              ]
+            }
+          ],
+          "show_me": [
+            "press transport_lock 300"
+          ],
+          "ask": "What does the Transport Lock block?",
+          "est_s": 25,
+          "figure": "N120615",
+          "source": {
+            "pages": [
+              "50-26",
+              "30-14"
+            ],
+            "topic": "transport-machine--4216ec"
+          },
+          "confidence": "manual"
+        }
+      ]
+    }
+  ]
+}

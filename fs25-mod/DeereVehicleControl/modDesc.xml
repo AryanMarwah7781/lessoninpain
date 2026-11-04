@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<modDesc descVersion="90">
+  <author>Lesson Studio (spike)</author>
+  <version>0.1.0.0</version>
+  <title>
+    <en>Deere Vehicle Control (spike)</en>
+  </title>
+  <description>
+    <en>Connects the Display and CommandARM Simulator Connections app to the sprayer you drive: reads src/VehicleInfo.xml (lever, steering, boom fold, nozzles, camera) and writes src/gameToSim.xml (GPS position, speed, heading). Throwaway spike, 3 Nov 2026.</en>
+  </description>
+  <iconFilename>icon.png</iconFilename>
+  <multiplayer supported="false" />
+  <extraSourceFiles>
+    <sourceFile filename="scripts/DeereVehicleControl.lua" />
+  </extraSourceFiles>
+</modDesc>

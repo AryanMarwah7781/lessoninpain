@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<!-- Settings for the Deere Vehicle Control spike. Edit, then restart the game (or the savegame). -->
+<config>
+  <!-- Where map position (0, 0) sits on Earth. Placeholder (central Iowa) until we know the display's field ("South 40"). -->
+  <origin lat="41.6" lon="-93.6" />
+  <!-- Multi-function lever: 125 = neutral, 250 = full forward (assumed; reverse is not in the spike). -->
+  <lever neutral="125" deadband="6" fullForwardKmh="20" />
+  <!-- Road wheel angle (deg) that means full steering lock. -->
+  <steering fullLockDeg="35" invert="false" />
+  <!-- Milliseconds between reads of VehicleInfo.xml, writes of gameToSim.xml, and status lines in the game log. -->
+  <timing readMs="100" writeMs="150" logMs="2000" />
+</config>
