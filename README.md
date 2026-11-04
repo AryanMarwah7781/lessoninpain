@@ -12,6 +12,34 @@ operator's-manual picture beside it, gives timed hints, and ticks itself off whe
 
 ---
 
+## Quick setup: one script
+
+**`Setup.cmd`** does sections 2-4 below in one go and is safe to run again:
+
+1. checks Git, Python and the .NET 8 Desktop Runtime, installing what's missing with winget;
+2. updates these files (`git pull`), or clones them into `Documents\lesson-studio`;
+3. finds the Connections app (the running copy, `Documents\jd_resources`, Desktop, Downloads, `C:\Simulator`,
+   or extracts the Aug 26 zip) and sets it to the real armrest box;
+4. finds Farming Simulator 22, checks its first run, and offers to install the LTTS sprayer mods (savegame 1 is
+   backed up first);
+5. puts a **Lesson Studio** shortcut on the desktop and checks that the simulator API starts.
+
+It ends with a list of anything left for you (for example signing in to the game's first run). Options:
+`Setup.cmd -Armrest virtual` (practise without hardware), `-AppFolder "<folder>"`, `-SkipMods`, `-NoShortcut`.
+
+**On a brand-new PC** (no Git yet), in PowerShell:
+
+```powershell
+winget install --id Git.Git -e
+# open a new PowerShell window, then:
+git clone https://github.com/AryanMarwah7781/lessoninpain.git "$env:USERPROFILE\Documents\lesson-studio"
+& "$env:USERPROFILE\Documents\lesson-studio\Setup.cmd"
+```
+
+The sections below are the same steps by hand, plus what to do every session (section 5).
+
+---
+
 ## 1. What the PC needs
 
 | | What | Where it comes from |
