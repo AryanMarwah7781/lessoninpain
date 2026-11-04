@@ -5,7 +5,8 @@
 real     DevelopmentSettings:UseSBMEmulator = false: the app finds the box through monitor_daemon (as shipped).
 virtual  UseSBMEmulator = true: the app talks to SBMEmulator.exe (lesson-studio/virtual-commandarm) over the pipe.
 Restart the Connections app afterwards; it reads the setting at start. The first change keeps the original file as
-appsettings.local.json.orig. APP_FOLDER defaults to the copy in Documents/jd_resources.
+appsettings.local.json.orig. APP_FOLDER (the folder with SimulatorConnections.exe, or one above it) defaults to the
+copy that is running, else the one in Documents/jd_resources.
 """
 import json
 import os
@@ -16,13 +17,31 @@ DEFAULT = os.path.join(os.path.expanduser("~"), "Documents", "jd_resources", "Au
                        "net8.0-windows")
 
 
+def find_app_folder(given):
+    if given:
+        for cand in (given, os.path.join(given, "net8.0-windows")):
+            if os.path.isfile(os.path.join(cand, "appsettings.local.json")):
+                return cand
+        return given
+    try:                                   # the copy that is running now
+        sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        from simapi.profiles import running_dir
+        d = running_dir("SimulatorConnections")
+        if d:
+            return d
+    except Exception:
+        pass
+    return DEFAULT
+
+
 def main():
     if len(sys.argv) < 2 or sys.argv[1] not in ("real", "virtual", "show"):
         raise SystemExit(__doc__)
-    folder = sys.argv[2] if len(sys.argv) > 2 else DEFAULT
+    folder = find_app_folder(sys.argv[2] if len(sys.argv) > 2 else None)
     path = os.path.join(folder, "appsettings.local.json")
     if not os.path.isfile(path):
-        raise SystemExit(f"not found: {path}")
+        raise SystemExit(f"Connections app settings not found: {path}\n"
+                         "Start the app first, or pass its folder (the one with SimulatorConnections.exe).")
     data = json.load(open(path, encoding="utf-8-sig"))
     dev = data.setdefault("DevelopmentSettings", {})
     if sys.argv[1] != "show":
