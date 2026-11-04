@@ -241,6 +241,8 @@ class ReplayTail(threading.Thread):
         self.by_key = {(c["module"], c.get("key")): c for c in controls_doc["controls"] if c.get("key")}
         self.path, self.pos, self.buf = None, 0, b""
         self.state = {}
+        self.rest = {}
+        self.wheel_msg = False
         self.live = False
         self.wheel, self.last_an = 0.0, None
         self.stop = False
@@ -251,10 +253,21 @@ class ReplayTail(threading.Thread):
             self.state[cid] = value
             self.sink((time.time(), "control", cid, value))
 
+    # Values a button key rests at. The real box (rig, 4 Nov) sends 8 for a released keypad/side key and 0 for the
+    # handle; the Apr 20 virtual armrest sends 1. A key that starts at anything else is a status value, not a button
+    # (the real DCM's b13 alternates 2/3 and b14 sits at 9), so it is ignored.
+    RESTING = {"mhc": {0}, "scm": {8, 1}, "dcm": {8, 1}}
+
     def handle(self, msg):
         if not (isinstance(msg, list) and len(msg) == 2 and isinstance(msg[1], dict)):
             return
         mid, vals = msg
+        if mid == 1023 and "an" in vals:
+            # the real rig's steering wheel (G923 through monitor_daemon): angle in wheel degrees, limits min/max +-450.
+            # Sign not yet confirmed on the rig; armrest convention is positive = left.
+            self.wheel_msg = True
+            self._emit("steering", int(round(-float(vals["an"]))))
+            return
         mod = self.modules.get(mid)
         if mod is None:
             return
@@ -270,6 +283,9 @@ class ReplayTail(threading.Thread):
                     continue
                 if c is None:
                     continue
+                rest = self.rest.setdefault((m, k), v)          # the first value seen for this key
+                if c["kind"] != "switch" and rest not in self.RESTING[m]:
+                    continue                                    # a status value, not a button
                 if c["kind"] == "switch":                      # warning switch v1: 612R sends 3 when on
                     on = v == c.get("on", 1) or v == 3
                     self._emit(c["id"], "1" if on else "0")
@@ -282,7 +298,11 @@ class ReplayTail(threading.Thread):
                 self._emit("park_slot", "1" if vals["p"] else "0")
             if "v" in vals:
                 self._emit("lever", int(vals["v"]))
-        elif m == "steer" and "an" in vals:
+        elif m == "steer" and "an" in vals and not self.wheel_msg:
+            # the SBM's own steering encoder (virtual armrest / Apr 20 style: whole degrees 0-359). Ignored once the
+            # rig's wheel message (1023) has been seen, since the real box then sends small floats here.
+            if isinstance(vals["an"], float) and not vals["an"].is_integer():
+                return
             an = int(vals["an"]) % 360
             if self.last_an is not None:
                 step = (an - self.last_an + 180) % 360 - 180     # shortest step; rising reading = right
@@ -304,6 +324,7 @@ class ReplayTail(threading.Thread):
                 return
             fresh = self.path is not None or (time.time() - os.path.getmtime(p) < 120)
             self.path, self.buf, self.state, self.last_an, self.wheel = p, b"", {}, None, 0.0
+            self.rest, self.wheel_msg = {}, False
             self.pos = 0 if fresh else os.path.getsize(p)    # an old file from before we started: skip it
             if fresh:
                 self.live = True
