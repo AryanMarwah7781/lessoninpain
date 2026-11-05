@@ -10,6 +10,9 @@ operator's-manual picture beside it, gives timed hints, and ticks itself off whe
 > This repository contains John Deere operator's-manual text and figures and details of the simulator app.
 > Keep it **private**.
 
+Where the project stands: [`docs/DEBRIEF.md`](docs/DEBRIEF.md). Setting up a new laptop (tools, apps, rig access,
+Claude Code notes): [`docs/SETUP-JD-LAPTOP.md`](docs/SETUP-JD-LAPTOP.md).
+
 ---
 
 ## Quick setup: one script
