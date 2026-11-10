@@ -44,6 +44,7 @@ With the real armrest box instead of the virtual one, everything except `control
 | GET | `/api/controls` | the control catalogue (`virtual-commandarm/controls.json`) |
 | GET | `/api/screen-map` | where things are on the app's screens (`simapi/screens/apr20-r4045.json`) |
 | GET | `/api/screens` | which app windows are open: `display` (Gen 4), `pdu` (corner post + Operations + Navigation), `main`; the display also gets `picture`, the Gen 4 picture's box inside its window |
+| GET | `/operations/` | the Connections app's 612R Operations panel with the lessons, live (`lesson-studio/operations`; `lessons.js` is built from `lessons/612r-*.json`) |
 | GET | `/api/screen/<display\|pdu\|main>.png` | live capture of that window (404 until it's open). `display.png` is cropped to the 4:3 Gen 4 picture, whatever size the window is |
 
 ## Showing the button (for the UI)
@@ -65,6 +66,8 @@ The map covers the Gen 4 **Run page** and the corner-post window (40 targets, ch
 Other display pages (menus, setup) need their own entries.
 
 No cross-origin headers, and POSTs must be JSON, so other websites in the trainee's browser can't call it.
+The app's Operations panel keeps to that: its copy in the app folder (`file:`) only lists the steps and checks for
+the API by loading a picture, then moves to `/operations/` on the API, so its calls are same-origin.
 
 ## Hooking up the RAG chatbot
 

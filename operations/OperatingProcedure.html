@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!-- Lesson Studio's version of the Connections app's 612R Operations panel (HTML/SprayerOp/OperatingProcedure).
+     It keeps the app's two scenarios and adds the 612R lessons. Opened from the app folder it lists the steps; when
+     Lesson Studio's simulator API runs on this PC it moves to http://127.0.0.1:47900/operations/ and follows the
+     lesson live. The app's own page is kept beside it as OperatingProcedure.orig.html. -->
+<html lang="en" data-lesson-studio="operations">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Operations</title>
+    <link rel="stylesheet" href="operations.css"/>
+</head>
+<body>
+<div class="ops">
+    <header class="ops-head"><h1>Operations</h1></header>
+    <div class="ops-yellow"></div>
+    <main class="ops-body">
+        <label for="scenario">Select a scenario:</label>
+        <select id="scenario"></select>
+        <p id="status" class="status" role="status" hidden></p>
+        <div id="sheet" class="sheet" tabindex="-1"></div>
+    </main>
+</div>
+<script src="lessons.js"></script>
+<script src="operations.js"></script>
+</body>
+</html>

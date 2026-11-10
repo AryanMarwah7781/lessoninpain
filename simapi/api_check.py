@@ -114,4 +114,11 @@ check("state shows the game file and what the app sent",
       state["game"].get("boomUnfolded") == "1" and "PLT_AIC_Rate3Control" in state["sent"],
       f"boomUnfolded={state['game'].get('boomUnfolded')}, sent signals={len(state['sent'])}")
 
+with urllib.request.urlopen(BASE + "/operations/lessons.js", timeout=10) as r:
+    ops = json.loads(r.read().decode("utf-8").split("=", 1)[1].strip().rstrip(";"))
+with urllib.request.urlopen(BASE + "/operations/OperatingProcedure.html", timeout=10) as r:
+    page = r.read()
+check("Operations panel page and its 612R lessons served", b'data-lesson-studio="operations"' in page and len(ops) == 7,
+      f"{len(ops)} lessons, {sum(len(s['steps']) for L in ops for s in L['sections'])} steps")
+
 print(f"\n{sum(r[1] for r in results)}/{len(results)} API checks passed")

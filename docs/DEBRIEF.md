@@ -41,6 +41,7 @@ The software is built and runs on the rig; what is left is proving the lessons w
 | Lesson files (13) | Working | All pass the lesson checker; the 612R set is exported as a shareable Markdown file |
 | Simulator API | Working | Follows the Apr 20 and Aug 26 builds, runs the lessons; installed on the rig mini PC |
 | Lesson Studio window | Working | WPF on .NET 8 (the display simulator app's stack); 612R / R4045 chooser |
+| Lessons in the app's Operations panel | Working (6 Nov) | The 7 612R lessons run live inside the Connections app's own Operations panel, beside its two scenarios; installed into the app folder, the app's page kept. Not yet seen in the app on the rig |
 | Virtual armrest | Working | Drives the cloud machine on the Aug 26 build: lights come back, boom moves, lever took it to a steady 8.27 |
 | Farming Simulator 22 link | Working | LTTS mods installed; boom and wheel speed reach the game |
 | Rig mini PC | Working | Repo cloned, setup script passed, desktop shortcut; reachable by SSH on the rig network |

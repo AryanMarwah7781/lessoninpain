@@ -42,6 +42,9 @@ SCREEN_MAP_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "scre
 MANUAL_DIR = os.path.join(ROOT, "manual")
 FIGURE_MAP_PATH = os.path.join(MANUAL_DIR, "figure-map.json")
 FIGURE_KEY = re.compile(r"^[A-Z0-9]{3,16}$")
+OPS_DIR = os.path.join(ROOT, "operations")
+OPS_TYPES = {".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8",
+             ".js": "text/javascript; charset=utf-8", ".png": "image/png"}
 
 
 class App:
@@ -197,21 +200,9 @@ class App:
         return index
 
     def step_figure(self, step):
-        """The manual figure that best shows a step: the first photo of its first control that has one,
-        else the figure of a screen target it names. A step's own `figure` (lesson format 0.2) wins."""
-        if step.get("figure"):
-            return step["figure"]
-        extra = (self.run.lesson.get("extra_controls") or {}) if self.run else {}
-        for cid in step.get("controls", []):
-            if cid in extra and extra[cid].get("figure"):
-                return extra[cid]["figure"]
-            figs = (self.figure_map["controls"].get(cid) or {}).get("figures") or []
-            if figs:
-                return figs[0]
-        for tid in step.get("display") or []:
-            if self.figure_map["screen"].get(tid):
-                return self.figure_map["screen"][tid]
-        return None
+        """The manual figure that best shows a step (see operations.step_figure)."""
+        from .operations import step_figure
+        return step_figure(step, self.run.lesson if self.run else None, self.figure_map)
 
     # ---- "show me where": armrest controls and screen targets for the current step
     def where(self, view):
@@ -452,6 +443,8 @@ def make_handler(app):
                         return self._json(200, app.run.chatbot_context(app.store.snapshot()))
                 if u.path == "/api/stream":
                     return self._stream()
+                if u.path.startswith("/operations"):
+                    return self._operations(u.path)
                 return self._json(404, {"error": "not found"})
             except Exception as ex:          # keep the service up whatever a request does
                 return self._json(500, {"error": str(ex)})
@@ -492,6 +485,31 @@ def make_handler(app):
                 return self._json(404, {"error": "not found"})
             except (ValueError, KeyError, FileNotFoundError, RuntimeError, OSError) as ex:
                 return self._json(400, {"error": str(ex)})
+
+        def _operations(self, path):
+            """The app's Operations panel, live (lesson-studio/operations). Served from here so the page and the
+            API share one origin: the API stays without cross-origin headers."""
+            from . import operations
+            if path in ("/operations", "/operations/"):
+                self.send_response(302)
+                self.send_header("Location", "/operations/OperatingProcedure.html")
+                self.end_headers()
+                return
+            if path == "/operations/lessons.js":
+                data, ctype = operations.lessons_js(LESSON_DIR, app.figure_map).encode("utf-8"), OPS_TYPES[".js"]
+            else:
+                full = os.path.normpath(os.path.join(OPS_DIR, path[len("/operations/"):]))
+                ctype = OPS_TYPES.get(os.path.splitext(full)[1].lower())
+                if not full.startswith(OPS_DIR + os.sep) or not ctype or not os.path.isfile(full):
+                    return self._json(404, {"error": "not found"})
+                with open(full, "rb") as fh:
+                    data = fh.read()
+            self.send_response(200)
+            self.send_header("Content-Type", ctype)
+            self.send_header("Content-Length", str(len(data)))
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            self.wfile.write(data)
 
         def _stream(self):
             q = queue.Queue(maxsize=1000)

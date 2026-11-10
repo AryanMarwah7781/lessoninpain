@@ -138,6 +138,23 @@ Close Chrome and other big apps first: the app, the display, the game and Lesson
 | Automatic setup of the starting state | no: follow the trainer note at the start of the lesson | yes |
 | **Show me** | no | yes |
 
+### The lessons in the app's Operations panel
+
+The 612R lessons also run inside the Connections app, in its own **Operations** panel (next to the corner-post
+display, under *Select a scenario*). The app's two scenarios, *Begin Spraying* and *Enable See & Spray*, are still
+there under **Quick guides**.
+
+- **With Lesson Studio running**, the panel follows the lesson live:
+  - **Start lesson** begins one there;
+  - the current step opens with its manual figure and ticks off when the simulator sees it done;
+  - hints, Done and Skip work as in the Lesson Studio window.
+  - The panel and the window show the same lesson, so either one can drive it.
+- **Without Lesson Studio**, the panel lists every step, and switches to live by itself once Lesson Studio starts.
+
+`Start Lesson Studio.cmd` and `Setup.cmd` put the panel in place, writing only what changed. The app reads it at
+**Launch Machine Simulator**. The app's own page is kept as `HTML\SprayerOp\OperatingProcedure\OperatingProcedure.orig.html`;
+to put it back, run `python -I tools/operations_panel.py remove`.
+
 ## 7. Practising without the rig (virtual armrest)
 
 1. Double-click **`Use VIRTUAL armrest.cmd`**. It switches the app over and starts the virtual armrest
@@ -168,6 +185,7 @@ Switch back with **`Use REAL armrest.cmd`** before using the rig's box.
 |---|---|
 | Check a lesson file | `python -I lessons/check_lesson.py --validate lessons/612r-controls-tour.json` |
 | Export the 612R lessons to Markdown | `python -I lessons/export_markdown.py <out folder>` |
+| Lessons in the app's Operations panel | `python -I tools/operations_panel.py install\|remove\|show [APP_FOLDER]`; the page is `operations/`, live at <http://127.0.0.1:47900/operations/> |
 | Run the API on its own | `python -I run_simapi.py --build aug26` (or `apr20`, or `auto`); health at <http://127.0.0.1:47900/api/health> |
 | Rebuild Lesson Studio (needs the .NET 8 SDK) | `dotnet publish lesson-panel/LessonPanel.csproj -c Release -o dist/LessonStudio --self-contained false` |
 | Rebuild the virtual armrest | `virtual-commandarm\build.cmd` (uses the C# compiler that ships with Windows) |
@@ -178,6 +196,7 @@ Switch back with **`Use REAL armrest.cmd`** before using the rig's box.
 lessons/              lesson files (*.json), FORMAT.md, validator, Markdown exporter
 simapi/               simulator API (standard-library Python): app log, game file, armrest, lesson engine; API.md
 lesson-panel/         Lesson Studio source (WPF, .NET 8)
+operations/           the app's Operations panel with the 612R lessons (HTML; installed by tools/operations_panel.py)
 dist/LessonStudio/    Lesson Studio, ready-built
 virtual-commandarm/   virtual armrest (SBMEmulator.exe), controls.json, tests
 manual/               612R manual text, figures and the figure map the lessons use

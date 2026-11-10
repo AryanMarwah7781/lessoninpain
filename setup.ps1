@@ -139,6 +139,10 @@ else {
         $out = & $exe @rest -I (Join-Path $Studio 'tools\armrest_mode.py') $Armrest $app 2>&1
         if ($LASTEXITCODE -eq 0) { Ok ("armrest: " + ($out | Select-String 'armrest:' | ForEach-Object { $_.Line.Trim() -replace '^armrest:\s*', '' })) }
         else { Todo "Couldn't set the armrest: $out" }
+        # the 612R lessons in the app's own Operations panel (the app's page is kept as OperatingProcedure.orig.html)
+        $out = & $exe @rest -I (Join-Path $Studio 'tools\operations_panel.py') install $app 2>&1
+        if ($LASTEXITCODE -eq 0) { Ok 'Operations panel: the 612R lessons (live while Lesson Studio runs)' }
+        else { Todo "Couldn't put the lessons in the Operations panel: $out" }
         if ($Armrest -eq 'virtual' -and -not (Get-Process SBMEmulator -ErrorAction SilentlyContinue)) {
             $emu = Join-Path $Studio 'virtual-commandarm\SBMEmulator.exe'
             Start-Process -FilePath $emu -WorkingDirectory (Split-Path $emu); Ok 'virtual armrest started'

@@ -130,6 +130,9 @@ Ground rules that carry over: never sign in to the John Deere account for the us
 not touch the AWS session; do not change the Apr 20 app's `log4.config` without an explicit OK; ask before any
 change to another computer; keep the GitHub repo private (it holds John Deere manual content).
 
+The lessons are developed for the app's own **Operations** panel (`operations/`, installed into the app's
+`HTML\SprayerOp\OperatingProcedure` by `tools/operations_panel.py`; README section 6).
+
 Open work, in order:
 
 1. **Replay-logger reminder:** when the app's bridge is connected to the real box but no replay log is being
